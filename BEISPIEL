@@ -1,0 +1,40 @@
+definition* haupt definition*;
+definition: funktions_def
+		| variablen_def;
+funktions_def: "definiere" funktions_typ NAME "(" parameter ("," parameter)* ")" "{" code+ "}";
+funktions_typ: "wiedergabebefreit" 
+		| variablen_typ;
+parameter: variablen_typ NAME;
+
+haupt {
+	int a = bla(true, false);
+	int b = 2*a+a;
+	bool c = b>a;
+	falls(c){
+		definiere int bla(bool pA, bool pB){
+			return 2;
+		}
+		solange{
+			a = a - bla(false, false);
+		}a>1; 
+		falls(a==1){
+			sprich("schwarze sonne");
+		}
+		oder(a==0){
+			sprich("freie energie maschine");
+		}ansonsten {
+			sprich("nana");
+		}
+		schleife a<10 {
+			sprich("wqeqwe");
+			a = a + 1;
+		}
+	}
+}
+
+definiere wiedergabebefreit blablabla (){
+}
+
+definiere int bla (bool pA, bool pB){
+	zurückgeben 1;
+}
