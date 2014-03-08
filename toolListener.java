@@ -8,17 +8,6 @@ import org.antlr.v4.runtime.tree.ParseTreeListener;
  */
 public interface toolListener extends ParseTreeListener {
 	/**
-	 * Enter a parse tree produced by {@link toolParser#int_ausdruck}.
-	 * @param ctx the parse tree
-	 */
-	void enterInt_ausdruck(@NotNull toolParser.Int_ausdruckContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link toolParser#int_ausdruck}.
-	 * @param ctx the parse tree
-	 */
-	void exitInt_ausdruck(@NotNull toolParser.Int_ausdruckContext ctx);
-
-	/**
 	 * Enter a parse tree produced by {@link toolParser#ausdruck}.
 	 * @param ctx the parse tree
 	 */
@@ -30,59 +19,70 @@ public interface toolListener extends ParseTreeListener {
 	void exitAusdruck(@NotNull toolParser.AusdruckContext ctx);
 
 	/**
-	 * Enter a parse tree produced by {@link toolParser#start}.
+	 * Enter a parse tree produced by {@link toolParser#zuweisung}.
 	 * @param ctx the parse tree
 	 */
-	void enterStart(@NotNull toolParser.StartContext ctx);
+	void enterZuweisung(@NotNull toolParser.ZuweisungContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link toolParser#start}.
+	 * Exit a parse tree produced by {@link toolParser#zuweisung}.
 	 * @param ctx the parse tree
 	 */
-	void exitStart(@NotNull toolParser.StartContext ctx);
+	void exitZuweisung(@NotNull toolParser.ZuweisungContext ctx);
 
 	/**
-	 * Enter a parse tree produced by {@link toolParser#program}.
+	 * Enter a parse tree produced by {@link toolParser#funktions_aufruf}.
 	 * @param ctx the parse tree
 	 */
-	void enterProgram(@NotNull toolParser.ProgramContext ctx);
+	void enterFunktions_aufruf(@NotNull toolParser.Funktions_aufrufContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link toolParser#program}.
+	 * Exit a parse tree produced by {@link toolParser#funktions_aufruf}.
 	 * @param ctx the parse tree
 	 */
-	void exitProgram(@NotNull toolParser.ProgramContext ctx);
+	void exitFunktions_aufruf(@NotNull toolParser.Funktions_aufrufContext ctx);
 
 	/**
-	 * Enter a parse tree produced by {@link toolParser#variablen_typ}.
+	 * Enter a parse tree produced by {@link toolParser#funktions_def}.
 	 * @param ctx the parse tree
 	 */
-	void enterVariablen_typ(@NotNull toolParser.Variablen_typContext ctx);
+	void enterFunktions_def(@NotNull toolParser.Funktions_defContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link toolParser#variablen_typ}.
+	 * Exit a parse tree produced by {@link toolParser#funktions_def}.
 	 * @param ctx the parse tree
 	 */
-	void exitVariablen_typ(@NotNull toolParser.Variablen_typContext ctx);
+	void exitFunktions_def(@NotNull toolParser.Funktions_defContext ctx);
 
 	/**
-	 * Enter a parse tree produced by {@link toolParser#variablen_zuweisung}.
+	 * Enter a parse tree produced by {@link toolParser#int_faktor}.
 	 * @param ctx the parse tree
 	 */
-	void enterVariablen_zuweisung(@NotNull toolParser.Variablen_zuweisungContext ctx);
+	void enterInt_faktor(@NotNull toolParser.Int_faktorContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link toolParser#variablen_zuweisung}.
+	 * Exit a parse tree produced by {@link toolParser#int_faktor}.
 	 * @param ctx the parse tree
 	 */
-	void exitVariablen_zuweisung(@NotNull toolParser.Variablen_zuweisungContext ctx);
+	void exitInt_faktor(@NotNull toolParser.Int_faktorContext ctx);
 
 	/**
-	 * Enter a parse tree produced by {@link toolParser#bool_ausdruck}.
+	 * Enter a parse tree produced by {@link toolParser#bool_faktor}.
 	 * @param ctx the parse tree
 	 */
-	void enterBool_ausdruck(@NotNull toolParser.Bool_ausdruckContext ctx);
+	void enterBool_faktor(@NotNull toolParser.Bool_faktorContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link toolParser#bool_ausdruck}.
+	 * Exit a parse tree produced by {@link toolParser#bool_faktor}.
 	 * @param ctx the parse tree
 	 */
-	void exitBool_ausdruck(@NotNull toolParser.Bool_ausdruckContext ctx);
+	void exitBool_faktor(@NotNull toolParser.Bool_faktorContext ctx);
+
+	/**
+	 * Enter a parse tree produced by {@link toolParser#daten_typ}.
+	 * @param ctx the parse tree
+	 */
+	void enterDaten_typ(@NotNull toolParser.Daten_typContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link toolParser#daten_typ}.
+	 * @param ctx the parse tree
+	 */
+	void exitDaten_typ(@NotNull toolParser.Daten_typContext ctx);
 
 	/**
 	 * Enter a parse tree produced by {@link toolParser#produkt}.
@@ -96,15 +96,15 @@ public interface toolListener extends ParseTreeListener {
 	void exitProdukt(@NotNull toolParser.ProduktContext ctx);
 
 	/**
-	 * Enter a parse tree produced by {@link toolParser#faktor}.
+	 * Enter a parse tree produced by {@link toolParser#bool_ausdruck}.
 	 * @param ctx the parse tree
 	 */
-	void enterFaktor(@NotNull toolParser.FaktorContext ctx);
+	void enterBool_ausdruck(@NotNull toolParser.Bool_ausdruckContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link toolParser#faktor}.
+	 * Exit a parse tree produced by {@link toolParser#bool_ausdruck}.
 	 * @param ctx the parse tree
 	 */
-	void exitFaktor(@NotNull toolParser.FaktorContext ctx);
+	void exitBool_ausdruck(@NotNull toolParser.Bool_ausdruckContext ctx);
 
 	/**
 	 * Enter a parse tree produced by {@link toolParser#code}.
@@ -127,6 +127,50 @@ public interface toolListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitVariablen_def(@NotNull toolParser.Variablen_defContext ctx);
+
+	/**
+	 * Enter a parse tree produced by {@link toolParser#int_ausdruck}.
+	 * @param ctx the parse tree
+	 */
+	void enterInt_ausdruck(@NotNull toolParser.Int_ausdruckContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link toolParser#int_ausdruck}.
+	 * @param ctx the parse tree
+	 */
+	void exitInt_ausdruck(@NotNull toolParser.Int_ausdruckContext ctx);
+
+	/**
+	 * Enter a parse tree produced by {@link toolParser#parameter}.
+	 * @param ctx the parse tree
+	 */
+	void enterParameter(@NotNull toolParser.ParameterContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link toolParser#parameter}.
+	 * @param ctx the parse tree
+	 */
+	void exitParameter(@NotNull toolParser.ParameterContext ctx);
+
+	/**
+	 * Enter a parse tree produced by {@link toolParser#def}.
+	 * @param ctx the parse tree
+	 */
+	void enterDef(@NotNull toolParser.DefContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link toolParser#def}.
+	 * @param ctx the parse tree
+	 */
+	void exitDef(@NotNull toolParser.DefContext ctx);
+
+	/**
+	 * Enter a parse tree produced by {@link toolParser#start}.
+	 * @param ctx the parse tree
+	 */
+	void enterStart(@NotNull toolParser.StartContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link toolParser#start}.
+	 * @param ctx the parse tree
+	 */
+	void exitStart(@NotNull toolParser.StartContext ctx);
 
 	/**
 	 * Enter a parse tree produced by {@link toolParser#haupt}.

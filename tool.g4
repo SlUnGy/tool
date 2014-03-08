@@ -1,39 +1,50 @@
 grammar tool;
 
-start: program;
+start: def* haupt def*;
 
-program: haupt ;
+haupt: 'haupt' '{' code* '}';
 
-haupt: 'haupt' '{' code* '}' ;
+def: variablen_def ';'
+	| funktions_def;
 
-code: variablen_def
-	| variablen_zuweisung ';' ;
+code: variablen_def ';'
+	| zuweisung ';'
+	| funktions_aufruf ';';
 
-variablen_zuweisung: NAME '=' ausdruck ;
+zuweisung: NAME '=' ausdruck;
 
-ausdruck: int_ausdruck
+ausdruck: int_ausdruck 
 	| bool_ausdruck;
 
 int_ausdruck: produkt (('+' | '-') produkt)*;
 
-produkt: faktor (('*' | '/') faktor)*;
+produkt: int_faktor (('*' | '/') int_faktor)*;
 
-faktor: '(' int_ausdruck ')'
+int_faktor: '(' int_ausdruck ')'
+	| funktions_aufruf
 	| NAME
-	| WERT;
+	| ZAHL;
 	
-bool_ausdruck: '(' bool_ausdruck ')'
+bool_ausdruck: bool_faktor (('<' | '>' | '<=' | '>=' | '==' | '!=' | '||' | '&&') bool_faktor)*;
+
+bool_faktor: '(' bool_ausdruck ')'
+		| '!' bool_ausdruck
+		| funktions_aufruf
+		| int_ausdruck
+		| NAME
 		| BOOLEAN;
 
-variablen_def: variablen_typ NAME';'
-		| variablen_typ variablen_zuweisung';' ;
+variablen_def: daten_typ ( NAME | zuweisung );
 
+daten_typ: 'int' | 'bool';
 
-variablen_typ: 'int'
-		| 'bool';
+funktions_def: 'definiere' daten_typ NAME '(' (parameter (',' parameter)*)? ')' '{' code* '}';
+
+funktions_aufruf: NAME '(' ( ausdruck (',' ausdruck)* )?  ')';
+
+parameter: daten_typ NAME ;
 
 WS: [ \r\t\n]+ -> skip;
 NAME: [a-zA-Z]+ ;
-WERT: ZAHL|BOOLEAN;
-BOOLEAN: 'true'|'false' ;
+BOOLEAN: '_true' | '_false' ;
 ZAHL: [1-9][0-9]* | '0';
