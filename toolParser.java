@@ -840,6 +840,9 @@ public class toolParser extends Parser {
 	}
 
 	public static class Funktions_defContext extends ParserRuleContext {
+		public Daten_typContext daten_typ() {
+			return getRuleContext(Daten_typContext.class,0);
+		}
 		public TerminalNode NAME() { return getToken(toolParser.NAME, 0); }
 		public List<ParameterContext> parameter() {
 			return getRuleContexts(ParameterContext.class);
@@ -875,46 +878,47 @@ public class toolParser extends Parser {
 			enterOuterAlt(_localctx, 1);
 			{
 			setState(132); match(19);
-			setState(133); match(NAME);
-			setState(134); match(7);
-			setState(143);
+			setState(133); daten_typ();
+			setState(134); match(NAME);
+			setState(135); match(7);
+			setState(144);
 			_la = _input.LA(1);
 			if (_la==2 || _la==9) {
 				{
-				setState(135); parameter();
-				setState(140);
+				setState(136); parameter();
+				setState(141);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 				while (_la==3) {
 					{
 					{
-					setState(136); match(3);
-					setState(137); parameter();
+					setState(137); match(3);
+					setState(138); parameter();
 					}
 					}
-					setState(142);
+					setState(143);
 					_errHandler.sync(this);
 					_la = _input.LA(1);
 				}
 				}
 			}
 
-			setState(145); match(1);
-			setState(146); match(18);
-			setState(150);
+			setState(146); match(1);
+			setState(147); match(18);
+			setState(151);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << 2) | (1L << 9) | (1L << NAME))) != 0)) {
 				{
 				{
-				setState(147); code();
+				setState(148); code();
 				}
 				}
-				setState(152);
+				setState(153);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
-			setState(153); match(22);
+			setState(154); match(22);
 			}
 		}
 		catch (RecognitionException re) {
@@ -957,31 +961,31 @@ public class toolParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(155); match(NAME);
-			setState(156); match(7);
-			setState(165);
+			setState(156); match(NAME);
+			setState(157); match(7);
+			setState(166);
 			_la = _input.LA(1);
 			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << 7) | (1L << 24) | (1L << NAME) | (1L << BOOLEAN) | (1L << ZAHL))) != 0)) {
 				{
-				setState(157); ausdruck();
-				setState(162);
+				setState(158); ausdruck();
+				setState(163);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 				while (_la==3) {
 					{
 					{
-					setState(158); match(3);
-					setState(159); ausdruck();
+					setState(159); match(3);
+					setState(160); ausdruck();
 					}
 					}
-					setState(164);
+					setState(165);
 					_errHandler.sync(this);
 					_la = _input.LA(1);
 				}
 				}
 			}
 
-			setState(167); match(1);
+			setState(168); match(1);
 			}
 		}
 		catch (RecognitionException re) {
@@ -1020,8 +1024,8 @@ public class toolParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(169); daten_typ();
-			setState(170); match(NAME);
+			setState(170); daten_typ();
+			setState(171); match(NAME);
 			}
 		}
 		catch (RecognitionException re) {
@@ -1036,7 +1040,7 @@ public class toolParser extends Parser {
 	}
 
 	public static final String _serializedATN =
-		"\3\uacf5\uee8c\u4f5d\u8b0d\u4a45\u78bd\u1b2f\u3378\3\36\u00af\4\2\t\2"+
+		"\3\uacf5\uee8c\u4f5d\u8b0d\u4a45\u78bd\u1b2f\u3378\3\36\u00b0\4\2\t\2"+
 		"\4\3\t\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\4\b\t\b\4\t\t\t\4\n\t\n\4\13"+
 		"\t\13\4\f\t\f\4\r\t\r\4\16\t\16\4\17\t\17\4\20\t\20\4\21\t\21\3\2\7\2"+
 		"$\n\2\f\2\16\2\'\13\2\3\2\3\2\7\2+\n\2\f\2\16\2.\13\2\3\3\3\3\3\3\7\3"+
@@ -1045,15 +1049,15 @@ public class toolParser extends Parser {
 		"\3\b\3\b\7\bV\n\b\f\b\16\bY\13\b\3\t\3\t\3\t\7\t^\n\t\f\t\16\ta\13\t\3"+
 		"\n\3\n\3\n\3\n\3\n\3\n\3\n\5\nj\n\n\3\13\3\13\3\13\7\13o\n\13\f\13\16"+
 		"\13r\13\13\3\f\3\f\3\f\3\f\3\f\3\f\3\f\3\f\3\f\3\f\5\f~\n\f\3\r\3\r\3"+
-		"\r\5\r\u0083\n\r\3\16\3\16\3\17\3\17\3\17\3\17\3\17\3\17\7\17\u008d\n"+
-		"\17\f\17\16\17\u0090\13\17\5\17\u0092\n\17\3\17\3\17\3\17\7\17\u0097\n"+
-		"\17\f\17\16\17\u009a\13\17\3\17\3\17\3\20\3\20\3\20\3\20\3\20\7\20\u00a3"+
-		"\n\20\f\20\16\20\u00a6\13\20\5\20\u00a8\n\20\3\20\3\20\3\21\3\21\3\21"+
+		"\r\5\r\u0083\n\r\3\16\3\16\3\17\3\17\3\17\3\17\3\17\3\17\3\17\7\17\u008e"+
+		"\n\17\f\17\16\17\u0091\13\17\5\17\u0093\n\17\3\17\3\17\3\17\7\17\u0098"+
+		"\n\17\f\17\16\17\u009b\13\17\3\17\3\17\3\20\3\20\3\20\3\20\3\20\7\20\u00a4"+
+		"\n\20\f\20\16\20\u00a7\13\20\5\20\u00a9\n\20\3\20\3\20\3\21\3\21\3\21"+
 		"\3\21\2\22\2\4\6\b\n\f\16\20\22\24\26\30\32\34\36 \2\6\4\2\6\6\b\b\4\2"+
-		"\7\7\26\26\7\2\n\n\16\16\20\23\27\27\31\31\4\2\4\4\13\13\u00b6\2%\3\2"+
+		"\7\7\26\26\7\2\n\n\16\16\20\23\27\27\31\31\4\2\4\4\13\13\u00b7\2%\3\2"+
 		"\2\2\4/\3\2\2\2\6=\3\2\2\2\bH\3\2\2\2\nJ\3\2\2\2\fP\3\2\2\2\16R\3\2\2"+
 		"\2\20Z\3\2\2\2\22i\3\2\2\2\24k\3\2\2\2\26}\3\2\2\2\30\177\3\2\2\2\32\u0084"+
-		"\3\2\2\2\34\u0086\3\2\2\2\36\u009d\3\2\2\2 \u00ab\3\2\2\2\"$\5\6\4\2#"+
+		"\3\2\2\2\34\u0086\3\2\2\2\36\u009e\3\2\2\2 \u00ac\3\2\2\2\"$\5\6\4\2#"+
 		"\"\3\2\2\2$\'\3\2\2\2%#\3\2\2\2%&\3\2\2\2&(\3\2\2\2\'%\3\2\2\2(,\5\4\3"+
 		"\2)+\5\6\4\2*)\3\2\2\2+.\3\2\2\2,*\3\2\2\2,-\3\2\2\2-\3\3\2\2\2.,\3\2"+
 		"\2\2/\60\7\r\2\2\60\64\7\24\2\2\61\63\5\b\5\2\62\61\3\2\2\2\63\66\3\2"+
@@ -1073,20 +1077,21 @@ public class toolParser extends Parser {
 		"\2|~\7\35\2\2}s\3\2\2\2}w\3\2\2\2}y\3\2\2\2}z\3\2\2\2}{\3\2\2\2}|\3\2"+
 		"\2\2~\27\3\2\2\2\177\u0082\5\32\16\2\u0080\u0083\7\34\2\2\u0081\u0083"+
 		"\5\n\6\2\u0082\u0080\3\2\2\2\u0082\u0081\3\2\2\2\u0083\31\3\2\2\2\u0084"+
-		"\u0085\t\5\2\2\u0085\33\3\2\2\2\u0086\u0087\7\25\2\2\u0087\u0088\7\34"+
-		"\2\2\u0088\u0091\7\t\2\2\u0089\u008e\5 \21\2\u008a\u008b\7\5\2\2\u008b"+
-		"\u008d\5 \21\2\u008c\u008a\3\2\2\2\u008d\u0090\3\2\2\2\u008e\u008c\3\2"+
-		"\2\2\u008e\u008f\3\2\2\2\u008f\u0092\3\2\2\2\u0090\u008e\3\2\2\2\u0091"+
-		"\u0089\3\2\2\2\u0091\u0092\3\2\2\2\u0092\u0093\3\2\2\2\u0093\u0094\7\3"+
-		"\2\2\u0094\u0098\7\24\2\2\u0095\u0097\5\b\5\2\u0096\u0095\3\2\2\2\u0097"+
-		"\u009a\3\2\2\2\u0098\u0096\3\2\2\2\u0098\u0099\3\2\2\2\u0099\u009b\3\2"+
-		"\2\2\u009a\u0098\3\2\2\2\u009b\u009c\7\30\2\2\u009c\35\3\2\2\2\u009d\u009e"+
-		"\7\34\2\2\u009e\u00a7\7\t\2\2\u009f\u00a4\5\f\7\2\u00a0\u00a1\7\5\2\2"+
-		"\u00a1\u00a3\5\f\7\2\u00a2\u00a0\3\2\2\2\u00a3\u00a6\3\2\2\2\u00a4\u00a2"+
-		"\3\2\2\2\u00a4\u00a5\3\2\2\2\u00a5\u00a8\3\2\2\2\u00a6\u00a4\3\2\2\2\u00a7"+
-		"\u009f\3\2\2\2\u00a7\u00a8\3\2\2\2\u00a8\u00a9\3\2\2\2\u00a9\u00aa\7\3"+
-		"\2\2\u00aa\37\3\2\2\2\u00ab\u00ac\5\32\16\2\u00ac\u00ad\7\34\2\2\u00ad"+
-		"!\3\2\2\2\23%,\64=HPW_ip}\u0082\u008e\u0091\u0098\u00a4\u00a7";
+		"\u0085\t\5\2\2\u0085\33\3\2\2\2\u0086\u0087\7\25\2\2\u0087\u0088\5\32"+
+		"\16\2\u0088\u0089\7\34\2\2\u0089\u0092\7\t\2\2\u008a\u008f\5 \21\2\u008b"+
+		"\u008c\7\5\2\2\u008c\u008e\5 \21\2\u008d\u008b\3\2\2\2\u008e\u0091\3\2"+
+		"\2\2\u008f\u008d\3\2\2\2\u008f\u0090\3\2\2\2\u0090\u0093\3\2\2\2\u0091"+
+		"\u008f\3\2\2\2\u0092\u008a\3\2\2\2\u0092\u0093\3\2\2\2\u0093\u0094\3\2"+
+		"\2\2\u0094\u0095\7\3\2\2\u0095\u0099\7\24\2\2\u0096\u0098\5\b\5\2\u0097"+
+		"\u0096\3\2\2\2\u0098\u009b\3\2\2\2\u0099\u0097\3\2\2\2\u0099\u009a\3\2"+
+		"\2\2\u009a\u009c\3\2\2\2\u009b\u0099\3\2\2\2\u009c\u009d\7\30\2\2\u009d"+
+		"\35\3\2\2\2\u009e\u009f\7\34\2\2\u009f\u00a8\7\t\2\2\u00a0\u00a5\5\f\7"+
+		"\2\u00a1\u00a2\7\5\2\2\u00a2\u00a4\5\f\7\2\u00a3\u00a1\3\2\2\2\u00a4\u00a7"+
+		"\3\2\2\2\u00a5\u00a3\3\2\2\2\u00a5\u00a6\3\2\2\2\u00a6\u00a9\3\2\2\2\u00a7"+
+		"\u00a5\3\2\2\2\u00a8\u00a0\3\2\2\2\u00a8\u00a9\3\2\2\2\u00a9\u00aa\3\2"+
+		"\2\2\u00aa\u00ab\7\3\2\2\u00ab\37\3\2\2\2\u00ac\u00ad\5\32\16\2\u00ad"+
+		"\u00ae\7\34\2\2\u00ae!\3\2\2\2\23%,\64=HPW_ip}\u0082\u008f\u0092\u0099"+
+		"\u00a5\u00a8";
 	public static final ATN _ATN =
 		ATNSimulator.deserialize(_serializedATN.toCharArray());
 	static {

@@ -1,6 +1,7 @@
 #! /bin/bash
 
+antlrpath=/usr/local/lib/antlr-4.1-complete.jar
 
 rm *.class
-java -jar /usr/local/lib/antlr-4.1-complete.jar tool.g4
+java -jar $antlrpath tool.g4
 javac *.java
