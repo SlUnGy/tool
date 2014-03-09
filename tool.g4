@@ -1,50 +1,66 @@
 grammar tool;
 
-start: def* haupt def*;
+start: def* main def*;
 
-haupt: 'haupt' '{' code* '}';
+main: MAIN '(' ')' '{' code* '}';
 
-def: variablen_def ';'
-	| funktions_def;
+def: var_def ';'
+	| func_def;
 
-code: variablen_def ';'
-	| zuweisung ';'
-	| funktions_aufruf ';';
+code: var_def ';'
+	| assignment ';'
+	| func_call ';'
+	| cont_structure;
 
-zuweisung: NAME '=' ausdruck;
+cont_structure: IF '(' bool_expression ')' '{' code+ '}' ( ELSEIF '(' bool_expression ')' '{' code+ '}' )* ( ELSE '{' code+ '}' )?;
 
-ausdruck: int_ausdruck 
-	| bool_ausdruck;
+assignment: NAME '=' expression;
 
-int_ausdruck: produkt (('+' | '-') produkt)*;
+expression: int_expression 
+	| bool_expression;
+
+int_expression: produkt (('+' | '-') produkt)*;
 
 produkt: int_faktor (('*' | '/') int_faktor)*;
 
-int_faktor: '(' int_ausdruck ')'
-	| funktions_aufruf
+int_faktor: '(' int_expression ')'
+	| func_call
 	| NAME
-	| ZAHL;
+	| NUMBER;
 	
-bool_ausdruck: bool_faktor (('<' | '>' | '<=' | '>=' | '==' | '!=' | '||' | '&&') bool_faktor)*;
+bool_expression: bool_faktor (('<' | '>' | '<=' | '>=' | '==' | '!=' | '||' | '&&') bool_faktor)*;
 
-bool_faktor: '(' bool_ausdruck ')'
-		| '!' bool_ausdruck
-		| funktions_aufruf
-		| int_ausdruck
+bool_faktor: '(' bool_expression ')'
+		| '!' bool_expression
+		| func_call
+		| int_expression
 		| NAME
 		| BOOLEAN;
 
-variablen_def: daten_typ ( NAME | zuweisung );
+var_def: data_type ( NAME | assignment );
 
-daten_typ: 'int' | 'bool';
+data_type: TYPE_INT | TYPE_BOOL;
 
-funktions_def: 'definiere' daten_typ NAME '(' (parameter (',' parameter)*)? ')' '{' code* '}';
+func_def: DEFINE data_type NAME '(' (parameter (',' parameter)*)? ')' '{' code* '}';
 
-funktions_aufruf: NAME '(' ( ausdruck (',' ausdruck)* )?  ')';
+func_call: NAME '(' ( expression (',' expression)* )?  ')';
 
-parameter: daten_typ NAME ;
+parameter: data_type NAME;
 
-WS: [ \r\t\n]+ -> skip;
+
+MAIN: '_haupt';
+
+IF: '_wenn';
+ELSEIF: '_oder_dies';
+ELSE: '_sonst';
+
+DEFINE: 'definiere';
+
+TYPE_INT: 'int';
+TYPE_BOOL: 'bool';
+
 NAME: [a-zA-Z]+ ;
 BOOLEAN: '_true' | '_false' ;
-ZAHL: [1-9][0-9]* | '0';
+NUMBER: [1-9][0-9]* | '0';
+
+WS: [ \r\t\n]+ -> skip;

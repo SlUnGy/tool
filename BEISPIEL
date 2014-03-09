@@ -1,11 +1,3 @@
-definition* haupt definition*;
-definition: funktions_def
-		| variablen_def;
-funktions_def: "definiere" funktions_typ NAME "(" parameter ("," parameter)* ")" "{" code+ "}";
-funktions_typ: "wiedergabebefreit" 
-		| variablen_typ;
-parameter: variablen_typ NAME;
-
 haupt {
 	int a = bla(true, false);
 	int b = 2*a+a;

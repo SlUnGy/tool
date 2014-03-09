@@ -16,52 +16,52 @@ public class toolBaseListener implements toolListener {
 	 * <p/>
 	 * The default implementation does nothing.
 	 */
-	@Override public void enterAusdruck(@NotNull toolParser.AusdruckContext ctx) { }
+	@Override public void enterExpression(@NotNull toolParser.ExpressionContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 * <p/>
 	 * The default implementation does nothing.
 	 */
-	@Override public void exitAusdruck(@NotNull toolParser.AusdruckContext ctx) { }
+	@Override public void exitExpression(@NotNull toolParser.ExpressionContext ctx) { }
 
 	/**
 	 * {@inheritDoc}
 	 * <p/>
 	 * The default implementation does nothing.
 	 */
-	@Override public void enterZuweisung(@NotNull toolParser.ZuweisungContext ctx) { }
+	@Override public void enterInt_expression(@NotNull toolParser.Int_expressionContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 * <p/>
 	 * The default implementation does nothing.
 	 */
-	@Override public void exitZuweisung(@NotNull toolParser.ZuweisungContext ctx) { }
+	@Override public void exitInt_expression(@NotNull toolParser.Int_expressionContext ctx) { }
 
 	/**
 	 * {@inheritDoc}
 	 * <p/>
 	 * The default implementation does nothing.
 	 */
-	@Override public void enterFunktions_aufruf(@NotNull toolParser.Funktions_aufrufContext ctx) { }
+	@Override public void enterVar_def(@NotNull toolParser.Var_defContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 * <p/>
 	 * The default implementation does nothing.
 	 */
-	@Override public void exitFunktions_aufruf(@NotNull toolParser.Funktions_aufrufContext ctx) { }
+	@Override public void exitVar_def(@NotNull toolParser.Var_defContext ctx) { }
 
 	/**
 	 * {@inheritDoc}
 	 * <p/>
 	 * The default implementation does nothing.
 	 */
-	@Override public void enterFunktions_def(@NotNull toolParser.Funktions_defContext ctx) { }
+	@Override public void enterBool_expression(@NotNull toolParser.Bool_expressionContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 * <p/>
 	 * The default implementation does nothing.
 	 */
-	@Override public void exitFunktions_def(@NotNull toolParser.Funktions_defContext ctx) { }
+	@Override public void exitBool_expression(@NotNull toolParser.Bool_expressionContext ctx) { }
 
 	/**
 	 * {@inheritDoc}
@@ -94,19 +94,6 @@ public class toolBaseListener implements toolListener {
 	 * <p/>
 	 * The default implementation does nothing.
 	 */
-	@Override public void enterDaten_typ(@NotNull toolParser.Daten_typContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 * <p/>
-	 * The default implementation does nothing.
-	 */
-	@Override public void exitDaten_typ(@NotNull toolParser.Daten_typContext ctx) { }
-
-	/**
-	 * {@inheritDoc}
-	 * <p/>
-	 * The default implementation does nothing.
-	 */
 	@Override public void enterProdukt(@NotNull toolParser.ProduktContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -114,19 +101,6 @@ public class toolBaseListener implements toolListener {
 	 * The default implementation does nothing.
 	 */
 	@Override public void exitProdukt(@NotNull toolParser.ProduktContext ctx) { }
-
-	/**
-	 * {@inheritDoc}
-	 * <p/>
-	 * The default implementation does nothing.
-	 */
-	@Override public void enterBool_ausdruck(@NotNull toolParser.Bool_ausdruckContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 * <p/>
-	 * The default implementation does nothing.
-	 */
-	@Override public void exitBool_ausdruck(@NotNull toolParser.Bool_ausdruckContext ctx) { }
 
 	/**
 	 * {@inheritDoc}
@@ -146,26 +120,52 @@ public class toolBaseListener implements toolListener {
 	 * <p/>
 	 * The default implementation does nothing.
 	 */
-	@Override public void enterVariablen_def(@NotNull toolParser.Variablen_defContext ctx) { }
+	@Override public void enterFunc_def(@NotNull toolParser.Func_defContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 * <p/>
 	 * The default implementation does nothing.
 	 */
-	@Override public void exitVariablen_def(@NotNull toolParser.Variablen_defContext ctx) { }
+	@Override public void exitFunc_def(@NotNull toolParser.Func_defContext ctx) { }
 
 	/**
 	 * {@inheritDoc}
 	 * <p/>
 	 * The default implementation does nothing.
 	 */
-	@Override public void enterInt_ausdruck(@NotNull toolParser.Int_ausdruckContext ctx) { }
+	@Override public void enterMain(@NotNull toolParser.MainContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 * <p/>
 	 * The default implementation does nothing.
 	 */
-	@Override public void exitInt_ausdruck(@NotNull toolParser.Int_ausdruckContext ctx) { }
+	@Override public void exitMain(@NotNull toolParser.MainContext ctx) { }
+
+	/**
+	 * {@inheritDoc}
+	 * <p/>
+	 * The default implementation does nothing.
+	 */
+	@Override public void enterCont_structure(@NotNull toolParser.Cont_structureContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 * <p/>
+	 * The default implementation does nothing.
+	 */
+	@Override public void exitCont_structure(@NotNull toolParser.Cont_structureContext ctx) { }
+
+	/**
+	 * {@inheritDoc}
+	 * <p/>
+	 * The default implementation does nothing.
+	 */
+	@Override public void enterAssignment(@NotNull toolParser.AssignmentContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 * <p/>
+	 * The default implementation does nothing.
+	 */
+	@Override public void exitAssignment(@NotNull toolParser.AssignmentContext ctx) { }
 
 	/**
 	 * {@inheritDoc}
@@ -179,6 +179,19 @@ public class toolBaseListener implements toolListener {
 	 * The default implementation does nothing.
 	 */
 	@Override public void exitParameter(@NotNull toolParser.ParameterContext ctx) { }
+
+	/**
+	 * {@inheritDoc}
+	 * <p/>
+	 * The default implementation does nothing.
+	 */
+	@Override public void enterFunc_call(@NotNull toolParser.Func_callContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 * <p/>
+	 * The default implementation does nothing.
+	 */
+	@Override public void exitFunc_call(@NotNull toolParser.Func_callContext ctx) { }
 
 	/**
 	 * {@inheritDoc}
@@ -211,13 +224,13 @@ public class toolBaseListener implements toolListener {
 	 * <p/>
 	 * The default implementation does nothing.
 	 */
-	@Override public void enterHaupt(@NotNull toolParser.HauptContext ctx) { }
+	@Override public void enterData_type(@NotNull toolParser.Data_typeContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 * <p/>
 	 * The default implementation does nothing.
 	 */
-	@Override public void exitHaupt(@NotNull toolParser.HauptContext ctx) { }
+	@Override public void exitData_type(@NotNull toolParser.Data_typeContext ctx) { }
 
 	/**
 	 * {@inheritDoc}
