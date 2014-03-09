@@ -42,6 +42,19 @@ public class toolBaseListener implements toolListener {
 	 * <p/>
 	 * The default implementation does nothing.
 	 */
+	@Override public void enterStr_expression(@NotNull toolParser.Str_expressionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 * <p/>
+	 * The default implementation does nothing.
+	 */
+	@Override public void exitStr_expression(@NotNull toolParser.Str_expressionContext ctx) { }
+
+	/**
+	 * {@inheritDoc}
+	 * <p/>
+	 * The default implementation does nothing.
+	 */
 	@Override public void enterVar_def(@NotNull toolParser.Var_defContext ctx) { }
 	/**
 	 * {@inheritDoc}

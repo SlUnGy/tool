@@ -30,6 +30,17 @@ public interface toolListener extends ParseTreeListener {
 	void exitInt_expression(@NotNull toolParser.Int_expressionContext ctx);
 
 	/**
+	 * Enter a parse tree produced by {@link toolParser#str_expression}.
+	 * @param ctx the parse tree
+	 */
+	void enterStr_expression(@NotNull toolParser.Str_expressionContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link toolParser#str_expression}.
+	 * @param ctx the parse tree
+	 */
+	void exitStr_expression(@NotNull toolParser.Str_expressionContext ctx);
+
+	/**
 	 * Enter a parse tree produced by {@link toolParser#var_def}.
 	 * @param ctx the parse tree
 	 */

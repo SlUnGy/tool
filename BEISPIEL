@@ -1,20 +1,18 @@
-haupt {
+_haupt () {
 	int a = bla(true, false);
 	int b = 2*a+a;
 	bool c = b>a;
-	falls(c){
-		definiere int bla(bool pA, bool pB){
-			return 2;
-		}
+	_wenn(c){
 		solange{
 			a = a - bla(false, false);
 		}a>1; 
-		falls(a==1){
+		_wenn(a==1){
 			sprich("schwarze sonne");
 		}
-		oder(a==0){
+		_oder_dies(a==0){
 			sprich("freie energie maschine");
-		}ansonsten {
+		}
+		_sonst{
 			sprich("nana");
 		}
 		schleife a<10 {

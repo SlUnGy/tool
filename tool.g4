@@ -17,7 +17,8 @@ cont_structure: IF '(' bool_expression ')' '{' code+ '}' ( ELSEIF '(' bool_expre
 assignment: NAME '=' expression;
 
 expression: int_expression 
-	| bool_expression;
+	| bool_expression
+	| str_expression;
 
 int_expression: produkt (('+' | '-') produkt)*;
 
@@ -35,11 +36,14 @@ bool_faktor: '(' bool_expression ')'
 		| func_call
 		| int_expression
 		| NAME
-		| BOOLEAN;
+		| BOOLEAN
+		| STRING;
+
+str_expression: STRING;
 
 var_def: data_type ( NAME | assignment );
 
-data_type: TYPE_INT | TYPE_BOOL;
+data_type: TYPE_INT | TYPE_BOOL | TYPE_STRING;
 
 func_def: DEFINE data_type NAME '(' (parameter (',' parameter)*)? ')' '{' code* '}';
 
@@ -58,9 +62,11 @@ DEFINE: 'definiere';
 
 TYPE_INT: 'int';
 TYPE_BOOL: 'bool';
+TYPE_STRING: 'str';
 
-NAME: [a-zA-Z]+ ;
-BOOLEAN: '_true' | '_false' ;
+NAME: [a-zA-Z]+;
+STRING: '"' .*? '"'; 
+BOOLEAN: '_true' | '_false';
 NUMBER: [1-9][0-9]* | '0';
 
 WS: [ \r\t\n]+ -> skip;
