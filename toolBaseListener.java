@@ -29,19 +29,6 @@ public class toolBaseListener implements toolListener {
 	 * <p/>
 	 * The default implementation does nothing.
 	 */
-	@Override public void enterInt_expression(@NotNull toolParser.Int_expressionContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 * <p/>
-	 * The default implementation does nothing.
-	 */
-	@Override public void exitInt_expression(@NotNull toolParser.Int_expressionContext ctx) { }
-
-	/**
-	 * {@inheritDoc}
-	 * <p/>
-	 * The default implementation does nothing.
-	 */
 	@Override public void enterStr_expression(@NotNull toolParser.Str_expressionContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -49,6 +36,19 @@ public class toolBaseListener implements toolListener {
 	 * The default implementation does nothing.
 	 */
 	@Override public void exitStr_expression(@NotNull toolParser.Str_expressionContext ctx) { }
+
+	/**
+	 * {@inheritDoc}
+	 * <p/>
+	 * The default implementation does nothing.
+	 */
+	@Override public void enterInt_expression(@NotNull toolParser.Int_expressionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 * <p/>
+	 * The default implementation does nothing.
+	 */
+	@Override public void exitInt_expression(@NotNull toolParser.Int_expressionContext ctx) { }
 
 	/**
 	 * {@inheritDoc}
@@ -68,6 +68,19 @@ public class toolBaseListener implements toolListener {
 	 * <p/>
 	 * The default implementation does nothing.
 	 */
+	@Override public void enterVar_name(@NotNull toolParser.Var_nameContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 * <p/>
+	 * The default implementation does nothing.
+	 */
+	@Override public void exitVar_name(@NotNull toolParser.Var_nameContext ctx) { }
+
+	/**
+	 * {@inheritDoc}
+	 * <p/>
+	 * The default implementation does nothing.
+	 */
 	@Override public void enterBool_expression(@NotNull toolParser.Bool_expressionContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -75,6 +88,19 @@ public class toolBaseListener implements toolListener {
 	 * The default implementation does nothing.
 	 */
 	@Override public void exitBool_expression(@NotNull toolParser.Bool_expressionContext ctx) { }
+
+	/**
+	 * {@inheritDoc}
+	 * <p/>
+	 * The default implementation does nothing.
+	 */
+	@Override public void enterStr_faktor(@NotNull toolParser.Str_faktorContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 * <p/>
+	 * The default implementation does nothing.
+	 */
+	@Override public void exitStr_faktor(@NotNull toolParser.Str_faktorContext ctx) { }
 
 	/**
 	 * {@inheritDoc}
@@ -159,13 +185,13 @@ public class toolBaseListener implements toolListener {
 	 * <p/>
 	 * The default implementation does nothing.
 	 */
-	@Override public void enterCont_structure(@NotNull toolParser.Cont_structureContext ctx) { }
+	@Override public void enterWhile(@NotNull toolParser.WhileContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 * <p/>
 	 * The default implementation does nothing.
 	 */
-	@Override public void exitCont_structure(@NotNull toolParser.Cont_structureContext ctx) { }
+	@Override public void exitWhile(@NotNull toolParser.WhileContext ctx) { }
 
 	/**
 	 * {@inheritDoc}
@@ -224,6 +250,19 @@ public class toolBaseListener implements toolListener {
 	 * <p/>
 	 * The default implementation does nothing.
 	 */
+	@Override public void enterDo_while(@NotNull toolParser.Do_whileContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 * <p/>
+	 * The default implementation does nothing.
+	 */
+	@Override public void exitDo_while(@NotNull toolParser.Do_whileContext ctx) { }
+
+	/**
+	 * {@inheritDoc}
+	 * <p/>
+	 * The default implementation does nothing.
+	 */
 	@Override public void enterStart(@NotNull toolParser.StartContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -244,6 +283,19 @@ public class toolBaseListener implements toolListener {
 	 * The default implementation does nothing.
 	 */
 	@Override public void exitData_type(@NotNull toolParser.Data_typeContext ctx) { }
+
+	/**
+	 * {@inheritDoc}
+	 * <p/>
+	 * The default implementation does nothing.
+	 */
+	@Override public void enterIf(@NotNull toolParser.IfContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 * <p/>
+	 * The default implementation does nothing.
+	 */
+	@Override public void exitIf(@NotNull toolParser.IfContext ctx) { }
 
 	/**
 	 * {@inheritDoc}

@@ -1,30 +1,42 @@
+/*variablen & funktions definition*/
+
+int i = 1;
+str mussManWissen="Schwarze Sonne";
+bool b = _true;
+
+_definiere leer druckeWas(){
+	sprich(mussManWissen);
+}
+
+_definiere bool gebeB( int pA, int pB){
+	return(b);
+}
+
+/* kontrollstrukturen */
 _haupt () {
-	int a = bla(true, false);
-	int b = 2*a+a;
-	bool c = b>a;
-	_wenn(c){
-		solange{
-			a = a - bla(false, false);
-		}a>1; 
-		_wenn(a==1){
-			sprich("schwarze sonne");
-		}
-		_oder_dies(a==0){
-			sprich("freie energie maschine");
-		}
-		_sonst{
-			sprich("nana");
-		}
-		schleife a<10 {
-			sprich("wqeqwe");
-			a = a + 1;
-		}
+	_wenn( i == 1){
+		druckeWas(); /* druckt "Schwarze Sonne" aufs stdout */
 	}
+	_oder_dies( !gebeB() ) {
+		i = 2;	
+	}
+	_sonst {
+		i = 3;
+	}
+	sprich(toStr(i)); /* druckt "1" */
+
+/* schleifen */
+	_solange_bis {
+		i = 1 + i;
+		sprich(toStr(i) + " ");
+	}(i <= 10);
+	/* druckt "2 3 4 5 6 7 8 9 10 " */
+	
+	_schleife(i>1){
+		i = i - (1 * 1);
+		sprich(toStr(i) + " ");
+	}
+	/* druckt "9 8 7 6 5 4 3 2 1 "*/
 }
 
-definiere wiedergabebefreit blablabla (){
-}
 
-definiere int bla (bool pA, bool pB){
-	zurückgeben 1;
-}
