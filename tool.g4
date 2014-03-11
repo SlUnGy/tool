@@ -2,23 +2,23 @@ grammar tool;
 
 start: def* main def*;
 
-main: MAIN '(' ')' '{' code* '}';
+main: MAIN L_PAREN R_PAREN L_C_BRACE code* R_C_BRACE;
 
-def: var_def ';' 
+def: var_def SEMICOLON 
 	| func_def 
 	;
 
-code: var_def ';'
-	| assignment ';'
-	| func_call ';'
-	| cont_structure;
+code: var_def SEMICOLON
+	| assignment SEMICOLON
+	| func_call SEMICOLON
+	| contr_structure;
 
-cont_structure: IF '(' bool_expression ')' '{' code+ '}' ( ELSEIF '(' bool_expression ')' '{' code+ '}' )* ( ELSE '{' code+ '}' )? #if
-		| DO_WHILE '{' code+ '}' '(' bool_expression ')' ';'#do_while
-		| WHILE '(' bool_expression ')' '{' code+ '}' #while
+contr_structure: IF L_PAREN bool_expression R_PAREN L_C_BRACE code+ R_C_BRACE ( ELSEIF L_PAREN bool_expression R_PAREN L_C_BRACE code+ R_C_BRACE )* ( ELSE L_C_BRACE code+ R_C_BRACE )? #if
+		| DO_WHILE L_C_BRACE code+ R_C_BRACE L_PAREN bool_expression R_PAREN SEMICOLON #do_while
+		| WHILE L_PAREN bool_expression R_PAREN L_C_BRACE code+ R_C_BRACE #while
 		;
 
-assignment: NAME '=' expression;
+assignment: NAME ASSIGN_TO expression;
 
 expression: var_name
 	| func_call
@@ -28,28 +28,28 @@ expression: var_name
 
 var_name: NAME;
 
-int_expression: produkt (('+' | '-') produkt)*;
+int_expression: produkt ( ('+' | '-') produkt)*;
 
-produkt: int_faktor (('*' | '/') int_faktor)*;
+produkt: int_faktor ( ('*' | '/') int_faktor)*;
 
-int_faktor: '(' int_expression ')'
-	| func_call
+int_faktor: L_PAREN int_expression R_PAREN
+| func_call
 	| var_name
 	| NUMBER;
 	
-bool_expression: bool_faktor (('<' | '>' | '<=' | '>=' | '==' | '!=' | '||' | '&&') bool_faktor)*;
+bool_expression: bool_faktor ( ('<' | '>' | '<=' | '>=' | '==' | '!=' | '||' | '&&') bool_faktor)*;
 
-bool_faktor: '(' bool_expression ')'
-		| '!' bool_expression
+bool_faktor: L_PAREN bool_expression R_PAREN
+		| INVERT bool_expression
 		| func_call
 		| int_expression
 		| str_expression
 		| var_name
 		| BOOLEAN;
 
-str_expression: str_faktor ('+' str_faktor)*;
+str_expression: str_faktor ( CAT str_faktor)*;
 
-str_faktor: '(' str_expression ')'
+str_faktor: L_PAREN str_expression R_PAREN
 		| func_call
 		| STRING;
 
@@ -57,12 +57,23 @@ var_def: data_type ( NAME | assignment );
 
 data_type: TYPE_INT | TYPE_BOOL | TYPE_STRING;
 
-func_def: DEFINE ( data_type | TYPE_VOID ) NAME '(' (parameter (',' parameter)*)? ')' '{' code* '}';
+func_def: DEFINE ( data_type | TYPE_VOID ) NAME L_PAREN (parameter ( COMMA parameter)* )? R_PAREN L_C_BRACE code* R_C_BRACE ;
 
-func_call: NAME '(' ( expression (',' expression)* )?  ')';
+func_call: NAME L_PAREN ( expression ( COMMA  expression)* )?  R_PAREN ;
 
 parameter: data_type NAME;
 
+
+L_PAREN: '(';
+R_PAREN: ')';
+R_C_BRACE: '}';
+L_C_BRACE: '{';
+SEMICOLON: ';';
+COMMA: ',';
+ASSIGN_TO: '=';
+CAT: '+';
+
+INVERT: '!';
 
 MAIN: '_haupt';
 
@@ -78,6 +89,7 @@ DEFINE: '_definiere';
 TYPE_INT: 'int';
 TYPE_BOOL: 'bool';
 TYPE_STRING: 'str';
+
 /* for functions */
 TYPE_VOID: 'leer';
 
