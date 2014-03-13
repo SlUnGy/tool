@@ -8,6 +8,7 @@ import java.util.Arrays;
 
 import org.antlr.v4.runtime.ANTLRFileStream;
 import org.antlr.v4.runtime.CommonTokenStream;
+import org.antlr.v4.runtime.TokenSource;
 import org.antlr.v4.runtime.TokenStream;
 
 public class Main {
@@ -20,8 +21,7 @@ public class Main {
 		try {
 			ANTLRFileStream filestream = new ANTLRFileStream( 
 										Arrays.deepToString(Files.readAllLines( Paths.get( args[1] ), StandardCharsets.UTF_8).toArray()));
-			
-			//TokenStream tokens = new CommonTokenStream(filestream);
+			toolLexer lexer = new toolLexer(filestream);
 			
 		} catch (IOException e) {
 			e.printStackTrace();

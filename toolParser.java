@@ -1,4 +1,4 @@
-// Generated from tool.g4 by ANTLR 4.1
+// Generated from Tool.g4 by ANTLR 4.1
 import org.antlr.v4.runtime.atn.*;
 import org.antlr.v4.runtime.dfa.DFA;
 import org.antlr.v4.runtime.*;
@@ -9,7 +9,7 @@ import java.util.Iterator;
 import java.util.ArrayList;
 
 @SuppressWarnings({"all", "warnings", "unchecked", "unused", "cast"})
-public class toolParser extends Parser {
+public class ToolParser extends Parser {
 	protected static final DFA[] _decisionToDFA;
 	protected static final PredictionContextCache _sharedContextCache =
 		new PredictionContextCache();
@@ -41,7 +41,7 @@ public class toolParser extends Parser {
 	};
 
 	@Override
-	public String getGrammarFileName() { return "tool.g4"; }
+	public String getGrammarFileName() { return "Tool.g4"; }
 
 	@Override
 	public String[] getTokenNames() { return tokenNames; }
@@ -52,7 +52,7 @@ public class toolParser extends Parser {
 	@Override
 	public ATN getATN() { return _ATN; }
 
-	public toolParser(TokenStream input) {
+	public ToolParser(TokenStream input) {
 		super(input);
 		_interp = new ParserATNSimulator(this,_ATN,_decisionToDFA,_sharedContextCache);
 	}
@@ -72,7 +72,7 @@ public class toolParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_start; }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof toolVisitor ) return ((toolVisitor<? extends T>)visitor).visitStart(this);
+			if ( visitor instanceof ToolVisitor ) return ((ToolVisitor<? extends T>)visitor).visitStart(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -125,24 +125,24 @@ public class toolParser extends Parser {
 	}
 
 	public static class MainContext extends ParserRuleContext {
-		public TerminalNode R_PAREN() { return getToken(toolParser.R_PAREN, 0); }
-		public TerminalNode L_C_BRACE() { return getToken(toolParser.L_C_BRACE, 0); }
-		public TerminalNode L_PAREN() { return getToken(toolParser.L_PAREN, 0); }
-		public TerminalNode R_C_BRACE() { return getToken(toolParser.R_C_BRACE, 0); }
+		public TerminalNode R_PAREN() { return getToken(ToolParser.R_PAREN, 0); }
+		public TerminalNode L_C_BRACE() { return getToken(ToolParser.L_C_BRACE, 0); }
+		public TerminalNode L_PAREN() { return getToken(ToolParser.L_PAREN, 0); }
+		public TerminalNode R_C_BRACE() { return getToken(ToolParser.R_C_BRACE, 0); }
 		public CodeContext code(int i) {
 			return getRuleContext(CodeContext.class,i);
 		}
 		public List<CodeContext> code() {
 			return getRuleContexts(CodeContext.class);
 		}
-		public TerminalNode MAIN() { return getToken(toolParser.MAIN, 0); }
+		public TerminalNode MAIN() { return getToken(ToolParser.MAIN, 0); }
 		public MainContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_main; }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof toolVisitor ) return ((toolVisitor<? extends T>)visitor).visitMain(this);
+			if ( visitor instanceof ToolVisitor ) return ((ToolVisitor<? extends T>)visitor).visitMain(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -186,7 +186,7 @@ public class toolParser extends Parser {
 	}
 
 	public static class DefContext extends ParserRuleContext {
-		public TerminalNode SEMICOLON() { return getToken(toolParser.SEMICOLON, 0); }
+		public TerminalNode SEMICOLON() { return getToken(ToolParser.SEMICOLON, 0); }
 		public Var_defContext var_def() {
 			return getRuleContext(Var_defContext.class,0);
 		}
@@ -199,7 +199,7 @@ public class toolParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_def; }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof toolVisitor ) return ((toolVisitor<? extends T>)visitor).visitDef(this);
+			if ( visitor instanceof ToolVisitor ) return ((ToolVisitor<? extends T>)visitor).visitDef(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -244,7 +244,7 @@ public class toolParser extends Parser {
 		public Contr_structureContext contr_structure() {
 			return getRuleContext(Contr_structureContext.class,0);
 		}
-		public TerminalNode SEMICOLON() { return getToken(toolParser.SEMICOLON, 0); }
+		public TerminalNode SEMICOLON() { return getToken(ToolParser.SEMICOLON, 0); }
 		public Func_callContext func_call() {
 			return getRuleContext(Func_callContext.class,0);
 		}
@@ -260,7 +260,7 @@ public class toolParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_code; }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof toolVisitor ) return ((toolVisitor<? extends T>)visitor).visitCode(this);
+			if ( visitor instanceof ToolVisitor ) return ((ToolVisitor<? extends T>)visitor).visitCode(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -326,56 +326,56 @@ public class toolParser extends Parser {
 		}
 	}
 	public static class Do_whileContext extends Contr_structureContext {
-		public TerminalNode SEMICOLON() { return getToken(toolParser.SEMICOLON, 0); }
-		public TerminalNode R_PAREN() { return getToken(toolParser.R_PAREN, 0); }
+		public TerminalNode SEMICOLON() { return getToken(ToolParser.SEMICOLON, 0); }
+		public TerminalNode R_PAREN() { return getToken(ToolParser.R_PAREN, 0); }
 		public Bool_expressionContext bool_expression() {
 			return getRuleContext(Bool_expressionContext.class,0);
 		}
-		public TerminalNode L_C_BRACE() { return getToken(toolParser.L_C_BRACE, 0); }
-		public TerminalNode L_PAREN() { return getToken(toolParser.L_PAREN, 0); }
-		public TerminalNode R_C_BRACE() { return getToken(toolParser.R_C_BRACE, 0); }
+		public TerminalNode L_C_BRACE() { return getToken(ToolParser.L_C_BRACE, 0); }
+		public TerminalNode L_PAREN() { return getToken(ToolParser.L_PAREN, 0); }
+		public TerminalNode R_C_BRACE() { return getToken(ToolParser.R_C_BRACE, 0); }
 		public CodeContext code(int i) {
 			return getRuleContext(CodeContext.class,i);
 		}
-		public TerminalNode DO_WHILE() { return getToken(toolParser.DO_WHILE, 0); }
+		public TerminalNode DO_WHILE() { return getToken(ToolParser.DO_WHILE, 0); }
 		public List<CodeContext> code() {
 			return getRuleContexts(CodeContext.class);
 		}
 		public Do_whileContext(Contr_structureContext ctx) { copyFrom(ctx); }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof toolVisitor ) return ((toolVisitor<? extends T>)visitor).visitDo_while(this);
+			if ( visitor instanceof ToolVisitor ) return ((ToolVisitor<? extends T>)visitor).visitDo_while(this);
 			else return visitor.visitChildren(this);
 		}
 	}
 	public static class IfContext extends Contr_structureContext {
-		public List<TerminalNode> ELSEIF() { return getTokens(toolParser.ELSEIF); }
+		public List<TerminalNode> ELSEIF() { return getTokens(ToolParser.ELSEIF); }
 		public List<Bool_expressionContext> bool_expression() {
 			return getRuleContexts(Bool_expressionContext.class);
 		}
-		public List<TerminalNode> R_PAREN() { return getTokens(toolParser.R_PAREN); }
-		public List<TerminalNode> L_C_BRACE() { return getTokens(toolParser.L_C_BRACE); }
-		public List<TerminalNode> L_PAREN() { return getTokens(toolParser.L_PAREN); }
+		public List<TerminalNode> R_PAREN() { return getTokens(ToolParser.R_PAREN); }
+		public List<TerminalNode> L_C_BRACE() { return getTokens(ToolParser.L_C_BRACE); }
+		public List<TerminalNode> L_PAREN() { return getTokens(ToolParser.L_PAREN); }
 		public TerminalNode L_PAREN(int i) {
-			return getToken(toolParser.L_PAREN, i);
+			return getToken(ToolParser.L_PAREN, i);
 		}
 		public TerminalNode R_C_BRACE(int i) {
-			return getToken(toolParser.R_C_BRACE, i);
+			return getToken(ToolParser.R_C_BRACE, i);
 		}
-		public TerminalNode IF() { return getToken(toolParser.IF, 0); }
+		public TerminalNode IF() { return getToken(ToolParser.IF, 0); }
 		public TerminalNode L_C_BRACE(int i) {
-			return getToken(toolParser.L_C_BRACE, i);
+			return getToken(ToolParser.L_C_BRACE, i);
 		}
 		public TerminalNode R_PAREN(int i) {
-			return getToken(toolParser.R_PAREN, i);
+			return getToken(ToolParser.R_PAREN, i);
 		}
-		public TerminalNode ELSE() { return getToken(toolParser.ELSE, 0); }
+		public TerminalNode ELSE() { return getToken(ToolParser.ELSE, 0); }
 		public Bool_expressionContext bool_expression(int i) {
 			return getRuleContext(Bool_expressionContext.class,i);
 		}
-		public List<TerminalNode> R_C_BRACE() { return getTokens(toolParser.R_C_BRACE); }
+		public List<TerminalNode> R_C_BRACE() { return getTokens(ToolParser.R_C_BRACE); }
 		public TerminalNode ELSEIF(int i) {
-			return getToken(toolParser.ELSEIF, i);
+			return getToken(ToolParser.ELSEIF, i);
 		}
 		public CodeContext code(int i) {
 			return getRuleContext(CodeContext.class,i);
@@ -386,19 +386,19 @@ public class toolParser extends Parser {
 		public IfContext(Contr_structureContext ctx) { copyFrom(ctx); }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof toolVisitor ) return ((toolVisitor<? extends T>)visitor).visitIf(this);
+			if ( visitor instanceof ToolVisitor ) return ((ToolVisitor<? extends T>)visitor).visitIf(this);
 			else return visitor.visitChildren(this);
 		}
 	}
 	public static class WhileContext extends Contr_structureContext {
-		public TerminalNode WHILE() { return getToken(toolParser.WHILE, 0); }
-		public TerminalNode R_PAREN() { return getToken(toolParser.R_PAREN, 0); }
+		public TerminalNode WHILE() { return getToken(ToolParser.WHILE, 0); }
+		public TerminalNode R_PAREN() { return getToken(ToolParser.R_PAREN, 0); }
 		public Bool_expressionContext bool_expression() {
 			return getRuleContext(Bool_expressionContext.class,0);
 		}
-		public TerminalNode L_C_BRACE() { return getToken(toolParser.L_C_BRACE, 0); }
-		public TerminalNode L_PAREN() { return getToken(toolParser.L_PAREN, 0); }
-		public TerminalNode R_C_BRACE() { return getToken(toolParser.R_C_BRACE, 0); }
+		public TerminalNode L_C_BRACE() { return getToken(ToolParser.L_C_BRACE, 0); }
+		public TerminalNode L_PAREN() { return getToken(ToolParser.L_PAREN, 0); }
+		public TerminalNode R_C_BRACE() { return getToken(ToolParser.R_C_BRACE, 0); }
 		public CodeContext code(int i) {
 			return getRuleContext(CodeContext.class,i);
 		}
@@ -408,7 +408,7 @@ public class toolParser extends Parser {
 		public WhileContext(Contr_structureContext ctx) { copyFrom(ctx); }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof toolVisitor ) return ((toolVisitor<? extends T>)visitor).visitWhile(this);
+			if ( visitor instanceof ToolVisitor ) return ((ToolVisitor<? extends T>)visitor).visitWhile(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -569,15 +569,15 @@ public class toolParser extends Parser {
 		public ExpressionContext expression() {
 			return getRuleContext(ExpressionContext.class,0);
 		}
-		public TerminalNode NAME() { return getToken(toolParser.NAME, 0); }
-		public TerminalNode ASSIGN_TO() { return getToken(toolParser.ASSIGN_TO, 0); }
+		public TerminalNode NAME() { return getToken(ToolParser.NAME, 0); }
+		public TerminalNode ASSIGN_TO() { return getToken(ToolParser.ASSIGN_TO, 0); }
 		public AssignmentContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_assignment; }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof toolVisitor ) return ((toolVisitor<? extends T>)visitor).visitAssignment(this);
+			if ( visitor instanceof ToolVisitor ) return ((ToolVisitor<? extends T>)visitor).visitAssignment(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -626,7 +626,7 @@ public class toolParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_expression; }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof toolVisitor ) return ((toolVisitor<? extends T>)visitor).visitExpression(this);
+			if ( visitor instanceof ToolVisitor ) return ((ToolVisitor<? extends T>)visitor).visitExpression(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -685,14 +685,14 @@ public class toolParser extends Parser {
 	}
 
 	public static class Var_nameContext extends ParserRuleContext {
-		public TerminalNode NAME() { return getToken(toolParser.NAME, 0); }
+		public TerminalNode NAME() { return getToken(ToolParser.NAME, 0); }
 		public Var_nameContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_var_name; }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof toolVisitor ) return ((toolVisitor<? extends T>)visitor).visitVar_name(this);
+			if ( visitor instanceof ToolVisitor ) return ((ToolVisitor<? extends T>)visitor).visitVar_name(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -730,7 +730,7 @@ public class toolParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_int_expression; }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof toolVisitor ) return ((toolVisitor<? extends T>)visitor).visitInt_expression(this);
+			if ( visitor instanceof ToolVisitor ) return ((ToolVisitor<? extends T>)visitor).visitInt_expression(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -788,7 +788,7 @@ public class toolParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_produkt; }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof toolVisitor ) return ((toolVisitor<? extends T>)visitor).visitProdukt(this);
+			if ( visitor instanceof ToolVisitor ) return ((ToolVisitor<? extends T>)visitor).visitProdukt(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -840,19 +840,19 @@ public class toolParser extends Parser {
 		public Var_nameContext var_name() {
 			return getRuleContext(Var_nameContext.class,0);
 		}
-		public TerminalNode R_PAREN() { return getToken(toolParser.R_PAREN, 0); }
+		public TerminalNode R_PAREN() { return getToken(ToolParser.R_PAREN, 0); }
 		public Func_callContext func_call() {
 			return getRuleContext(Func_callContext.class,0);
 		}
-		public TerminalNode L_PAREN() { return getToken(toolParser.L_PAREN, 0); }
-		public TerminalNode NUMBER() { return getToken(toolParser.NUMBER, 0); }
+		public TerminalNode L_PAREN() { return getToken(ToolParser.L_PAREN, 0); }
+		public TerminalNode NUMBER() { return getToken(ToolParser.NUMBER, 0); }
 		public Int_faktorContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_int_faktor; }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof toolVisitor ) return ((toolVisitor<? extends T>)visitor).visitInt_faktor(this);
+			if ( visitor instanceof ToolVisitor ) return ((ToolVisitor<? extends T>)visitor).visitInt_faktor(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -918,7 +918,7 @@ public class toolParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_bool_expression; }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof toolVisitor ) return ((toolVisitor<? extends T>)visitor).visitBool_expression(this);
+			if ( visitor instanceof ToolVisitor ) return ((ToolVisitor<? extends T>)visitor).visitBool_expression(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -973,26 +973,26 @@ public class toolParser extends Parser {
 		public Var_nameContext var_name() {
 			return getRuleContext(Var_nameContext.class,0);
 		}
-		public TerminalNode INVERT() { return getToken(toolParser.INVERT, 0); }
-		public TerminalNode BOOLEAN() { return getToken(toolParser.BOOLEAN, 0); }
+		public TerminalNode INVERT() { return getToken(ToolParser.INVERT, 0); }
+		public TerminalNode BOOLEAN() { return getToken(ToolParser.BOOLEAN, 0); }
 		public Str_expressionContext str_expression() {
 			return getRuleContext(Str_expressionContext.class,0);
 		}
-		public TerminalNode R_PAREN() { return getToken(toolParser.R_PAREN, 0); }
+		public TerminalNode R_PAREN() { return getToken(ToolParser.R_PAREN, 0); }
 		public Bool_expressionContext bool_expression() {
 			return getRuleContext(Bool_expressionContext.class,0);
 		}
 		public Func_callContext func_call() {
 			return getRuleContext(Func_callContext.class,0);
 		}
-		public TerminalNode L_PAREN() { return getToken(toolParser.L_PAREN, 0); }
+		public TerminalNode L_PAREN() { return getToken(ToolParser.L_PAREN, 0); }
 		public Bool_faktorContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_bool_faktor; }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof toolVisitor ) return ((toolVisitor<? extends T>)visitor).visitBool_faktor(this);
+			if ( visitor instanceof ToolVisitor ) return ((ToolVisitor<? extends T>)visitor).visitBool_faktor(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -1075,16 +1075,16 @@ public class toolParser extends Parser {
 			return getRuleContexts(Str_faktorContext.class);
 		}
 		public TerminalNode CAT(int i) {
-			return getToken(toolParser.CAT, i);
+			return getToken(ToolParser.CAT, i);
 		}
-		public List<TerminalNode> CAT() { return getTokens(toolParser.CAT); }
+		public List<TerminalNode> CAT() { return getTokens(ToolParser.CAT); }
 		public Str_expressionContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_str_expression; }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof toolVisitor ) return ((toolVisitor<? extends T>)visitor).visitStr_expression(this);
+			if ( visitor instanceof ToolVisitor ) return ((ToolVisitor<? extends T>)visitor).visitStr_expression(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -1125,22 +1125,22 @@ public class toolParser extends Parser {
 	}
 
 	public static class Str_faktorContext extends ParserRuleContext {
-		public TerminalNode R_PAREN() { return getToken(toolParser.R_PAREN, 0); }
+		public TerminalNode R_PAREN() { return getToken(ToolParser.R_PAREN, 0); }
 		public Str_expressionContext str_expression() {
 			return getRuleContext(Str_expressionContext.class,0);
 		}
 		public Func_callContext func_call() {
 			return getRuleContext(Func_callContext.class,0);
 		}
-		public TerminalNode L_PAREN() { return getToken(toolParser.L_PAREN, 0); }
-		public TerminalNode STRING() { return getToken(toolParser.STRING, 0); }
+		public TerminalNode L_PAREN() { return getToken(ToolParser.L_PAREN, 0); }
+		public TerminalNode STRING() { return getToken(ToolParser.STRING, 0); }
 		public Str_faktorContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_str_faktor; }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof toolVisitor ) return ((toolVisitor<? extends T>)visitor).visitStr_faktor(this);
+			if ( visitor instanceof ToolVisitor ) return ((ToolVisitor<? extends T>)visitor).visitStr_faktor(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -1190,7 +1190,7 @@ public class toolParser extends Parser {
 		public AssignmentContext assignment() {
 			return getRuleContext(AssignmentContext.class,0);
 		}
-		public TerminalNode NAME() { return getToken(toolParser.NAME, 0); }
+		public TerminalNode NAME() { return getToken(ToolParser.NAME, 0); }
 		public Data_typeContext data_type() {
 			return getRuleContext(Data_typeContext.class,0);
 		}
@@ -1200,7 +1200,7 @@ public class toolParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_var_def; }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof toolVisitor ) return ((toolVisitor<? extends T>)visitor).visitVar_def(this);
+			if ( visitor instanceof ToolVisitor ) return ((ToolVisitor<? extends T>)visitor).visitVar_def(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -1240,16 +1240,16 @@ public class toolParser extends Parser {
 	}
 
 	public static class Data_typeContext extends ParserRuleContext {
-		public TerminalNode TYPE_STRING() { return getToken(toolParser.TYPE_STRING, 0); }
-		public TerminalNode TYPE_BOOL() { return getToken(toolParser.TYPE_BOOL, 0); }
-		public TerminalNode TYPE_INT() { return getToken(toolParser.TYPE_INT, 0); }
+		public TerminalNode TYPE_STRING() { return getToken(ToolParser.TYPE_STRING, 0); }
+		public TerminalNode TYPE_BOOL() { return getToken(ToolParser.TYPE_BOOL, 0); }
+		public TerminalNode TYPE_INT() { return getToken(ToolParser.TYPE_INT, 0); }
 		public Data_typeContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_data_type; }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof toolVisitor ) return ((toolVisitor<? extends T>)visitor).visitData_type(this);
+			if ( visitor instanceof ToolVisitor ) return ((ToolVisitor<? extends T>)visitor).visitData_type(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -1281,17 +1281,17 @@ public class toolParser extends Parser {
 	}
 
 	public static class Func_defContext extends ParserRuleContext {
-		public TerminalNode TYPE_VOID() { return getToken(toolParser.TYPE_VOID, 0); }
-		public TerminalNode DEFINE() { return getToken(toolParser.DEFINE, 0); }
-		public TerminalNode R_PAREN() { return getToken(toolParser.R_PAREN, 0); }
-		public TerminalNode L_C_BRACE() { return getToken(toolParser.L_C_BRACE, 0); }
-		public TerminalNode L_PAREN() { return getToken(toolParser.L_PAREN, 0); }
+		public TerminalNode TYPE_VOID() { return getToken(ToolParser.TYPE_VOID, 0); }
+		public TerminalNode DEFINE() { return getToken(ToolParser.DEFINE, 0); }
+		public TerminalNode R_PAREN() { return getToken(ToolParser.R_PAREN, 0); }
+		public TerminalNode L_C_BRACE() { return getToken(ToolParser.L_C_BRACE, 0); }
+		public TerminalNode L_PAREN() { return getToken(ToolParser.L_PAREN, 0); }
 		public TerminalNode COMMA(int i) {
-			return getToken(toolParser.COMMA, i);
+			return getToken(ToolParser.COMMA, i);
 		}
-		public List<TerminalNode> COMMA() { return getTokens(toolParser.COMMA); }
-		public TerminalNode NAME() { return getToken(toolParser.NAME, 0); }
-		public TerminalNode R_C_BRACE() { return getToken(toolParser.R_C_BRACE, 0); }
+		public List<TerminalNode> COMMA() { return getTokens(ToolParser.COMMA); }
+		public TerminalNode NAME() { return getToken(ToolParser.NAME, 0); }
+		public TerminalNode R_C_BRACE() { return getToken(ToolParser.R_C_BRACE, 0); }
 		public Data_typeContext data_type() {
 			return getRuleContext(Data_typeContext.class,0);
 		}
@@ -1313,7 +1313,7 @@ public class toolParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_func_def; }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof toolVisitor ) return ((toolVisitor<? extends T>)visitor).visitFunc_def(this);
+			if ( visitor instanceof ToolVisitor ) return ((ToolVisitor<? extends T>)visitor).visitFunc_def(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -1400,15 +1400,15 @@ public class toolParser extends Parser {
 		public ExpressionContext expression(int i) {
 			return getRuleContext(ExpressionContext.class,i);
 		}
-		public TerminalNode R_PAREN() { return getToken(toolParser.R_PAREN, 0); }
-		public List<TerminalNode> COMMA() { return getTokens(toolParser.COMMA); }
-		public TerminalNode L_PAREN() { return getToken(toolParser.L_PAREN, 0); }
+		public TerminalNode R_PAREN() { return getToken(ToolParser.R_PAREN, 0); }
+		public List<TerminalNode> COMMA() { return getTokens(ToolParser.COMMA); }
+		public TerminalNode L_PAREN() { return getToken(ToolParser.L_PAREN, 0); }
 		public List<ExpressionContext> expression() {
 			return getRuleContexts(ExpressionContext.class);
 		}
-		public TerminalNode NAME() { return getToken(toolParser.NAME, 0); }
+		public TerminalNode NAME() { return getToken(ToolParser.NAME, 0); }
 		public TerminalNode COMMA(int i) {
-			return getToken(toolParser.COMMA, i);
+			return getToken(ToolParser.COMMA, i);
 		}
 		public Func_callContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -1416,7 +1416,7 @@ public class toolParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_func_call; }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof toolVisitor ) return ((toolVisitor<? extends T>)visitor).visitFunc_call(this);
+			if ( visitor instanceof ToolVisitor ) return ((ToolVisitor<? extends T>)visitor).visitFunc_call(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -1467,7 +1467,7 @@ public class toolParser extends Parser {
 	}
 
 	public static class ParameterContext extends ParserRuleContext {
-		public TerminalNode NAME() { return getToken(toolParser.NAME, 0); }
+		public TerminalNode NAME() { return getToken(ToolParser.NAME, 0); }
 		public Data_typeContext data_type() {
 			return getRuleContext(Data_typeContext.class,0);
 		}
@@ -1477,7 +1477,7 @@ public class toolParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_parameter; }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof toolVisitor ) return ((toolVisitor<? extends T>)visitor).visitParameter(this);
+			if ( visitor instanceof ToolVisitor ) return ((ToolVisitor<? extends T>)visitor).visitParameter(this);
 			else return visitor.visitChildren(this);
 		}
 	}

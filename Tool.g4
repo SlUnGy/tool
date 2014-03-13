@@ -1,4 +1,4 @@
-grammar tool;
+grammar Tool;
 
 start: def* main def*;
 
