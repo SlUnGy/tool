@@ -2,6 +2,10 @@
 
 antlrpath=/usr/local/lib/antlr-4.1-complete.jar
 
-rm *.class
 java -jar $antlrpath Tool.g4 -no-listener -visitor
-javac *.java
+
+rm project/src/parser/*.java
+sed -i '1i package parser;' *.java
+
+mv *.java project/src/parser/
+mv *.tokens project/src/parser/

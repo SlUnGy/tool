@@ -1,4 +1,4 @@
-package tool_project;
+package compiler;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -21,7 +21,7 @@ public class Main {
 		try {
 			ANTLRFileStream filestream = new ANTLRFileStream( 
 										Arrays.deepToString(Files.readAllLines( Paths.get( args[1] ), StandardCharsets.UTF_8).toArray()));
-			toolLexer lexer = new toolLexer(filestream);
+			ToolLexer lexer = new ToolLexer(filestream);
 			
 		} catch (IOException e) {
 			e.printStackTrace();
