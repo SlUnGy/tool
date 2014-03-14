@@ -11,6 +11,8 @@ import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.TokenSource;
 import org.antlr.v4.runtime.TokenStream;
 
+import parser.ToolLexer;
+
 public class Main {
 
 	public static void main(String[] args) {

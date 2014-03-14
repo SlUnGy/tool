@@ -1,4 +1,4 @@
-package parser;
+package generated;
 // Generated from Tool.g4 by ANTLR 4.1
 import org.antlr.v4.runtime.atn.*;
 import org.antlr.v4.runtime.dfa.DFA;
