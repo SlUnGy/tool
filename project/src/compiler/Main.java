@@ -20,12 +20,16 @@ public class Main {
 	 * args[1] := file to compile
 	*/
 	public static void main(String[] args) {
+		String file;
 		if( args.length != 2){
-			System.exit(1);
+			 file = "../EXAMPLE";
+		}
+		else {
+			file = args[1];
 		}
 		
 		try {
-			ANTLRFileStream filestream = new ANTLRFileStream( Arrays.deepToString(Files.readAllLines( Paths.get( args[1] ), StandardCharsets.UTF_8).toArray()));
+			ANTLRFileStream filestream = new ANTLRFileStream( file );
 			ToolLexer lexer = new ToolLexer(filestream);
 			TokenStream tokens = new CommonTokenStream(lexer);
 			ToolParser parser = new ToolParser(tokens);

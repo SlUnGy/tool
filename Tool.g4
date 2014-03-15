@@ -1,67 +1,75 @@
 grammar Tool;
 
-start: def* main def*;
+start: befDef=def* main aftDef=def*#program;
 
-main: MAIN L_PAREN R_PAREN L_C_BRACE code* R_C_BRACE;
+main: MAIN L_PAREN R_PAREN L_C_BRACE instructions=code* R_C_BRACE#main_func;
 
-def: var_def SEMICOLON 
-	| func_def 
+def: variableDef=var_def SEMICOLON
+	| functionDef=func_def
 	;
 
-code: var_def SEMICOLON
+code: var_def SEMICOLON 
 	| assignment SEMICOLON
 	| func_call SEMICOLON
-	| contr_structure;
+	| contr_structure
+	;
 
-contr_structure: IF L_PAREN bool_expression R_PAREN L_C_BRACE code+ R_C_BRACE ( ELSEIF L_PAREN bool_expression R_PAREN L_C_BRACE code+ R_C_BRACE )* ( ELSE L_C_BRACE code+ R_C_BRACE )? #if
-		| DO_WHILE L_C_BRACE code+ R_C_BRACE L_PAREN bool_expression R_PAREN SEMICOLON #do_while
-		| WHILE L_PAREN bool_expression R_PAREN L_C_BRACE code+ R_C_BRACE #while
+contr_structure: IF L_PAREN if_condition=bool_expr R_PAREN L_C_BRACE if_instructions=code+ R_C_BRACE ( ELSEIF L_PAREN elif_condigion=bool_expr R_PAREN L_C_BRACE elif_instructions=code+ R_C_BRACE )* ( ELSE L_C_BRACE else_instructions=code+ R_C_BRACE )? #if
+		| DO_WHILE L_C_BRACE instructions=code+ R_C_BRACE L_PAREN condition=bool_expr R_PAREN SEMICOLON #do_while
+		| WHILE L_PAREN condition=bool_expr R_PAREN L_C_BRACE instructions=code+ R_C_BRACE #while
 		;
 
-assignment: NAME ASSIGN_TO expression;
+assignment: variableName=NAME ASSIGN_TO value=expr #assign_to;
 
-expression: var_name
+expr: var_name
 	| func_call
-	| int_expression 
-	| str_expression
-	| bool_expression;
+	| int_expr 
+	| str_expr
+	| bool_expr;
 
 var_name: NAME;
 
-int_expression: produkt ( ('+' | '-') produkt)*;
+int_expr: left=produkt ( operator=('+' | '-') val=produkt)*;
 
-produkt: int_faktor ( ('*' | '/') int_faktor)*;
+produkt: left=int_faktor ( operator=('*' | '/') val=int_faktor)*;
 
-int_faktor: L_PAREN int_expression R_PAREN
-| func_call
+int_faktor: L_PAREN int_expr R_PAREN
+	| func_call
 	| var_name
 	| NUMBER;
 	
-bool_expression: bool_faktor ( ('<' | '>' | '<=' | '>=' | '==' | '!=' | '||' | '&&') bool_faktor)*;
+bool_expr: left=bool_faktor ( operator=('<' | '>' | '<=' | '>=' | '==' | '!=' | '||' | '&&') val=bool_faktor)*;
 
-bool_faktor: L_PAREN bool_expression R_PAREN
-		| INVERT bool_expression
+
+bool_faktor: L_PAREN bool_expr R_PAREN
+		| INVERT bool_expr
 		| func_call
-		| int_expression
-		| str_expression
+		| int_expr
+		| str_expr
 		| var_name
 		| BOOLEAN;
 
-str_expression: str_faktor ( CAT str_faktor)*;
+str_expr: left=str_faktor ( CAT str_faktor)*;
 
-str_faktor: L_PAREN str_expression R_PAREN
+str_faktor: L_PAREN str_expr R_PAREN
 		| func_call
 		| STRING;
 
-var_def: data_type ( NAME | assignment );
+var_def: type=var_data_type ( NAME | assignment ) 
+	; 
 
-data_type: TYPE_INT | TYPE_BOOL | TYPE_STRING;
+var_data_type: TYPE_INT | TYPE_BOOL | TYPE_STRING;
+func_data_type: var_data_type | TYPE_VOID;
 
-func_def: DEFINE ( data_type | TYPE_VOID ) NAME L_PAREN (parameter ( COMMA parameter)* )? R_PAREN L_C_BRACE code* R_C_BRACE ;
+func_def: DEFINE type=func_data_type fn_name=NAME L_PAREN parameter_list=func_def_params? R_PAREN L_C_BRACE instructions=code* R_C_BRACE ;
 
-func_call: NAME L_PAREN ( expression ( COMMA  expression)* )?  R_PAREN ;
+func_def_params: parameter ( COMMA parameter )*;
 
-parameter: data_type NAME;
+func_call: fn_name=NAME L_PAREN parameters=func_call_params?  R_PAREN ;
+
+func_call_params: expr ( COMMA expr )*;
+
+parameter: type=var_data_type name=NAME;
 
 
 L_PAREN: '(';
