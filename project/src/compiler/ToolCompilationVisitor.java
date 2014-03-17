@@ -7,45 +7,66 @@ import generated.*;
 
 public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 
-	public String visit(ParseTree pAST) {
-		super.visit(pAST);
-		return pAST.toStringTree();
-	}
-
 	@Override
-	public String visitFunc_data_type(
-			@NotNull ToolParser.Func_data_typeContext ctx) {
-		System.out.println(ctx.getText());
+	public String visitStringFaktorString(
+			@NotNull ToolParser.StringFaktorStringContext ctx) {
 		return visitChildren(ctx);
 	}
 
 	@Override
-	public String visitInt_expr(@NotNull ToolParser.Int_exprContext ctx) {
+	public String visitBooleanFaktorString(
+			@NotNull ToolParser.BooleanFaktorStringContext ctx) {
 		return visitChildren(ctx);
 	}
 
 	@Override
-	public String visitStr_faktor(@NotNull ToolParser.Str_faktorContext ctx) {
+	public String visitAssignTo(@NotNull ToolParser.AssignToContext ctx) {
 		return visitChildren(ctx);
 	}
 
 	@Override
-	public String visitBool_faktor(@NotNull ToolParser.Bool_faktorContext ctx) {
+	public String visitExprBoolean(@NotNull ToolParser.ExprBooleanContext ctx) {
 		return visitChildren(ctx);
 	}
 
 	@Override
-	public String visitExpr(@NotNull ToolParser.ExprContext ctx) {
+	public String visitIntegerFaktorFunctionCall(
+			@NotNull ToolParser.IntegerFaktorFunctionCallContext ctx) {
 		return visitChildren(ctx);
 	}
 
 	@Override
-	public String visitAssign_to(@NotNull ToolParser.Assign_toContext ctx) {
+	public String visitBooleanFaktorFunctionCall(
+			@NotNull ToolParser.BooleanFaktorFunctionCallContext ctx) {
 		return visitChildren(ctx);
 	}
 
 	@Override
-	public String visitFunc_def(@NotNull ToolParser.Func_defContext ctx) {
+	public String visitVariableName(@NotNull ToolParser.VariableNameContext ctx) {
+		return visitChildren(ctx);
+	}
+
+	@Override
+	public String visitCodeFunctionCall(
+			@NotNull ToolParser.CodeFunctionCallContext ctx) {
+		return visitChildren(ctx);
+	}
+
+	@Override
+	public String visitCodeAssignment(
+			@NotNull ToolParser.CodeAssignmentContext ctx) {
+		return visitChildren(ctx);
+	}
+
+	@Override
+	public String visitCodeVariableDefinition(
+			@NotNull ToolParser.CodeVariableDefinitionContext ctx) {
+		return visitChildren(ctx);
+	}
+
+	@Override
+	public String visitStringFaktorParenthesis(
+			@NotNull ToolParser.StringFaktorParenthesisContext ctx) {
 		return visitChildren(ctx);
 	}
 
@@ -55,23 +76,24 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 	}
 
 	@Override
-	public String visitStr_expr(@NotNull ToolParser.Str_exprContext ctx) {
+	public String visitProductRight(@NotNull ToolParser.ProductRightContext ctx) {
 		return visitChildren(ctx);
 	}
 
 	@Override
-	public String visitVar_data_type(
-			@NotNull ToolParser.Var_data_typeContext ctx) {
+	public String visitFunctionCall(@NotNull ToolParser.FunctionCallContext ctx) {
 		return visitChildren(ctx);
 	}
 
 	@Override
-	public String visitParameter(@NotNull ToolParser.ParameterContext ctx) {
+	public String visitCodeControllStructure(
+			@NotNull ToolParser.CodeControllStructureContext ctx) {
 		return visitChildren(ctx);
 	}
 
 	@Override
-	public String visitDef(@NotNull ToolParser.DefContext ctx) {
+	public String visitBooleanFaktorParenthesis(
+			@NotNull ToolParser.BooleanFaktorParenthesisContext ctx) {
 		return visitChildren(ctx);
 	}
 
@@ -81,64 +103,189 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 	}
 
 	@Override
-	public String visitFunc_def_params(
-			@NotNull ToolParser.Func_def_paramsContext ctx) {
+	public String visitFunctionDefinitionParameters(
+			@NotNull ToolParser.FunctionDefinitionParametersContext ctx) {
 		return visitChildren(ctx);
 	}
 
 	@Override
-	public String visitBool_expr(@NotNull ToolParser.Bool_exprContext ctx) {
+	public String visitExprInteger(@NotNull ToolParser.ExprIntegerContext ctx) {
 		return visitChildren(ctx);
 	}
 
 	@Override
-	public String visitVar_name(@NotNull ToolParser.Var_nameContext ctx) {
+	public String visitExprVariableName(
+			@NotNull ToolParser.ExprVariableNameContext ctx) {
 		return visitChildren(ctx);
 	}
 
 	@Override
-	public String visitVar_def(@NotNull ToolParser.Var_defContext ctx) {
+	public String visitExprFunctionName(
+			@NotNull ToolParser.ExprFunctionNameContext ctx) {
 		return visitChildren(ctx);
 	}
 
 	@Override
-	public String visitFunc_call_params(
-			@NotNull ToolParser.Func_call_paramsContext ctx) {
+	public String visitProductCalc(@NotNull ToolParser.ProductCalcContext ctx) {
 		return visitChildren(ctx);
 	}
 
 	@Override
-	public String visitInt_faktor(@NotNull ToolParser.Int_faktorContext ctx) {
+	public String visitBooleanExpressionRight(
+			@NotNull ToolParser.BooleanExpressionRightContext ctx) {
 		return visitChildren(ctx);
 	}
 
 	@Override
-	public String visitProdukt(@NotNull ToolParser.ProduktContext ctx) {
+	public String visitFunctionDataType(
+			@NotNull ToolParser.FunctionDataTypeContext ctx) {
 		return visitChildren(ctx);
 	}
 
 	@Override
-	public String visitCode(@NotNull ToolParser.CodeContext ctx) {
+	public String visitBooleanFaktorInverted(
+			@NotNull ToolParser.BooleanFaktorInvertedContext ctx) {
 		return visitChildren(ctx);
 	}
 
 	@Override
-	public String visitDo_while(@NotNull ToolParser.Do_whileContext ctx) {
+	public String visitStringExpression(
+			@NotNull ToolParser.StringExpressionContext ctx) {
 		return visitChildren(ctx);
 	}
 
 	@Override
-	public String visitFunc_call(@NotNull ToolParser.Func_callContext ctx) {
+	public String visitIntegerFaktorVariableName(
+			@NotNull ToolParser.IntegerFaktorVariableNameContext ctx) {
 		return visitChildren(ctx);
 	}
 
 	@Override
-	public String visitMain_func(@NotNull ToolParser.Main_funcContext ctx) {
+	public String visitVariableDefinition(
+			@NotNull ToolParser.VariableDefinitionContext ctx) {
+		return visitChildren(ctx);
+	}
+
+	@Override
+	public String visitParameterDefinition(
+			@NotNull ToolParser.ParameterDefinitionContext ctx) {
+		return visitChildren(ctx);
+	}
+
+	@Override
+	public String visitBooleanFaktorBoolean(
+			@NotNull ToolParser.BooleanFaktorBooleanContext ctx) {
+		return visitChildren(ctx);
+	}
+
+	@Override
+	public String visitBooleanFaktorInt(
+			@NotNull ToolParser.BooleanFaktorIntContext ctx) {
+		return visitChildren(ctx);
+	}
+
+	@Override
+	public String visitDoWhile(@NotNull ToolParser.DoWhileContext ctx) {
+		return visitChildren(ctx);
+	}
+
+	@Override
+	public String visitMainFunction(@NotNull ToolParser.MainFunctionContext ctx) {
+		return visitChildren(ctx);
+	}
+
+	@Override
+	public String visitExprString(@NotNull ToolParser.ExprStringContext ctx) {
+		return visitChildren(ctx);
+	}
+
+	@Override
+	public String visitBooleanFaktorVariableName(
+			@NotNull ToolParser.BooleanFaktorVariableNameContext ctx) {
+		return visitChildren(ctx);
+	}
+
+	@Override
+	public String visitDefFunctionDefinition(
+			@NotNull ToolParser.DefFunctionDefinitionContext ctx) {
+		return visitChildren(ctx);
+	}
+
+	@Override
+	public String visitIntegerFaktor(
+			@NotNull ToolParser.IntegerFaktorContext ctx) {
+		return visitChildren(ctx);
+	}
+
+	@Override
+	public String visitDataType(@NotNull ToolParser.DataTypeContext ctx) {
+		return visitChildren(ctx);
+	}
+
+	@Override
+	public String visitFunctionDefinition(
+			@NotNull ToolParser.FunctionDefinitionContext ctx) {
+		return visitChildren(ctx);
+	}
+
+	@Override
+	public String visitDefVariableDefinition(
+			@NotNull ToolParser.DefVariableDefinitionContext ctx) {
+		return visitChildren(ctx);
+	}
+
+	@Override
+	public String visitIntegerExpression(
+			@NotNull ToolParser.IntegerExpressionContext ctx) {
+		return visitChildren(ctx);
+	}
+
+	@Override
+	public String visitFunctionCallParameters(
+			@NotNull ToolParser.FunctionCallParametersContext ctx) {
+		return visitChildren(ctx);
+	}
+
+	@Override
+	public String visitBooleanExpression(
+			@NotNull ToolParser.BooleanExpressionContext ctx) {
+		return visitChildren(ctx);
+	}
+
+	@Override
+	public String visitStringExpressionRight(
+			@NotNull ToolParser.StringExpressionRightContext ctx) {
+		return visitChildren(ctx);
+	}
+
+	@Override
+	public String visitIntegerFaktorParenthesis(
+			@NotNull ToolParser.IntegerFaktorParenthesisContext ctx) {
+		return visitChildren(ctx);
+	}
+
+	@Override
+	public String visitIntegerExpressionRight(
+			@NotNull ToolParser.IntegerExpressionRightContext ctx) {
+		return visitChildren(ctx);
+	}
+
+	@Override
+	public String visitStringFaktorFunctionCall(
+			@NotNull ToolParser.StringFaktorFunctionCallContext ctx) {
 		return visitChildren(ctx);
 	}
 
 	@Override
 	public String visitProgram(@NotNull ToolParser.ProgramContext ctx) {
-		return visitChildren(ctx);
+		String before = "";
+		if (ctx.befDef != null) {
+			visit(ctx.befDef);
+		}
+		String after = "";
+		if (ctx.aftDef != null) {
+			visit(ctx.aftDef);
+		}
+		return before + "\n" + after + "\n" + visit(ctx.main());
 	}
 }

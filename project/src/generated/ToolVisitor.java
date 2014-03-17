@@ -12,53 +12,81 @@ import org.antlr.v4.runtime.tree.ParseTreeVisitor;
  */
 public interface ToolVisitor<T> extends ParseTreeVisitor<T> {
 	/**
-	 * Visit a parse tree produced by {@link ToolParser#func_data_type}.
+	 * Visit a parse tree produced by {@link ToolParser#stringFaktorString}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitFunc_data_type(@NotNull ToolParser.Func_data_typeContext ctx);
+	T visitStringFaktorString(@NotNull ToolParser.StringFaktorStringContext ctx);
 
 	/**
-	 * Visit a parse tree produced by {@link ToolParser#int_expr}.
+	 * Visit a parse tree produced by {@link ToolParser#booleanFaktorString}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitInt_expr(@NotNull ToolParser.Int_exprContext ctx);
+	T visitBooleanFaktorString(@NotNull ToolParser.BooleanFaktorStringContext ctx);
 
 	/**
-	 * Visit a parse tree produced by {@link ToolParser#str_faktor}.
+	 * Visit a parse tree produced by {@link ToolParser#assignTo}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitStr_faktor(@NotNull ToolParser.Str_faktorContext ctx);
+	T visitAssignTo(@NotNull ToolParser.AssignToContext ctx);
 
 	/**
-	 * Visit a parse tree produced by {@link ToolParser#bool_faktor}.
+	 * Visit a parse tree produced by {@link ToolParser#exprBoolean}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitBool_faktor(@NotNull ToolParser.Bool_faktorContext ctx);
+	T visitExprBoolean(@NotNull ToolParser.ExprBooleanContext ctx);
 
 	/**
-	 * Visit a parse tree produced by {@link ToolParser#expr}.
+	 * Visit a parse tree produced by {@link ToolParser#integerFaktorFunctionCall}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitExpr(@NotNull ToolParser.ExprContext ctx);
+	T visitIntegerFaktorFunctionCall(@NotNull ToolParser.IntegerFaktorFunctionCallContext ctx);
 
 	/**
-	 * Visit a parse tree produced by {@link ToolParser#assign_to}.
+	 * Visit a parse tree produced by {@link ToolParser#booleanFaktorFunctionCall}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitAssign_to(@NotNull ToolParser.Assign_toContext ctx);
+	T visitBooleanFaktorFunctionCall(@NotNull ToolParser.BooleanFaktorFunctionCallContext ctx);
 
 	/**
-	 * Visit a parse tree produced by {@link ToolParser#func_def}.
+	 * Visit a parse tree produced by {@link ToolParser#variableName}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitFunc_def(@NotNull ToolParser.Func_defContext ctx);
+	T visitVariableName(@NotNull ToolParser.VariableNameContext ctx);
+
+	/**
+	 * Visit a parse tree produced by {@link ToolParser#codeFunctionCall}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitCodeFunctionCall(@NotNull ToolParser.CodeFunctionCallContext ctx);
+
+	/**
+	 * Visit a parse tree produced by {@link ToolParser#codeAssignment}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitCodeAssignment(@NotNull ToolParser.CodeAssignmentContext ctx);
+
+	/**
+	 * Visit a parse tree produced by {@link ToolParser#codeVariableDefinition}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitCodeVariableDefinition(@NotNull ToolParser.CodeVariableDefinitionContext ctx);
+
+	/**
+	 * Visit a parse tree produced by {@link ToolParser#stringFaktorParenthesis}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitStringFaktorParenthesis(@NotNull ToolParser.StringFaktorParenthesisContext ctx);
 
 	/**
 	 * Visit a parse tree produced by {@link ToolParser#while}.
@@ -68,32 +96,32 @@ public interface ToolVisitor<T> extends ParseTreeVisitor<T> {
 	T visitWhile(@NotNull ToolParser.WhileContext ctx);
 
 	/**
-	 * Visit a parse tree produced by {@link ToolParser#str_expr}.
+	 * Visit a parse tree produced by {@link ToolParser#productRight}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitStr_expr(@NotNull ToolParser.Str_exprContext ctx);
+	T visitProductRight(@NotNull ToolParser.ProductRightContext ctx);
 
 	/**
-	 * Visit a parse tree produced by {@link ToolParser#var_data_type}.
+	 * Visit a parse tree produced by {@link ToolParser#functionCall}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitVar_data_type(@NotNull ToolParser.Var_data_typeContext ctx);
+	T visitFunctionCall(@NotNull ToolParser.FunctionCallContext ctx);
 
 	/**
-	 * Visit a parse tree produced by {@link ToolParser#parameter}.
+	 * Visit a parse tree produced by {@link ToolParser#codeControllStructure}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitParameter(@NotNull ToolParser.ParameterContext ctx);
+	T visitCodeControllStructure(@NotNull ToolParser.CodeControllStructureContext ctx);
 
 	/**
-	 * Visit a parse tree produced by {@link ToolParser#def}.
+	 * Visit a parse tree produced by {@link ToolParser#booleanFaktorParenthesis}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitDef(@NotNull ToolParser.DefContext ctx);
+	T visitBooleanFaktorParenthesis(@NotNull ToolParser.BooleanFaktorParenthesisContext ctx);
 
 	/**
 	 * Visit a parse tree produced by {@link ToolParser#if}.
@@ -103,81 +131,172 @@ public interface ToolVisitor<T> extends ParseTreeVisitor<T> {
 	T visitIf(@NotNull ToolParser.IfContext ctx);
 
 	/**
-	 * Visit a parse tree produced by {@link ToolParser#func_def_params}.
+	 * Visit a parse tree produced by {@link ToolParser#functionDefinitionParameters}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitFunc_def_params(@NotNull ToolParser.Func_def_paramsContext ctx);
+	T visitFunctionDefinitionParameters(@NotNull ToolParser.FunctionDefinitionParametersContext ctx);
 
 	/**
-	 * Visit a parse tree produced by {@link ToolParser#bool_expr}.
+	 * Visit a parse tree produced by {@link ToolParser#exprInteger}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitBool_expr(@NotNull ToolParser.Bool_exprContext ctx);
+	T visitExprInteger(@NotNull ToolParser.ExprIntegerContext ctx);
 
 	/**
-	 * Visit a parse tree produced by {@link ToolParser#var_name}.
+	 * Visit a parse tree produced by {@link ToolParser#exprVariableName}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitVar_name(@NotNull ToolParser.Var_nameContext ctx);
+	T visitExprVariableName(@NotNull ToolParser.ExprVariableNameContext ctx);
 
 	/**
-	 * Visit a parse tree produced by {@link ToolParser#var_def}.
+	 * Visit a parse tree produced by {@link ToolParser#exprFunctionName}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitVar_def(@NotNull ToolParser.Var_defContext ctx);
+	T visitExprFunctionName(@NotNull ToolParser.ExprFunctionNameContext ctx);
 
 	/**
-	 * Visit a parse tree produced by {@link ToolParser#func_call_params}.
+	 * Visit a parse tree produced by {@link ToolParser#productCalc}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitFunc_call_params(@NotNull ToolParser.Func_call_paramsContext ctx);
+	T visitProductCalc(@NotNull ToolParser.ProductCalcContext ctx);
 
 	/**
-	 * Visit a parse tree produced by {@link ToolParser#int_faktor}.
+	 * Visit a parse tree produced by {@link ToolParser#booleanExpressionRight}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitInt_faktor(@NotNull ToolParser.Int_faktorContext ctx);
+	T visitBooleanExpressionRight(@NotNull ToolParser.BooleanExpressionRightContext ctx);
 
 	/**
-	 * Visit a parse tree produced by {@link ToolParser#produkt}.
+	 * Visit a parse tree produced by {@link ToolParser#functionDataType}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitProdukt(@NotNull ToolParser.ProduktContext ctx);
+	T visitFunctionDataType(@NotNull ToolParser.FunctionDataTypeContext ctx);
 
 	/**
-	 * Visit a parse tree produced by {@link ToolParser#code}.
+	 * Visit a parse tree produced by {@link ToolParser#booleanFaktorInverted}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitCode(@NotNull ToolParser.CodeContext ctx);
+	T visitBooleanFaktorInverted(@NotNull ToolParser.BooleanFaktorInvertedContext ctx);
 
 	/**
-	 * Visit a parse tree produced by {@link ToolParser#do_while}.
+	 * Visit a parse tree produced by {@link ToolParser#stringExpression}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitDo_while(@NotNull ToolParser.Do_whileContext ctx);
+	T visitStringExpression(@NotNull ToolParser.StringExpressionContext ctx);
 
 	/**
-	 * Visit a parse tree produced by {@link ToolParser#func_call}.
+	 * Visit a parse tree produced by {@link ToolParser#integerFaktorVariableName}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitFunc_call(@NotNull ToolParser.Func_callContext ctx);
+	T visitIntegerFaktorVariableName(@NotNull ToolParser.IntegerFaktorVariableNameContext ctx);
 
 	/**
-	 * Visit a parse tree produced by {@link ToolParser#main_func}.
+	 * Visit a parse tree produced by {@link ToolParser#variableDefinition}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitMain_func(@NotNull ToolParser.Main_funcContext ctx);
+	T visitVariableDefinition(@NotNull ToolParser.VariableDefinitionContext ctx);
+
+	/**
+	 * Visit a parse tree produced by {@link ToolParser#parameterDefinition}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitParameterDefinition(@NotNull ToolParser.ParameterDefinitionContext ctx);
+
+	/**
+	 * Visit a parse tree produced by {@link ToolParser#booleanFaktorBoolean}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitBooleanFaktorBoolean(@NotNull ToolParser.BooleanFaktorBooleanContext ctx);
+
+	/**
+	 * Visit a parse tree produced by {@link ToolParser#booleanFaktorInt}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitBooleanFaktorInt(@NotNull ToolParser.BooleanFaktorIntContext ctx);
+
+	/**
+	 * Visit a parse tree produced by {@link ToolParser#doWhile}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitDoWhile(@NotNull ToolParser.DoWhileContext ctx);
+
+	/**
+	 * Visit a parse tree produced by {@link ToolParser#mainFunction}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitMainFunction(@NotNull ToolParser.MainFunctionContext ctx);
+
+	/**
+	 * Visit a parse tree produced by {@link ToolParser#exprString}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitExprString(@NotNull ToolParser.ExprStringContext ctx);
+
+	/**
+	 * Visit a parse tree produced by {@link ToolParser#booleanFaktorVariableName}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitBooleanFaktorVariableName(@NotNull ToolParser.BooleanFaktorVariableNameContext ctx);
+
+	/**
+	 * Visit a parse tree produced by {@link ToolParser#defFunctionDefinition}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitDefFunctionDefinition(@NotNull ToolParser.DefFunctionDefinitionContext ctx);
+
+	/**
+	 * Visit a parse tree produced by {@link ToolParser#integerFaktor}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitIntegerFaktor(@NotNull ToolParser.IntegerFaktorContext ctx);
+
+	/**
+	 * Visit a parse tree produced by {@link ToolParser#dataType}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitDataType(@NotNull ToolParser.DataTypeContext ctx);
+
+	/**
+	 * Visit a parse tree produced by {@link ToolParser#functionDefinition}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitFunctionDefinition(@NotNull ToolParser.FunctionDefinitionContext ctx);
+
+	/**
+	 * Visit a parse tree produced by {@link ToolParser#defVariableDefinition}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitDefVariableDefinition(@NotNull ToolParser.DefVariableDefinitionContext ctx);
+
+	/**
+	 * Visit a parse tree produced by {@link ToolParser#integerExpression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitIntegerExpression(@NotNull ToolParser.IntegerExpressionContext ctx);
 
 	/**
 	 * Visit a parse tree produced by {@link ToolParser#program}.
@@ -185,4 +304,46 @@ public interface ToolVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitProgram(@NotNull ToolParser.ProgramContext ctx);
+
+	/**
+	 * Visit a parse tree produced by {@link ToolParser#functionCallParameters}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitFunctionCallParameters(@NotNull ToolParser.FunctionCallParametersContext ctx);
+
+	/**
+	 * Visit a parse tree produced by {@link ToolParser#booleanExpression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitBooleanExpression(@NotNull ToolParser.BooleanExpressionContext ctx);
+
+	/**
+	 * Visit a parse tree produced by {@link ToolParser#stringExpressionRight}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitStringExpressionRight(@NotNull ToolParser.StringExpressionRightContext ctx);
+
+	/**
+	 * Visit a parse tree produced by {@link ToolParser#integerFaktorParenthesis}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitIntegerFaktorParenthesis(@NotNull ToolParser.IntegerFaktorParenthesisContext ctx);
+
+	/**
+	 * Visit a parse tree produced by {@link ToolParser#integerExpressionRight}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitIntegerExpressionRight(@NotNull ToolParser.IntegerExpressionRightContext ctx);
+
+	/**
+	 * Visit a parse tree produced by {@link ToolParser#stringFaktorFunctionCall}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitStringFaktorFunctionCall(@NotNull ToolParser.StringFaktorFunctionCallContext ctx);
 }
