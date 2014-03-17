@@ -55,11 +55,16 @@ str_faktor: L_PAREN str_expr R_PAREN
 		| func_call
 		| STRING;
 
-var_def: type=var_data_type ( NAME | assignment ) 
-	; 
+var_def: type=var_data_type  variableName=NAME (ASSIGN_TO value=expr)?; 
 
-var_data_type: TYPE_INT | TYPE_BOOL | TYPE_STRING;
-func_data_type: var_data_type | TYPE_VOID;
+var_data_type: type=TYPE_INT 
+		| type=TYPE_BOOL 
+		| type=TYPE_STRING;
+
+func_data_type: type=TYPE_INT 
+		| type=TYPE_BOOL 
+		| type=TYPE_STRING
+		| type=TYPE_VOID;
 
 func_def: DEFINE type=func_data_type fn_name=NAME L_PAREN parameter_list=func_def_params? R_PAREN L_C_BRACE instructions=code* R_C_BRACE ;
 
