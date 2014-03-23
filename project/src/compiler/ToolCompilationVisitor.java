@@ -173,12 +173,11 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 		
 		final Datatype type = Datatype.resolveType(ctx.type.getText());
 		if(type.equals(Datatype.TYPE_INVALID)){
+			System.err.println("not able to resolve type from "+ctx.type.getText());
 			System.exit(-1);
 		}
 		
 		int newId = currentScope.define(ctx.variableName.getText(), type);
-		
-		//currentScope.printInfo();
 		
 		return "a" + newId + "\n" + setValue + "\n";
 	}
@@ -288,19 +287,21 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 		if(ctx.next != null){
 			rest = visit(ctx.next);
 		}
-		return visit(ctx.definition)+"\n"+rest+"\n";
+		return visit(ctx.definition) + "\n" + rest + "\n";
 	}
 
 	@Override
 	public String visitProgram(@NotNull ToolParser.ProgramContext ctx) {
 		String before = "";
 		if (ctx.before != null) {
-			visit(ctx.before);
+			before = visit(ctx.before);
 		}
+		currentScope.printInfo();
 		String after = "";
 		if (ctx.after != null) {
-			visit(ctx.after);
+			after = visit(ctx.after);
 		}
+		currentScope.printInfo();
 		return ".class " + applicationName + "\n.super java/lang/Object\n" + before + "\n" + after + "\n" + visit(ctx.m) + "\n";
 	}
 }

@@ -22,13 +22,19 @@ public class Scope {
 		this.names = new HashMap<>();
 	}
 
-	int define(String pName, Datatype pType){
-		final int next = names.size();
-		names.put(pName, new Variable(next, pType));
-		return next;
+	public int define(String pName, Datatype pType){
+		if(!this.names.containsKey(pName)){
+			final int next = names.size();
+			names.put(pName, new Variable(next, pType));
+			return next;
+		}
+		else {
+			System.out.println("variable "+pName+" redefined in same scope");
+		}
+		return -1;
 	}
 	
-	Integer getId(String pName) throws UnknownVariableException{
+	public Integer getId(String pName) throws UnknownVariableException{
 		if(names.containsKey(pName)){
 			return names.get(pName).getId();	
 		}
@@ -42,7 +48,7 @@ public class Scope {
 		}
 	}
 	
-	void printInfo(){
+	public void printInfo(){
 		System.out.println("Info on "+this.toString());
 		System.out.println("parent:"+this.parent);
 		System.out.println("contents:"+this.names.size());
