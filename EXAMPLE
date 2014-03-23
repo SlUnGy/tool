@@ -65,4 +65,5 @@ _haupt () {
 	Scopes();
 }
 
-
+int unbenutzt = 3;
+str nanana = "batman";

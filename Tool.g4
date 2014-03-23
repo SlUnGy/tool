@@ -1,11 +1,13 @@
 grammar Tool;
 
-start: befDef=def* main aftDef=def*#program;
+start: before=def_list? m=main after=def_list?#program;
+
+def_list: definition=def next=def_list?#definitionList;
 
 main: MAIN L_PAREN R_PAREN L_C_BRACE instructions=code* R_C_BRACE#mainFunction;
 
-def: variableDef=var_def SEMICOLON #defVariableDefinition
-	| functionDef=func_def #defFunctionDefinition
+def: variableDef=var_def SEMICOLON
+	| functionDef=func_def
 	;
 
 code: instruction=var_def SEMICOLON #codeVariableDefinition

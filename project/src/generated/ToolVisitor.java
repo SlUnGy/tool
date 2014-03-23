@@ -117,6 +117,13 @@ public interface ToolVisitor<T> extends ParseTreeVisitor<T> {
 	T visitCodeControllStructure(@NotNull ToolParser.CodeControllStructureContext ctx);
 
 	/**
+	 * Visit a parse tree produced by {@link ToolParser#def}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitDef(@NotNull ToolParser.DefContext ctx);
+
+	/**
 	 * Visit a parse tree produced by {@link ToolParser#booleanFaktorParenthesis}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -129,6 +136,13 @@ public interface ToolVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitIf(@NotNull ToolParser.IfContext ctx);
+
+	/**
+	 * Visit a parse tree produced by {@link ToolParser#definitionList}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitDefinitionList(@NotNull ToolParser.DefinitionListContext ctx);
 
 	/**
 	 * Visit a parse tree produced by {@link ToolParser#functionDefinitionParameters}.
@@ -257,13 +271,6 @@ public interface ToolVisitor<T> extends ParseTreeVisitor<T> {
 	T visitBooleanFaktorVariableName(@NotNull ToolParser.BooleanFaktorVariableNameContext ctx);
 
 	/**
-	 * Visit a parse tree produced by {@link ToolParser#defFunctionDefinition}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitDefFunctionDefinition(@NotNull ToolParser.DefFunctionDefinitionContext ctx);
-
-	/**
 	 * Visit a parse tree produced by {@link ToolParser#integerFaktor}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -283,13 +290,6 @@ public interface ToolVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitFunctionDefinition(@NotNull ToolParser.FunctionDefinitionContext ctx);
-
-	/**
-	 * Visit a parse tree produced by {@link ToolParser#defVariableDefinition}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitDefVariableDefinition(@NotNull ToolParser.DefVariableDefinitionContext ctx);
 
 	/**
 	 * Visit a parse tree produced by {@link ToolParser#integerExpression}.

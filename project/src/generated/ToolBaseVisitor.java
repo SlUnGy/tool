@@ -138,6 +138,14 @@ public class ToolBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements T
 	 * The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.
 	 */
+	@Override public T visitDef(@NotNull ToolParser.DefContext ctx) { return visitChildren(ctx); }
+
+	/**
+	 * {@inheritDoc}
+	 * <p/>
+	 * The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.
+	 */
 	@Override public T visitBooleanFaktorParenthesis(@NotNull ToolParser.BooleanFaktorParenthesisContext ctx) { return visitChildren(ctx); }
 
 	/**
@@ -147,6 +155,14 @@ public class ToolBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements T
 	 * {@link #visitChildren} on {@code ctx}.
 	 */
 	@Override public T visitIf(@NotNull ToolParser.IfContext ctx) { return visitChildren(ctx); }
+
+	/**
+	 * {@inheritDoc}
+	 * <p/>
+	 * The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.
+	 */
+	@Override public T visitDefinitionList(@NotNull ToolParser.DefinitionListContext ctx) { return visitChildren(ctx); }
 
 	/**
 	 * {@inheritDoc}
@@ -298,14 +314,6 @@ public class ToolBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements T
 	 * The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.
 	 */
-	@Override public T visitDefFunctionDefinition(@NotNull ToolParser.DefFunctionDefinitionContext ctx) { return visitChildren(ctx); }
-
-	/**
-	 * {@inheritDoc}
-	 * <p/>
-	 * The default implementation returns the result of calling
-	 * {@link #visitChildren} on {@code ctx}.
-	 */
 	@Override public T visitIntegerFaktor(@NotNull ToolParser.IntegerFaktorContext ctx) { return visitChildren(ctx); }
 
 	/**
@@ -323,14 +331,6 @@ public class ToolBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements T
 	 * {@link #visitChildren} on {@code ctx}.
 	 */
 	@Override public T visitFunctionDefinition(@NotNull ToolParser.FunctionDefinitionContext ctx) { return visitChildren(ctx); }
-
-	/**
-	 * {@inheritDoc}
-	 * <p/>
-	 * The default implementation returns the result of calling
-	 * {@link #visitChildren} on {@code ctx}.
-	 */
-	@Override public T visitDefVariableDefinition(@NotNull ToolParser.DefVariableDefinitionContext ctx) { return visitChildren(ctx); }
 
 	/**
 	 * {@inheritDoc}

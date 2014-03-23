@@ -1,11 +1,14 @@
 package compiler;
 
 import org.antlr.v4.runtime.misc.NotNull;
-import org.antlr.v4.runtime.tree.ParseTree;
 
+import compiler.Datatype.UnknownDatatypeException;
 import generated.*;
 
 public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
+	
+	private Scope currentScope = new Scope(null);
+	private String applicationName = "Default";
 
 	@Override
 	public String visitStringFaktorString(
@@ -163,7 +166,21 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 	@Override
 	public String visitVariableDefinition(
 			@NotNull ToolParser.VariableDefinitionContext ctx) {
-		return visitChildren(ctx);
+		String setValue = "";
+		if(ctx.value != null){
+			setValue = visit(ctx.value);
+		}
+		
+		final Datatype type = Datatype.resolveType(ctx.type.getText());
+		if(type.equals(Datatype.TYPE_INVALID)){
+			System.exit(-1);
+		}
+		
+		int newId = currentScope.define(ctx.variableName.getText(), type);
+		
+		//currentScope.printInfo();
+		
+		return "a" + newId + "\n" + setValue + "\n";
 	}
 
 	@Override
@@ -206,12 +223,6 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 	}
 
 	@Override
-	public String visitDefFunctionDefinition(
-			@NotNull ToolParser.DefFunctionDefinitionContext ctx) {
-		return visitChildren(ctx);
-	}
-
-	@Override
 	public String visitIntegerFaktor(
 			@NotNull ToolParser.IntegerFaktorContext ctx) {
 		return visitChildren(ctx);
@@ -225,12 +236,6 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 	@Override
 	public String visitFunctionDefinition(
 			@NotNull ToolParser.FunctionDefinitionContext ctx) {
-		return visitChildren(ctx);
-	}
-
-	@Override
-	public String visitDefVariableDefinition(
-			@NotNull ToolParser.DefVariableDefinitionContext ctx) {
 		return visitChildren(ctx);
 	}
 
@@ -275,17 +280,27 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 			@NotNull ToolParser.StringFaktorFunctionCallContext ctx) {
 		return visitChildren(ctx);
 	}
+	
+	@Override
+	public String visitDefinitionList
+			(@NotNull ToolParser.DefinitionListContext ctx){
+		String rest = "";
+		if(ctx.next != null){
+			rest = visit(ctx.next);
+		}
+		return visit(ctx.definition)+"\n"+rest+"\n";
+	}
 
 	@Override
 	public String visitProgram(@NotNull ToolParser.ProgramContext ctx) {
 		String before = "";
-		if (ctx.befDef != null) {
-			visit(ctx.befDef);
+		if (ctx.before != null) {
+			visit(ctx.before);
 		}
 		String after = "";
-		if (ctx.aftDef != null) {
-			visit(ctx.aftDef);
+		if (ctx.after != null) {
+			visit(ctx.after);
 		}
-		return before + "\n" + after + "\n" + visit(ctx.main());
+		return ".class " + applicationName + "\n.super java/lang/Object\n" + before + "\n" + after + "\n" + visit(ctx.m) + "\n";
 	}
 }
