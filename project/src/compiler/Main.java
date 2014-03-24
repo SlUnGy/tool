@@ -36,7 +36,8 @@ public class Main {
 			
 			ToolCompilationVisitor tcv = new ToolCompilationVisitor();
 			String compiled = tcv.visit(tree);
-			System.out.print(compiled);
+			String nice = compiled.replaceAll("(?m)^[ \t]*\r?\n", "");
+			System.out.print(nice);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

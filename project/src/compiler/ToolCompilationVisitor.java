@@ -166,9 +166,9 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 	@Override
 	public String visitVariableDefinition(
 			@NotNull ToolParser.VariableDefinitionContext ctx) {
-		String setValue = "";
+		String value = "";
 		if(ctx.value != null){
-			setValue = visit(ctx.value);
+			value = visit(ctx.value);
 		}
 		
 		final Datatype type = Datatype.resolveType(ctx.type.getText());
@@ -179,7 +179,12 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 		
 		int newId = currentScope.define(ctx.variableName.getText(), type);
 		
-		return "a" + newId + "\n" + setValue + "\n";
+		if(currentScope.isRoot()){
+			return ".field static " + ctx.variableName.getText() + " " + type.getJasminType() + "\n";
+		}
+		else {
+			return "ldc " + value + "\n";
+		}
 	}
 
 	@Override

@@ -21,6 +21,10 @@ public class Scope {
 		this.parent = pParent;
 		this.names = new HashMap<>();
 	}
+	
+	public boolean isRoot(){
+		return this.parent == null;
+	}
 
 	public int define(String pName, Datatype pType){
 		if(!this.names.containsKey(pName)){
