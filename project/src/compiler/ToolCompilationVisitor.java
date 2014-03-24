@@ -1,8 +1,11 @@
 package compiler;
 
+import java.util.HashMap;
+
 import org.antlr.v4.runtime.misc.NotNull;
 
 import generated.*;
+import generated.ToolParser.ExprContext;
 
 public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 	
@@ -197,7 +200,8 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 	@Override
 	public String visitParameterDefinition(
 			@NotNull ToolParser.ParameterDefinitionContext ctx) {
-		return visitChildren(ctx);
+		System.out.println("Parameter: "+ctx.name+":"+ctx.type);
+		return ctx.name+":"+ctx.type;
 	}
 
 	@Override
@@ -259,8 +263,12 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 		
 		
 		Function function = new Function(functionName, type, currentScope);
+		System.out.println("New Function: "+functionName+" "+type.toString());
 		
-		//visit(ctx.parameter_list);
+		if(ctx.parameter_list != null)
+		{
+			visit(ctx.parameter_list);
+		}
 		
 		
 		return visitChildren(ctx);
@@ -275,6 +283,37 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 	@Override
 	public String visitFunctionCallParameters(
 			@NotNull ToolParser.FunctionCallParametersContext ctx) {
+		
+		HashMap<String, Datatype> parameters = new HashMap<String, Datatype>();		
+		
+		String[] param = visit(ctx.param).split(":");
+		System.out.print(param[0]);
+		
+		Datatype type = Datatype.resolveType(param[1]);
+		if(type.equals(Datatype.TYPE_INVALID)){
+			System.err.println("not able to resolve type from "+param[1]);
+			System.exit(-1);
+		}
+		
+		parameters.put(param[0], type);
+		
+		if(ctx.remainder != null)
+		{
+			for(ExprContext ec : ctx.remainder) {	
+				
+				param = visit(ec).split(":");	
+				
+				type = Datatype.resolveType(param[1]);
+				if(type.equals(Datatype.TYPE_INVALID)){
+					System.err.println("not able to resolve type from "+param[1]);
+					System.exit(-1);
+				}
+				
+				parameters.put(param[0], type);
+			}
+		}
+		
+		
 		return visitChildren(ctx);
 	}
 
