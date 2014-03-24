@@ -1,6 +1,7 @@
 package compiler;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 import org.antlr.v4.runtime.misc.NotNull;
 
@@ -198,8 +199,8 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 	@Override
 	public String visitParameterDefinition(
 			@NotNull ToolParser.ParameterDefinitionContext ctx) {
-		System.out.println("Parameter: "+ctx.name+":"+ctx.type);
-		return ctx.name+":"+ctx.type;
+		System.out.println("Parameter: "+ctx.name.getText()+":"+ctx.type.getText());
+		return ctx.name.getText()+":"+ctx.type.getText();
 	}
 
 	@Override
@@ -261,15 +262,15 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 		
 		
 		Function function = new Function(functionName, type, currentScope);
-		System.out.println("New Function: "+functionName+" "+type.toString());
+		System.out.println("New Function: "+functionName+" "+type.getType());
 		
 		if(ctx.parameter_list != null)
 		{
 			visit(ctx.parameter_list);
 		}
 		
-		
-		return visitChildren(ctx);
+		return "";
+		//return visitChildren(ctx);
 	}
 
 	@Override
@@ -282,11 +283,12 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 	public String visitFunctionCallParameters(
 			@NotNull ToolParser.FunctionCallParametersContext ctx) {
 		
-		HashMap<String, Datatype> parameters = new HashMap<String, Datatype>();		
+		LinkedHashMap<String, Datatype> parameters = new LinkedHashMap<String, Datatype>();		
 		
-		String[] param = visit(ctx.param).split(":");
-		System.out.print(param[0]);
+		//Split param string (name:type)
+		String[] param = visit(ctx.param).split(":");		
 		
+		//Resolve data type from string
 		Datatype type = Datatype.resolveType(param[1]);
 		if(type.equals(Datatype.TYPE_INVALID)){
 			System.err.println("not able to resolve type from "+param[1]);
