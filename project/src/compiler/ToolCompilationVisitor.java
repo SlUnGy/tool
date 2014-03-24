@@ -11,6 +11,7 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 	
 	private Scope currentScope = new Scope(null);
 	private String applicationName = "Default";
+	private final static String seperator = ":";
 
 	@Override
 	public String visitStringFaktorString(
@@ -183,7 +184,11 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 		int newId = currentScope.define(ctx.variableName.getText(), type);
 		
 		if(currentScope.isRoot()){
-			return ".field static " + ctx.variableName.getText() + " " + type.getJasminType() + "\n";
+			String definition = ".field static " + ctx.variableName.getText() + " " + type.getJasminType();
+			if(value != null){
+				definition += ToolCompilationVisitor.seperator + value;
+			}
+			return definition;
 		}
 		else {
 			return "ldc " + value + "\n";
