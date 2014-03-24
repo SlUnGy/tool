@@ -370,7 +370,10 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 		
 		String result = ".class " + applicationName + "\n" + ".super java/lang/Object" + "\n" + definition + "\n";
 		if(staticInitializerBlock.length()>0){
-			result += ".method static public <clinit>()V" +"\n" + staticInitializerBlock + ".end method" + "\n";
+			result += ".method static public <clinit>()V" +"\n";
+			result += ".limit stack 100" + "\n";
+			result += staticInitializerBlock + "return " + "\n";
+			result += ".end method" + "\n";
 		}
 		result += visit(ctx.m) + "\n";
 		
