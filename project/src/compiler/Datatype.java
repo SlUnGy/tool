@@ -1,8 +1,18 @@
 package compiler;
 
 public enum Datatype {
-	TYPE_INT, TYPE_BOOL, TYPE_STRING, TYPE_VOID, TYPE_INVALID;
+	TYPE_INT("I"), TYPE_BOOL("Z"), TYPE_STRING("Ljava/lang/String;"), TYPE_VOID("V"), TYPE_INVALID("Ö");
 
+	private String jasminType;
+	
+	private Datatype(){
+		this.jasminType="";
+	}
+	
+	private Datatype(String pType){
+		this.jasminType = pType;
+	}
+	
 	public static Datatype resolveType(String pString){
 		Datatype type = null;
 		switch(pString){
@@ -23,5 +33,9 @@ public enum Datatype {
 			break;
 		}
 		return type;
+	}
+
+	public String getJasminType() {
+		return this.jasminType;
 	}
 }
