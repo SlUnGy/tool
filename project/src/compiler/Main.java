@@ -16,16 +16,15 @@ import generated.*;
 public class Main {
 
 	/*
-	 * args[0] := executed program (obviously)
-	 * args[1] := file to compile
+	 * args[0] := file to compile
 	*/
 	public static void main(String[] args) {
 		String file;
-		if( args.length != 2){
+		if( args.length != 1){
 			 file = "../EXAMPLE";
 		}
 		else {
-			file = args[1];
+			file = args[0];
 		}
 		
 		try {
