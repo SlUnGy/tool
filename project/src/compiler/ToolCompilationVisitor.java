@@ -217,7 +217,12 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 
 	@Override
 	public String visitMainFunction(@NotNull ToolParser.MainFunctionContext ctx) {
-		return visitChildren(ctx);
+        String mainStuff = ".method public static main([Ljava/lang/String;)V \n .limit stack 100\n ";
+        for (ToolParser.CodeContext c : ctx.instructions) {
+            mainStuff += visit(c);
+        }
+        mainStuff += "\n return \n .end method";
+		return mainStuff;
 	}
 
 	@Override
