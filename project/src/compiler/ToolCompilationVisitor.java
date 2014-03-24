@@ -2,7 +2,6 @@ package compiler;
 
 import org.antlr.v4.runtime.misc.NotNull;
 
-import compiler.Datatype.UnknownDatatypeException;
 import generated.*;
 
 public class ToolCompilationVisitor extends ToolBaseVisitor<String> {

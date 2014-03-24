@@ -30,8 +30,8 @@ public class Scope {
 		}
 		else {
 			System.out.println("variable "+pName+" redefined in same scope");
+			return -1;
 		}
-		return -1;
 	}
 	
 	public Integer getId(String pName) throws UnknownVariableException{
