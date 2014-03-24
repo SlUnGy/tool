@@ -158,7 +158,7 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 			result += aggregate + "\n";
 		}
 		if(nextResult != null){
-			result += aggregate + "\n";
+			result += nextResult + "\n";
 		}
 		return result;
 	}
@@ -277,6 +277,7 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 			}
 		}
 		currentScope.printInfo();
+		
 		String after = "";
 		if (ctx.after != null) {
 			for(ToolParser.DefContext ca : ctx.after){
