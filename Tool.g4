@@ -69,11 +69,11 @@ func_data_type:	var_data_type #functionDataType
 
 func_def: DEFINE type=func_data_type fn_name=NAME L_PAREN parameter_list=func_def_params? R_PAREN L_C_BRACE (instructions += code)* R_C_BRACE #functionDefinition;
 
-func_def_params: param=parameter ( COMMA rest+=parameter )*#functionDefinitionParameters;
+func_def_params: param=parameter ( COMMA remainder+=parameter )*#functionDefinitionParameters;
 
 func_call: fn_name=NAME L_PAREN parameters=func_call_params?  R_PAREN #functionCall;
 
-func_call_params: param=expr ( COMMA rest+=expr )* #functionCallParameters;
+func_call_params: param=expr ( COMMA remainder+=expr )* #functionCallParameters;
 
 parameter: type=var_data_type name=NAME#parameterDefinition;
 

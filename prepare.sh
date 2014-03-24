@@ -1,6 +1,6 @@
 #! /bin/bash
 
-antlrpath=/usr/local/lib/antlr-4.1-complete.jar
+antlrpath=project/antlr-4.2-complete.jar
 name=generated
 
 

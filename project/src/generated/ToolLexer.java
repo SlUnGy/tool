@@ -1,4 +1,4 @@
-// Generated from Tool.g4 by ANTLR 4.1
+// Generated from Tool.g4 by ANTLR 4.2
 package generated;
 import org.antlr.v4.runtime.Lexer;
 import org.antlr.v4.runtime.CharStream;
@@ -57,32 +57,16 @@ public class ToolLexer extends Lexer {
 	public String[] getRuleNames() { return ruleNames; }
 
 	@Override
+	public String getSerializedATN() { return _serializedATN; }
+
+	@Override
 	public String[] getModeNames() { return modeNames; }
 
 	@Override
 	public ATN getATN() { return _ATN; }
 
-	@Override
-	public void action(RuleContext _localctx, int ruleIndex, int actionIndex) {
-		switch (ruleIndex) {
-		case 35: COMMENT_action((RuleContext)_localctx, actionIndex); break;
-
-		case 36: WS_action((RuleContext)_localctx, actionIndex); break;
-		}
-	}
-	private void WS_action(RuleContext _localctx, int actionIndex) {
-		switch (actionIndex) {
-		case 1: skip();  break;
-		}
-	}
-	private void COMMENT_action(RuleContext _localctx, int actionIndex) {
-		switch (actionIndex) {
-		case 0: skip();  break;
-		}
-	}
-
 	public static final String _serializedATN =
-		"\3\uacf5\uee8c\u4f5d\u8b0d\u4a45\u78bd\u1b2f\u3378\2\'\u0108\b\1\4\2\t"+
+		"\3\u0430\ud6d1\u8206\uad2d\u4417\uaef1\u8d80\uaadd\2\'\u0108\b\1\4\2\t"+
 		"\2\4\3\t\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\4\b\t\b\4\t\t\t\4\n\t\n\4\13"+
 		"\t\13\4\f\t\f\4\r\t\r\4\16\t\16\4\17\t\17\4\20\t\20\4\21\t\21\4\22\t\22"+
 		"\4\23\t\23\4\24\t\24\4\25\t\25\4\26\t\26\4\27\t\27\4\30\t\30\4\31\t\31"+
@@ -100,11 +84,10 @@ public class ToolLexer extends Lexer {
 		"\16\"\u00d9\13\"\3\"\3\"\3#\3#\3#\3#\3#\3#\3#\3#\3#\3#\3#\5#\u00e8\n#"+
 		"\3$\3$\7$\u00ec\n$\f$\16$\u00ef\13$\3$\5$\u00f2\n$\3%\3%\3%\3%\7%\u00f8"+
 		"\n%\f%\16%\u00fb\13%\3%\3%\3%\3%\3%\3&\6&\u0103\n&\r&\16&\u0104\3&\3&"+
-		"\4\u00d7\u00f9\'\3\3\1\5\4\1\7\5\1\t\6\1\13\7\1\r\b\1\17\t\1\21\n\1\23"+
-		"\13\1\25\f\1\27\r\1\31\16\1\33\17\1\35\20\1\37\21\1!\22\1#\23\1%\24\1"+
-		"\'\25\1)\26\1+\27\1-\30\1/\31\1\61\32\1\63\33\1\65\34\1\67\35\19\36\1"+
-		";\37\1= \1?!\1A\"\1C#\1E$\1G%\1I&\2K\'\3\3\2\6\4\2C\\c|\3\2\63;\3\2\62"+
-		";\5\2\13\f\17\17\"\"\u010e\2\3\3\2\2\2\2\5\3\2\2\2\2\7\3\2\2\2\2\t\3\2"+
+		"\4\u00d7\u00f9\2\'\3\3\5\4\7\5\t\6\13\7\r\b\17\t\21\n\23\13\25\f\27\r"+
+		"\31\16\33\17\35\20\37\21!\22#\23%\24\'\25)\26+\27-\30/\31\61\32\63\33"+
+		"\65\34\67\359\36;\37= ?!A\"C#E$G%I&K\'\3\2\6\4\2C\\c|\3\2\63;\3\2\62;"+
+		"\5\2\13\f\17\17\"\"\u010e\2\3\3\2\2\2\2\5\3\2\2\2\2\7\3\2\2\2\2\t\3\2"+
 		"\2\2\2\13\3\2\2\2\2\r\3\2\2\2\2\17\3\2\2\2\2\21\3\2\2\2\2\23\3\2\2\2\2"+
 		"\25\3\2\2\2\2\27\3\2\2\2\2\31\3\2\2\2\2\33\3\2\2\2\2\35\3\2\2\2\2\37\3"+
 		"\2\2\2\2!\3\2\2\2\2#\3\2\2\2\2%\3\2\2\2\2\'\3\2\2\2\2)\3\2\2\2\2+\3\2"+
@@ -162,10 +145,10 @@ public class ToolLexer extends Lexer {
 		"\2\2\u00fa\u00fc\3\2\2\2\u00fb\u00f9\3\2\2\2\u00fc\u00fd\7,\2\2\u00fd"+
 		"\u00fe\7\61\2\2\u00fe\u00ff\3\2\2\2\u00ff\u0100\b%\2\2\u0100J\3\2\2\2"+
 		"\u0101\u0103\t\5\2\2\u0102\u0101\3\2\2\2\u0103\u0104\3\2\2\2\u0104\u0102"+
-		"\3\2\2\2\u0104\u0105\3\2\2\2\u0105\u0106\3\2\2\2\u0106\u0107\b&\3\2\u0107"+
-		"L\3\2\2\2\n\2\u00d1\u00d7\u00e7\u00ed\u00f1\u00f9\u0104";
+		"\3\2\2\2\u0104\u0105\3\2\2\2\u0105\u0106\3\2\2\2\u0106\u0107\b&\2\2\u0107"+
+		"L\3\2\2\2\n\2\u00d1\u00d7\u00e7\u00ed\u00f1\u00f9\u0104\3\b\2\2";
 	public static final ATN _ATN =
-		ATNSimulator.deserialize(_serializedATN.toCharArray());
+		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {
 		_decisionToDFA = new DFA[_ATN.getNumberOfDecisions()];
 		for (int i = 0; i < _ATN.getNumberOfDecisions(); i++) {

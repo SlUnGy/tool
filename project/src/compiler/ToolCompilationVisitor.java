@@ -253,7 +253,7 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 		
 		Function function = new Function(functionName, type, currentScope);
 		
-		
+		//visit(ctx.parameter_list);
 		
 		
 		return visitChildren(ctx);

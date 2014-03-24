@@ -1,4 +1,4 @@
-// Generated from Tool.g4 by ANTLR 4.1
+// Generated from Tool.g4 by ANTLR 4.2
 package generated;
 import org.antlr.v4.runtime.misc.NotNull;
 import org.antlr.v4.runtime.tree.ParseTreeVisitor;
@@ -117,18 +117,18 @@ public interface ToolVisitor<T> extends ParseTreeVisitor<T> {
 	T visitDef(@NotNull ToolParser.DefContext ctx);
 
 	/**
-	 * Visit a parse tree produced by {@link ToolParser#if}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitIf(@NotNull ToolParser.IfContext ctx);
-
-	/**
 	 * Visit a parse tree produced by {@link ToolParser#booleanFaktorParenthesis}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitBooleanFaktorParenthesis(@NotNull ToolParser.BooleanFaktorParenthesisContext ctx);
+
+	/**
+	 * Visit a parse tree produced by {@link ToolParser#if}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitIf(@NotNull ToolParser.IfContext ctx);
 
 	/**
 	 * Visit a parse tree produced by {@link ToolParser#functionDefinitionParameters}.
@@ -145,18 +145,18 @@ public interface ToolVisitor<T> extends ParseTreeVisitor<T> {
 	T visitExprInteger(@NotNull ToolParser.ExprIntegerContext ctx);
 
 	/**
-	 * Visit a parse tree produced by {@link ToolParser#exprFunctionName}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitExprFunctionName(@NotNull ToolParser.ExprFunctionNameContext ctx);
-
-	/**
 	 * Visit a parse tree produced by {@link ToolParser#exprVariableName}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitExprVariableName(@NotNull ToolParser.ExprVariableNameContext ctx);
+
+	/**
+	 * Visit a parse tree produced by {@link ToolParser#exprFunctionName}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitExprFunctionName(@NotNull ToolParser.ExprFunctionNameContext ctx);
 
 	/**
 	 * Visit a parse tree produced by {@link ToolParser#productCalc}.
