@@ -234,6 +234,22 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 	@Override
 	public String visitFunctionDefinition(
 			@NotNull ToolParser.FunctionDefinitionContext ctx) {
+		
+		final Datatype type = Datatype.resolveType(ctx.type.getText());
+		if(type.equals(Datatype.TYPE_INVALID)){
+			System.err.println("not able to resolve type from "+ctx.type.getText());
+			System.exit(-1);
+		}
+		
+		String functionName = ctx.fn_name.getText();
+		
+		
+		
+		Function function = new Function(functionName, type, currentScope);
+		
+		
+		
+		
 		return visitChildren(ctx);
 	}
 
