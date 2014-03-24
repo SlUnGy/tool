@@ -181,9 +181,11 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 		int newId = currentScope.define(ctx.variableName.getText(), type);
 		
 		if(currentScope.isRoot()){
-			String definition = ".field static " + ctx.variableName.getText() + " " + type.getJasminType();
+			String definition = ".field static " + ctx.variableName.getText() + " " + type.getJasminType() + "\n";
 			if(value != null){
-				definition += ToolCompilationVisitor.seperator + value;
+				definition += ToolCompilationVisitor.seperator;
+				definition += "ldc " + ctx.value.getText() + "\n";
+				definition += "putstatic " + this.applicationName + "/" + ctx.variableName.getText() + " " + type.getJasminType() + "\n";
 			}
 			return definition;
 		}
@@ -296,21 +298,36 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 
 	@Override
 	public String visitProgram(@NotNull ToolParser.ProgramContext ctx) {
-		String before = "";
+		String staticInitializerBlock = "";
+		String definition = "";
 		if (ctx.before != null) {
 			for(ToolParser.DefContext cb : ctx.before){
-				before += visit(cb);
+				 String complete[] = visit(cb).split(ToolCompilationVisitor.seperator);
+				 definition += complete[0];
+				 if(complete.length == 2){
+					 staticInitializerBlock += complete[1];
+				 }
+			}
+		}
+		currentScope.printInfo();
+
+		if (ctx.after != null) {
+			for(ToolParser.DefContext ca : ctx.after){
+				 String complete[] = visit(ca).split(ToolCompilationVisitor.seperator);
+				 definition += complete[0];
+				 if(complete.length == 2){
+					 staticInitializerBlock += complete[1];
+				 }
 			}
 		}
 		currentScope.printInfo();
 		
-		String after = "";
-		if (ctx.after != null) {
-			for(ToolParser.DefContext ca : ctx.after){
-				after += visit(ca);
-			}
+		String result = ".class " + applicationName + "\n" + ".super java/lang/Object" + "\n" + definition + "\n";
+		if(staticInitializerBlock.length()>0){
+			result += ".method static public <clinit>()V" +"\n" + staticInitializerBlock + ".end method" + "\n";
 		}
-		currentScope.printInfo();
-		return ".class " + applicationName + "\n.super java/lang/Object\n" + before + "\n" + after + "\n" + visit(ctx.m) + "\n";
+		result += visit(ctx.m) + "\n";
+		
+		return result;
 	}
 }
