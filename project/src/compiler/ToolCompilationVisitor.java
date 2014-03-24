@@ -1,8 +1,12 @@
 package compiler;
 
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+
 import org.antlr.v4.runtime.misc.NotNull;
 
 import generated.*;
+import generated.ToolParser.ExprContext;
 
 public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 	
@@ -181,9 +185,11 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 		int newId = currentScope.define(ctx.variableName.getText(), type);
 		
 		if(currentScope.isRoot()){
-			String definition = ".field static " + ctx.variableName.getText() + " " + type.getJasminType();
+			String definition = ".field static " + ctx.variableName.getText() + " " + type.getJasminType() + "\n";
 			if(value != null){
-				definition += ToolCompilationVisitor.seperator + value;
+				definition += ToolCompilationVisitor.seperator;
+				definition += "ldc " + ctx.value.getText() + "\n";
+				definition += "putstatic " + this.applicationName + "/" + ctx.variableName.getText() + " " + type.getJasminType() + "\n";
 			}
 			return definition;
 		}
@@ -195,7 +201,8 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 	@Override
 	public String visitParameterDefinition(
 			@NotNull ToolParser.ParameterDefinitionContext ctx) {
-		return visitChildren(ctx);
+		System.out.println("Parameter: "+ctx.name.getText()+":"+ctx.type.getText());
+		return ctx.name.getText()+":"+ctx.type.getText();
 	}
 
 	@Override
@@ -262,11 +269,15 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 		
 		
 		Function function = new Function(functionName, type, currentScope);
+		System.out.println("New Function: "+functionName+" "+type.getType());
 		
-		//visit(ctx.parameter_list);
+		if(ctx.parameter_list != null)
+		{
+			visit(ctx.parameter_list);
+		}
 		
-		
-		return visitChildren(ctx);
+		return "";
+		//return visitChildren(ctx);
 	}
 
 	@Override
@@ -278,6 +289,38 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 	@Override
 	public String visitFunctionCallParameters(
 			@NotNull ToolParser.FunctionCallParametersContext ctx) {
+		
+		LinkedHashMap<String, Datatype> parameters = new LinkedHashMap<String, Datatype>();		
+		
+		//Split param string (name:type)
+		String[] param = visit(ctx.param).split(":");		
+		
+		//Resolve data type from string
+		Datatype type = Datatype.resolveType(param[1]);
+		if(type.equals(Datatype.TYPE_INVALID)){
+			System.err.println("not able to resolve type from "+param[1]);
+			System.exit(-1);
+		}
+		
+		parameters.put(param[0], type);
+		
+		if(ctx.remainder != null)
+		{
+			for(ExprContext ec : ctx.remainder) {	
+				
+				param = visit(ec).split(":");	
+				
+				type = Datatype.resolveType(param[1]);
+				if(type.equals(Datatype.TYPE_INVALID)){
+					System.err.println("not able to resolve type from "+param[1]);
+					System.exit(-1);
+				}
+				
+				parameters.put(param[0], type);
+			}
+		}
+		
+		
 		return visitChildren(ctx);
 	}
 
@@ -301,21 +344,36 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 
 	@Override
 	public String visitProgram(@NotNull ToolParser.ProgramContext ctx) {
-		String before = "";
+		String staticInitializerBlock = "";
+		String definition = "";
 		if (ctx.before != null) {
 			for(ToolParser.DefContext cb : ctx.before){
-				before += visit(cb);
+				 String complete[] = visit(cb).split(ToolCompilationVisitor.seperator);
+				 definition += complete[0];
+				 if(complete.length == 2){
+					 staticInitializerBlock += complete[1];
+				 }
+			}
+		}
+		currentScope.printInfo();
+
+		if (ctx.after != null) {
+			for(ToolParser.DefContext ca : ctx.after){
+				 String complete[] = visit(ca).split(ToolCompilationVisitor.seperator);
+				 definition += complete[0];
+				 if(complete.length == 2){
+					 staticInitializerBlock += complete[1];
+				 }
 			}
 		}
 		currentScope.printInfo();
 		
-		String after = "";
-		if (ctx.after != null) {
-			for(ToolParser.DefContext ca : ctx.after){
-				after += visit(ca);
-			}
+		String result = ".class " + applicationName + "\n" + ".super java/lang/Object" + "\n" + definition + "\n";
+		if(staticInitializerBlock.length()>0){
+			result += ".method static public <clinit>()V" +"\n" + staticInitializerBlock + ".end method" + "\n";
 		}
-		currentScope.printInfo();
-		return ".class " + applicationName + "\n.super java/lang/Object\n" + before + "\n" + after + "\n" + visit(ctx.m) + "\n";
+		result += visit(ctx.m) + "\n";
+		
+		return result;
 	}
 }

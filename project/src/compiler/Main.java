@@ -32,7 +32,7 @@ public class Main {
 			
 			ToolCompilationVisitor tcv = new ToolCompilationVisitor();
 			String compiled = tcv.visit(tree);
-			String nice = compiled.replaceAll("(?m)^[ \t]*\r?\n", "");
+			String nice = makeReadable(compiled);
 			System.out.print(nice);
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -40,4 +40,23 @@ public class Main {
 
 	}
 
+	private static String makeReadable(String pWhat){
+		StringBuffer buffer = new StringBuffer();
+		String lines[] = pWhat.replaceAll("(?m)^[ \t]*\r?\n", "").split("\n");
+		int indent = 0;
+		for(String line : lines){
+			if(line.contains(".end method")){
+				indent -= 1;
+			}
+			for(int i=0; i<indent; ++i){
+				line = "\t" + line;
+			}
+			if(line.contains(".method")){
+				indent += 1;
+			}
+			buffer.append(line).append("\n");
+		}
+		return buffer.toString();
+	}
+	
 }
