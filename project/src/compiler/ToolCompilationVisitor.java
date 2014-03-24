@@ -78,11 +78,6 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 	}
 
 	@Override
-	public String visitProductRight(@NotNull ToolParser.ProductRightContext ctx) {
-		return visitChildren(ctx);
-	}
-
-	@Override
 	public String visitFunctionCall(@NotNull ToolParser.FunctionCallContext ctx) {
 		return visitChildren(ctx);
 	}
@@ -133,12 +128,6 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 	}
 
 	@Override
-	public String visitBooleanExpressionRight(
-			@NotNull ToolParser.BooleanExpressionRightContext ctx) {
-		return visitChildren(ctx);
-	}
-
-	@Override
 	public String visitFunctionDataType(
 			@NotNull ToolParser.FunctionDataTypeContext ctx) {
 		return visitChildren(ctx);
@@ -160,6 +149,18 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 	public String visitIntegerFaktorVariableName(
 			@NotNull ToolParser.IntegerFaktorVariableNameContext ctx) {
 		return visitChildren(ctx);
+	}
+	
+	@Override
+	protected String aggregateResult(String aggregate, String nextResult) {
+		String result = "";
+		if(aggregate != null){
+			result += aggregate + "\n";
+		}
+		if(nextResult != null){
+			result += aggregate + "\n";
+		}
+		return result;
 	}
 
 	@Override
@@ -256,20 +257,8 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 	}
 
 	@Override
-	public String visitStringExpressionRight(
-			@NotNull ToolParser.StringExpressionRightContext ctx) {
-		return visitChildren(ctx);
-	}
-
-	@Override
 	public String visitIntegerFaktorParenthesis(
 			@NotNull ToolParser.IntegerFaktorParenthesisContext ctx) {
-		return visitChildren(ctx);
-	}
-
-	@Override
-	public String visitIntegerExpressionRight(
-			@NotNull ToolParser.IntegerExpressionRightContext ctx) {
 		return visitChildren(ctx);
 	}
 
@@ -278,27 +267,21 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 			@NotNull ToolParser.StringFaktorFunctionCallContext ctx) {
 		return visitChildren(ctx);
 	}
-	
-	@Override
-	public String visitDefinitionList
-			(@NotNull ToolParser.DefinitionListContext ctx){
-		String rest = "";
-		if(ctx.next != null){
-			rest = visit(ctx.next);
-		}
-		return visit(ctx.definition) + "\n" + rest + "\n";
-	}
 
 	@Override
 	public String visitProgram(@NotNull ToolParser.ProgramContext ctx) {
 		String before = "";
 		if (ctx.before != null) {
-			before = visit(ctx.before);
+			for(ToolParser.DefContext cb : ctx.before){
+				before += visit(cb);
+			}
 		}
 		currentScope.printInfo();
 		String after = "";
 		if (ctx.after != null) {
-			after = visit(ctx.after);
+			for(ToolParser.DefContext ca : ctx.after){
+				after += visit(ca);
+			}
 		}
 		currentScope.printInfo();
 		return ".class " + applicationName + "\n.super java/lang/Object\n" + before + "\n" + after + "\n" + visit(ctx.m) + "\n";
