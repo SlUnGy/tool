@@ -2,11 +2,13 @@ package compiler;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.LinkedList;
 
 import org.antlr.v4.runtime.misc.NotNull;
 
 import generated.*;
 import generated.ToolParser.ExprContext;
+import generated.ToolParser.ParameterContext;
 
 public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 	
@@ -107,7 +109,18 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 	@Override
 	public String visitFunctionDefinitionParameters(
 			@NotNull ToolParser.FunctionDefinitionParametersContext ctx) {
-		return visitChildren(ctx);
+				
+		//Split param string (name:type)
+		String param = visit(ctx.param);		
+		
+		if(ctx.remainder != null)
+		{
+			for(ParameterContext ec : ctx.remainder) {					
+				param += ","+visit(ec);	
+			}
+		}
+		
+		return param;
 	}
 
 	@Override
@@ -258,26 +271,56 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 	public String visitFunctionDefinition(
 			@NotNull ToolParser.FunctionDefinitionContext ctx) {
 		
-		final Datatype type = Datatype.resolveType(ctx.type.getText());
+		Datatype type = Datatype.resolveType(ctx.type.getText());
 		if(type.equals(Datatype.TYPE_INVALID)){
 			System.err.println("not able to resolve type from "+ctx.type.getText());
 			System.exit(-1);
 		}
 		
-		String functionName = ctx.fn_name.getText();		
+		String functionName = ctx.fn_name.getText();
+		String[] parameters;
+		LinkedList<String> paramNames= new LinkedList<String>();
+		LinkedList<String> paramTypes= new LinkedList<String>();
+		
 		if(ctx.parameter_list != null)
 		{
-			LinkedHashMap<String, Datatype> = visit(ctx.parameter_list);
+			parameters = visit(ctx.parameter_list).split(",");
+			
+			for(String param : parameters)
+			{
+				String[] t = param.split(":");
+				paramNames.add(t[0]);
+				
+				type = Datatype.resolveType(t[1]);
+				if(type.equals(Datatype.TYPE_INVALID)){
+					System.err.println("not able to resolve type from '"+ctx.type.getText()+"'");
+					System.exit(-1);
+				}
+				paramTypes.add(type.getJasminType());
+			}
+		}		
+				
+		String function = ".method public static "+functionName+"(";
+		for(int i = 0; i < paramTypes.size(); i++)
+		{
+			if(i == paramTypes.size()-1)
+			{
+				function += paramTypes.get(i);
+			}
+			else
+			{
+				function += paramTypes.get(i) + ",";
+			}	
+			
 		}
 		
-		
-		String function = ".method public static "+functionName+"("++")"+type.getJasminType();
-		System.out.println("New Function: "+functionName+" "+type.getType());
+		function +=	")"+type.getJasminType();
+		System.out.println(function);
 		
 		
 		
 		String code = visit(ctx.code);
-		
+		//System.out.print(code);
 		
 		return "";
 		//return visitChildren(ctx);
@@ -291,40 +334,20 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 
 	@Override
 	public String visitFunctionCallParameters(
-			@NotNull ToolParser.FunctionCallParametersContext ctx) {
-		
-		LinkedHashMap<String, Datatype> parameters = new LinkedHashMap<String, Datatype>();		
+			@NotNull ToolParser.FunctionCallParametersContext ctx) {	
 		
 		//Split param string (name:type)
-		String[] param = visit(ctx.param).split(":");		
-		
-		//Resolve data type from string
-		Datatype type = Datatype.resolveType(param[1]);
-		if(type.equals(Datatype.TYPE_INVALID)){
-			System.err.println("not able to resolve type from "+param[1]);
-			System.exit(-1);
-		}
-		
-		parameters.put(param[0], type);
-		
+		String param = visit(ctx.param);		
+
 		if(ctx.remainder != null)
 		{
-			for(ExprContext ec : ctx.remainder) {	
-				
-				param = visit(ec).split(":");	
-								
-				type = Datatype.resolveType(param[1]);
-				if(type.equals(Datatype.TYPE_INVALID)){
-					System.err.println("not able to resolve type from "+param[1]);
-					System.exit(-1);
-				}
-				
-				parameters.put(param[0], type);
+			for(ExprContext ec : ctx.remainder) {					
+				param += ","+visit(ec);	
+				//System.out.print("..."+visit(ec));
 			}
 		}
 		
-		
-		return visitChildren(ctx);
+		return param;
 	}
 
 	@Override

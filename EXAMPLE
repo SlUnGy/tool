@@ -13,7 +13,7 @@ bool b = _true;
 _definiere leer druckeWas(){
 	sprich(mussManWissen);
 }
-_definiere bool gebeB( int pA, int pB){
+_definiere bool gebeB(int pA, int pB){
 	return(b);
 }
 
