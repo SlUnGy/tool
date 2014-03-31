@@ -32,29 +32,29 @@ var_name: name=NAME #variableName;
 
 int_expr: left=product (operator+=('+' | '-') right+=int_expr )*#integerExpression;
 
-product: left=int_faktor (operator+=('*'|'/') right+=product )*#productCalc;
+product: left=int_factor (operator+=('*'|'/') right+=product )*#productCalc;
 
-int_faktor: L_PAREN e=int_expr R_PAREN #integerFaktorParenthesis
-	| e=func_call #integerFaktorFunctionCall
-	| e=var_name #integerFaktorVariableName
-	| e=NUMBER #integerFaktor
+int_factor: L_PAREN e=int_expr R_PAREN #integerFactorParenthesis
+	| e=func_call #integerFactorFunctionCall
+	| e=var_name #integerFactorVariableName
+	| e=NUMBER #integerFactor
 	;
 	
-bool_expr: left=bool_faktor (operator+=('<' | '>' | '<=' | '>=' | '==' | '!=' | '||' | '&&') right+= bool_expr )*#booleanExpression;
+bool_expr: left=bool_factor (operator+=('<' | '>' | '<=' | '>=' | '==' | '!=' | '||' | '&&') right+= bool_expr )*#booleanExpression;
 
-bool_faktor: L_PAREN bool_expr R_PAREN #booleanFaktorParenthesis
-		| INVERT bool_expr #booleanFaktorInverted
-		| func_call #booleanFaktorFunctionCall
-		| int_expr #booleanFaktorInt
-		| str_expr #booleanFaktorString
-		| var_name #booleanFaktorVariableName
-		| BOOLEAN #booleanFaktorBoolean;
+bool_factor: L_PAREN factor=bool_expr R_PAREN #booleanFactorParenthesis
+		| INVERT factor=bool_expr #booleanFactorInverted
+		| factor=func_call #booleanFactorFunctionCall
+		| factor=int_expr #booleanFactorInt
+		| factor=str_expr #booleanFactorString
+		| factor=var_name #booleanFactorVariableName
+		| factor=BOOLEAN #booleanFactorBoolean;
 
-str_expr: left=str_faktor ( CAT right+=str_expr)* #stringExpression;
+str_expr: left=str_factor ( CAT right+=str_expr)* #stringExpression;
 
-str_faktor: L_PAREN str_expr R_PAREN #stringFaktorParenthesis
-		| func_call #stringFaktorFunctionCall
-		| STRING #stringFaktorString;
+str_factor: L_PAREN str_expr R_PAREN #stringFactorParenthesis
+		| func_call #stringFactorFunctionCall
+		| STRING #stringFactorString;
 
 var_def: type=var_data_type  variableName=NAME (ASSIGN_TO value=expr)? #variableDefinition; 
 

@@ -31,14 +31,14 @@ public class ToolParser extends Parser {
 	public static final int
 		RULE_start = 0, RULE_main = 1, RULE_def = 2, RULE_code = 3, RULE_contr_structure = 4, 
 		RULE_assignment = 5, RULE_expr = 6, RULE_var_name = 7, RULE_int_expr = 8, 
-		RULE_product = 9, RULE_int_faktor = 10, RULE_bool_expr = 11, RULE_bool_faktor = 12, 
-		RULE_str_expr = 13, RULE_str_faktor = 14, RULE_var_def = 15, RULE_var_data_type = 16, 
+		RULE_product = 9, RULE_int_factor = 10, RULE_bool_expr = 11, RULE_bool_factor = 12, 
+		RULE_str_expr = 13, RULE_str_factor = 14, RULE_var_def = 15, RULE_var_data_type = 16, 
 		RULE_func_data_type = 17, RULE_func_def = 18, RULE_func_def_params = 19, 
 		RULE_func_call = 20, RULE_func_call_params = 21, RULE_parameter = 22;
 	public static final String[] ruleNames = {
 		"start", "main", "def", "code", "contr_structure", "assignment", "expr", 
-		"var_name", "int_expr", "product", "int_faktor", "bool_expr", "bool_faktor", 
-		"str_expr", "str_faktor", "var_def", "var_data_type", "func_data_type", 
+		"var_name", "int_expr", "product", "int_factor", "bool_expr", "bool_factor", 
+		"str_expr", "str_factor", "var_def", "var_data_type", "func_data_type", 
 		"func_def", "func_def_params", "func_call", "func_call_params", "parameter"
 	};
 
@@ -966,7 +966,7 @@ public class ToolParser extends Parser {
 		}
 	}
 	public static class ProductCalcContext extends ProductContext {
-		public Int_faktorContext left;
+		public Int_factorContext left;
 		public Token s4;
 		public List<Token> operator = new ArrayList<Token>();
 		public Token s5;
@@ -979,8 +979,8 @@ public class ToolParser extends Parser {
 		public List<ProductContext> product() {
 			return getRuleContexts(ProductContext.class);
 		}
-		public Int_faktorContext int_faktor() {
-			return getRuleContext(Int_faktorContext.class,0);
+		public Int_factorContext int_factor() {
+			return getRuleContext(Int_factorContext.class,0);
 		}
 		public ProductCalcContext(ProductContext ctx) { copyFrom(ctx); }
 		@Override
@@ -999,7 +999,7 @@ public class ToolParser extends Parser {
 			_localctx = new ProductCalcContext(_localctx);
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(172); ((ProductCalcContext)_localctx).left = int_faktor();
+			setState(172); ((ProductCalcContext)_localctx).left = int_factor();
 			setState(177);
 			_errHandler.sync(this);
 			_alt = getInterpreter().adaptivePredict(_input,14,_ctx);
@@ -1037,103 +1037,103 @@ public class ToolParser extends Parser {
 		return _localctx;
 	}
 
-	public static class Int_faktorContext extends ParserRuleContext {
-		public Int_faktorContext(ParserRuleContext parent, int invokingState) {
+	public static class Int_factorContext extends ParserRuleContext {
+		public Int_factorContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
-		@Override public int getRuleIndex() { return RULE_int_faktor; }
+		@Override public int getRuleIndex() { return RULE_int_factor; }
 	 
-		public Int_faktorContext() { }
-		public void copyFrom(Int_faktorContext ctx) {
+		public Int_factorContext() { }
+		public void copyFrom(Int_factorContext ctx) {
 			super.copyFrom(ctx);
 		}
 	}
-	public static class IntegerFaktorVariableNameContext extends Int_faktorContext {
-		public Var_nameContext e;
-		public Var_nameContext var_name() {
-			return getRuleContext(Var_nameContext.class,0);
-		}
-		public IntegerFaktorVariableNameContext(Int_faktorContext ctx) { copyFrom(ctx); }
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof ToolVisitor ) return ((ToolVisitor<? extends T>)visitor).visitIntegerFaktorVariableName(this);
-			else return visitor.visitChildren(this);
-		}
-	}
-	public static class IntegerFaktorContext extends Int_faktorContext {
+	public static class IntegerFactorContext extends Int_factorContext {
 		public Token e;
 		public TerminalNode NUMBER() { return getToken(ToolParser.NUMBER, 0); }
-		public IntegerFaktorContext(Int_faktorContext ctx) { copyFrom(ctx); }
+		public IntegerFactorContext(Int_factorContext ctx) { copyFrom(ctx); }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof ToolVisitor ) return ((ToolVisitor<? extends T>)visitor).visitIntegerFaktor(this);
+			if ( visitor instanceof ToolVisitor ) return ((ToolVisitor<? extends T>)visitor).visitIntegerFactor(this);
 			else return visitor.visitChildren(this);
 		}
 	}
-	public static class IntegerFaktorFunctionCallContext extends Int_faktorContext {
-		public Func_callContext e;
-		public Func_callContext func_call() {
-			return getRuleContext(Func_callContext.class,0);
-		}
-		public IntegerFaktorFunctionCallContext(Int_faktorContext ctx) { copyFrom(ctx); }
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof ToolVisitor ) return ((ToolVisitor<? extends T>)visitor).visitIntegerFaktorFunctionCall(this);
-			else return visitor.visitChildren(this);
-		}
-	}
-	public static class IntegerFaktorParenthesisContext extends Int_faktorContext {
+	public static class IntegerFactorParenthesisContext extends Int_factorContext {
 		public Int_exprContext e;
 		public Int_exprContext int_expr() {
 			return getRuleContext(Int_exprContext.class,0);
 		}
 		public TerminalNode R_PAREN() { return getToken(ToolParser.R_PAREN, 0); }
 		public TerminalNode L_PAREN() { return getToken(ToolParser.L_PAREN, 0); }
-		public IntegerFaktorParenthesisContext(Int_faktorContext ctx) { copyFrom(ctx); }
+		public IntegerFactorParenthesisContext(Int_factorContext ctx) { copyFrom(ctx); }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof ToolVisitor ) return ((ToolVisitor<? extends T>)visitor).visitIntegerFaktorParenthesis(this);
+			if ( visitor instanceof ToolVisitor ) return ((ToolVisitor<? extends T>)visitor).visitIntegerFactorParenthesis(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class IntegerFactorVariableNameContext extends Int_factorContext {
+		public Var_nameContext e;
+		public Var_nameContext var_name() {
+			return getRuleContext(Var_nameContext.class,0);
+		}
+		public IntegerFactorVariableNameContext(Int_factorContext ctx) { copyFrom(ctx); }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof ToolVisitor ) return ((ToolVisitor<? extends T>)visitor).visitIntegerFactorVariableName(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class IntegerFactorFunctionCallContext extends Int_factorContext {
+		public Func_callContext e;
+		public Func_callContext func_call() {
+			return getRuleContext(Func_callContext.class,0);
+		}
+		public IntegerFactorFunctionCallContext(Int_factorContext ctx) { copyFrom(ctx); }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof ToolVisitor ) return ((ToolVisitor<? extends T>)visitor).visitIntegerFactorFunctionCall(this);
 			else return visitor.visitChildren(this);
 		}
 	}
 
-	public final Int_faktorContext int_faktor() throws RecognitionException {
-		Int_faktorContext _localctx = new Int_faktorContext(_ctx, getState());
-		enterRule(_localctx, 20, RULE_int_faktor);
+	public final Int_factorContext int_factor() throws RecognitionException {
+		Int_factorContext _localctx = new Int_factorContext(_ctx, getState());
+		enterRule(_localctx, 20, RULE_int_factor);
 		try {
 			setState(187);
 			switch ( getInterpreter().adaptivePredict(_input,15,_ctx) ) {
 			case 1:
-				_localctx = new IntegerFaktorParenthesisContext(_localctx);
+				_localctx = new IntegerFactorParenthesisContext(_localctx);
 				enterOuterAlt(_localctx, 1);
 				{
 				setState(180); match(L_PAREN);
-				setState(181); ((IntegerFaktorParenthesisContext)_localctx).e = int_expr();
+				setState(181); ((IntegerFactorParenthesisContext)_localctx).e = int_expr();
 				setState(182); match(R_PAREN);
 				}
 				break;
 
 			case 2:
-				_localctx = new IntegerFaktorFunctionCallContext(_localctx);
+				_localctx = new IntegerFactorFunctionCallContext(_localctx);
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(184); ((IntegerFaktorFunctionCallContext)_localctx).e = func_call();
+				setState(184); ((IntegerFactorFunctionCallContext)_localctx).e = func_call();
 				}
 				break;
 
 			case 3:
-				_localctx = new IntegerFaktorVariableNameContext(_localctx);
+				_localctx = new IntegerFactorVariableNameContext(_localctx);
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(185); ((IntegerFaktorVariableNameContext)_localctx).e = var_name();
+				setState(185); ((IntegerFactorVariableNameContext)_localctx).e = var_name();
 				}
 				break;
 
 			case 4:
-				_localctx = new IntegerFaktorContext(_localctx);
+				_localctx = new IntegerFactorContext(_localctx);
 				enterOuterAlt(_localctx, 4);
 				{
-				setState(186); ((IntegerFaktorContext)_localctx).e = match(NUMBER);
+				setState(186); ((IntegerFactorContext)_localctx).e = match(NUMBER);
 				}
 				break;
 			}
@@ -1161,7 +1161,7 @@ public class ToolParser extends Parser {
 		}
 	}
 	public static class BooleanExpressionContext extends Bool_exprContext {
-		public Bool_faktorContext left;
+		public Bool_factorContext left;
 		public Token s6;
 		public List<Token> operator = new ArrayList<Token>();
 		public Token s2;
@@ -1177,11 +1177,11 @@ public class ToolParser extends Parser {
 		public List<Bool_exprContext> bool_expr() {
 			return getRuleContexts(Bool_exprContext.class);
 		}
-		public Bool_faktorContext bool_faktor() {
-			return getRuleContext(Bool_faktorContext.class,0);
-		}
 		public Bool_exprContext bool_expr(int i) {
 			return getRuleContext(Bool_exprContext.class,i);
+		}
+		public Bool_factorContext bool_factor() {
+			return getRuleContext(Bool_factorContext.class,0);
 		}
 		public BooleanExpressionContext(Bool_exprContext ctx) { copyFrom(ctx); }
 		@Override
@@ -1200,7 +1200,7 @@ public class ToolParser extends Parser {
 			_localctx = new BooleanExpressionContext(_localctx);
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(189); ((BooleanExpressionContext)_localctx).left = bool_faktor();
+			setState(189); ((BooleanExpressionContext)_localctx).left = bool_factor();
 			setState(194);
 			_errHandler.sync(this);
 			_alt = getInterpreter().adaptivePredict(_input,16,_ctx);
@@ -1238,158 +1238,165 @@ public class ToolParser extends Parser {
 		return _localctx;
 	}
 
-	public static class Bool_faktorContext extends ParserRuleContext {
-		public Bool_faktorContext(ParserRuleContext parent, int invokingState) {
+	public static class Bool_factorContext extends ParserRuleContext {
+		public Bool_factorContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
-		@Override public int getRuleIndex() { return RULE_bool_faktor; }
+		@Override public int getRuleIndex() { return RULE_bool_factor; }
 	 
-		public Bool_faktorContext() { }
-		public void copyFrom(Bool_faktorContext ctx) {
+		public Bool_factorContext() { }
+		public void copyFrom(Bool_factorContext ctx) {
 			super.copyFrom(ctx);
 		}
 	}
-	public static class BooleanFaktorStringContext extends Bool_faktorContext {
-		public Str_exprContext str_expr() {
-			return getRuleContext(Str_exprContext.class,0);
-		}
-		public BooleanFaktorStringContext(Bool_faktorContext ctx) { copyFrom(ctx); }
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof ToolVisitor ) return ((ToolVisitor<? extends T>)visitor).visitBooleanFaktorString(this);
-			else return visitor.visitChildren(this);
-		}
-	}
-	public static class BooleanFaktorFunctionCallContext extends Bool_faktorContext {
-		public Func_callContext func_call() {
-			return getRuleContext(Func_callContext.class,0);
-		}
-		public BooleanFaktorFunctionCallContext(Bool_faktorContext ctx) { copyFrom(ctx); }
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof ToolVisitor ) return ((ToolVisitor<? extends T>)visitor).visitBooleanFaktorFunctionCall(this);
-			else return visitor.visitChildren(this);
-		}
-	}
-	public static class BooleanFaktorParenthesisContext extends Bool_faktorContext {
-		public TerminalNode R_PAREN() { return getToken(ToolParser.R_PAREN, 0); }
-		public Bool_exprContext bool_expr() {
-			return getRuleContext(Bool_exprContext.class,0);
-		}
-		public TerminalNode L_PAREN() { return getToken(ToolParser.L_PAREN, 0); }
-		public BooleanFaktorParenthesisContext(Bool_faktorContext ctx) { copyFrom(ctx); }
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof ToolVisitor ) return ((ToolVisitor<? extends T>)visitor).visitBooleanFaktorParenthesis(this);
-			else return visitor.visitChildren(this);
-		}
-	}
-	public static class BooleanFaktorBooleanContext extends Bool_faktorContext {
-		public TerminalNode BOOLEAN() { return getToken(ToolParser.BOOLEAN, 0); }
-		public BooleanFaktorBooleanContext(Bool_faktorContext ctx) { copyFrom(ctx); }
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof ToolVisitor ) return ((ToolVisitor<? extends T>)visitor).visitBooleanFaktorBoolean(this);
-			else return visitor.visitChildren(this);
-		}
-	}
-	public static class BooleanFaktorIntContext extends Bool_faktorContext {
+	public static class BooleanFactorIntContext extends Bool_factorContext {
+		public Int_exprContext factor;
 		public Int_exprContext int_expr() {
 			return getRuleContext(Int_exprContext.class,0);
 		}
-		public BooleanFaktorIntContext(Bool_faktorContext ctx) { copyFrom(ctx); }
+		public BooleanFactorIntContext(Bool_factorContext ctx) { copyFrom(ctx); }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof ToolVisitor ) return ((ToolVisitor<? extends T>)visitor).visitBooleanFaktorInt(this);
+			if ( visitor instanceof ToolVisitor ) return ((ToolVisitor<? extends T>)visitor).visitBooleanFactorInt(this);
 			else return visitor.visitChildren(this);
 		}
 	}
-	public static class BooleanFaktorInvertedContext extends Bool_faktorContext {
+	public static class BooleanFactorVariableNameContext extends Bool_factorContext {
+		public Var_nameContext factor;
+		public Var_nameContext var_name() {
+			return getRuleContext(Var_nameContext.class,0);
+		}
+		public BooleanFactorVariableNameContext(Bool_factorContext ctx) { copyFrom(ctx); }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof ToolVisitor ) return ((ToolVisitor<? extends T>)visitor).visitBooleanFactorVariableName(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class BooleanFactorInvertedContext extends Bool_factorContext {
+		public Bool_exprContext factor;
 		public TerminalNode INVERT() { return getToken(ToolParser.INVERT, 0); }
 		public Bool_exprContext bool_expr() {
 			return getRuleContext(Bool_exprContext.class,0);
 		}
-		public BooleanFaktorInvertedContext(Bool_faktorContext ctx) { copyFrom(ctx); }
+		public BooleanFactorInvertedContext(Bool_factorContext ctx) { copyFrom(ctx); }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof ToolVisitor ) return ((ToolVisitor<? extends T>)visitor).visitBooleanFaktorInverted(this);
+			if ( visitor instanceof ToolVisitor ) return ((ToolVisitor<? extends T>)visitor).visitBooleanFactorInverted(this);
 			else return visitor.visitChildren(this);
 		}
 	}
-	public static class BooleanFaktorVariableNameContext extends Bool_faktorContext {
-		public Var_nameContext var_name() {
-			return getRuleContext(Var_nameContext.class,0);
+	public static class BooleanFactorStringContext extends Bool_factorContext {
+		public Str_exprContext factor;
+		public Str_exprContext str_expr() {
+			return getRuleContext(Str_exprContext.class,0);
 		}
-		public BooleanFaktorVariableNameContext(Bool_faktorContext ctx) { copyFrom(ctx); }
+		public BooleanFactorStringContext(Bool_factorContext ctx) { copyFrom(ctx); }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof ToolVisitor ) return ((ToolVisitor<? extends T>)visitor).visitBooleanFaktorVariableName(this);
+			if ( visitor instanceof ToolVisitor ) return ((ToolVisitor<? extends T>)visitor).visitBooleanFactorString(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class BooleanFactorFunctionCallContext extends Bool_factorContext {
+		public Func_callContext factor;
+		public Func_callContext func_call() {
+			return getRuleContext(Func_callContext.class,0);
+		}
+		public BooleanFactorFunctionCallContext(Bool_factorContext ctx) { copyFrom(ctx); }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof ToolVisitor ) return ((ToolVisitor<? extends T>)visitor).visitBooleanFactorFunctionCall(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class BooleanFactorBooleanContext extends Bool_factorContext {
+		public Token factor;
+		public TerminalNode BOOLEAN() { return getToken(ToolParser.BOOLEAN, 0); }
+		public BooleanFactorBooleanContext(Bool_factorContext ctx) { copyFrom(ctx); }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof ToolVisitor ) return ((ToolVisitor<? extends T>)visitor).visitBooleanFactorBoolean(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class BooleanFactorParenthesisContext extends Bool_factorContext {
+		public Bool_exprContext factor;
+		public Bool_exprContext bool_expr() {
+			return getRuleContext(Bool_exprContext.class,0);
+		}
+		public TerminalNode R_PAREN() { return getToken(ToolParser.R_PAREN, 0); }
+		public TerminalNode L_PAREN() { return getToken(ToolParser.L_PAREN, 0); }
+		public BooleanFactorParenthesisContext(Bool_factorContext ctx) { copyFrom(ctx); }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof ToolVisitor ) return ((ToolVisitor<? extends T>)visitor).visitBooleanFactorParenthesis(this);
 			else return visitor.visitChildren(this);
 		}
 	}
 
-	public final Bool_faktorContext bool_faktor() throws RecognitionException {
-		Bool_faktorContext _localctx = new Bool_faktorContext(_ctx, getState());
-		enterRule(_localctx, 24, RULE_bool_faktor);
+	public final Bool_factorContext bool_factor() throws RecognitionException {
+		Bool_factorContext _localctx = new Bool_factorContext(_ctx, getState());
+		enterRule(_localctx, 24, RULE_bool_factor);
 		try {
 			setState(208);
 			switch ( getInterpreter().adaptivePredict(_input,17,_ctx) ) {
 			case 1:
-				_localctx = new BooleanFaktorParenthesisContext(_localctx);
+				_localctx = new BooleanFactorParenthesisContext(_localctx);
 				enterOuterAlt(_localctx, 1);
 				{
 				setState(197); match(L_PAREN);
-				setState(198); bool_expr();
+				setState(198); ((BooleanFactorParenthesisContext)_localctx).factor = bool_expr();
 				setState(199); match(R_PAREN);
 				}
 				break;
 
 			case 2:
-				_localctx = new BooleanFaktorInvertedContext(_localctx);
+				_localctx = new BooleanFactorInvertedContext(_localctx);
 				enterOuterAlt(_localctx, 2);
 				{
 				setState(201); match(INVERT);
-				setState(202); bool_expr();
+				setState(202); ((BooleanFactorInvertedContext)_localctx).factor = bool_expr();
 				}
 				break;
 
 			case 3:
-				_localctx = new BooleanFaktorFunctionCallContext(_localctx);
+				_localctx = new BooleanFactorFunctionCallContext(_localctx);
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(203); func_call();
+				setState(203); ((BooleanFactorFunctionCallContext)_localctx).factor = func_call();
 				}
 				break;
 
 			case 4:
-				_localctx = new BooleanFaktorIntContext(_localctx);
+				_localctx = new BooleanFactorIntContext(_localctx);
 				enterOuterAlt(_localctx, 4);
 				{
-				setState(204); int_expr();
+				setState(204); ((BooleanFactorIntContext)_localctx).factor = int_expr();
 				}
 				break;
 
 			case 5:
-				_localctx = new BooleanFaktorStringContext(_localctx);
+				_localctx = new BooleanFactorStringContext(_localctx);
 				enterOuterAlt(_localctx, 5);
 				{
-				setState(205); str_expr();
+				setState(205); ((BooleanFactorStringContext)_localctx).factor = str_expr();
 				}
 				break;
 
 			case 6:
-				_localctx = new BooleanFaktorVariableNameContext(_localctx);
+				_localctx = new BooleanFactorVariableNameContext(_localctx);
 				enterOuterAlt(_localctx, 6);
 				{
-				setState(206); var_name();
+				setState(206); ((BooleanFactorVariableNameContext)_localctx).factor = var_name();
 				}
 				break;
 
 			case 7:
-				_localctx = new BooleanFaktorBooleanContext(_localctx);
+				_localctx = new BooleanFactorBooleanContext(_localctx);
 				enterOuterAlt(_localctx, 7);
 				{
-				setState(207); match(BOOLEAN);
+				setState(207); ((BooleanFactorBooleanContext)_localctx).factor = match(BOOLEAN);
 				}
 				break;
 			}
@@ -1417,14 +1424,14 @@ public class ToolParser extends Parser {
 		}
 	}
 	public static class StringExpressionContext extends Str_exprContext {
-		public Str_faktorContext left;
+		public Str_factorContext left;
 		public Str_exprContext str_expr;
 		public List<Str_exprContext> right = new ArrayList<Str_exprContext>();
 		public Str_exprContext str_expr(int i) {
 			return getRuleContext(Str_exprContext.class,i);
 		}
-		public Str_faktorContext str_faktor() {
-			return getRuleContext(Str_faktorContext.class,0);
+		public Str_factorContext str_factor() {
+			return getRuleContext(Str_factorContext.class,0);
 		}
 		public TerminalNode CAT(int i) {
 			return getToken(ToolParser.CAT, i);
@@ -1449,7 +1456,7 @@ public class ToolParser extends Parser {
 			_localctx = new StringExpressionContext(_localctx);
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(210); ((StringExpressionContext)_localctx).left = str_faktor();
+			setState(210); ((StringExpressionContext)_localctx).left = str_factor();
 			setState(215);
 			_errHandler.sync(this);
 			_alt = getInterpreter().adaptivePredict(_input,18,_ctx);
@@ -1480,59 +1487,59 @@ public class ToolParser extends Parser {
 		return _localctx;
 	}
 
-	public static class Str_faktorContext extends ParserRuleContext {
-		public Str_faktorContext(ParserRuleContext parent, int invokingState) {
+	public static class Str_factorContext extends ParserRuleContext {
+		public Str_factorContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
-		@Override public int getRuleIndex() { return RULE_str_faktor; }
+		@Override public int getRuleIndex() { return RULE_str_factor; }
 	 
-		public Str_faktorContext() { }
-		public void copyFrom(Str_faktorContext ctx) {
+		public Str_factorContext() { }
+		public void copyFrom(Str_factorContext ctx) {
 			super.copyFrom(ctx);
 		}
 	}
-	public static class StringFaktorStringContext extends Str_faktorContext {
-		public TerminalNode STRING() { return getToken(ToolParser.STRING, 0); }
-		public StringFaktorStringContext(Str_faktorContext ctx) { copyFrom(ctx); }
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof ToolVisitor ) return ((ToolVisitor<? extends T>)visitor).visitStringFaktorString(this);
-			else return visitor.visitChildren(this);
-		}
-	}
-	public static class StringFaktorFunctionCallContext extends Str_faktorContext {
+	public static class StringFactorFunctionCallContext extends Str_factorContext {
 		public Func_callContext func_call() {
 			return getRuleContext(Func_callContext.class,0);
 		}
-		public StringFaktorFunctionCallContext(Str_faktorContext ctx) { copyFrom(ctx); }
+		public StringFactorFunctionCallContext(Str_factorContext ctx) { copyFrom(ctx); }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof ToolVisitor ) return ((ToolVisitor<? extends T>)visitor).visitStringFaktorFunctionCall(this);
+			if ( visitor instanceof ToolVisitor ) return ((ToolVisitor<? extends T>)visitor).visitStringFactorFunctionCall(this);
 			else return visitor.visitChildren(this);
 		}
 	}
-	public static class StringFaktorParenthesisContext extends Str_faktorContext {
+	public static class StringFactorStringContext extends Str_factorContext {
+		public TerminalNode STRING() { return getToken(ToolParser.STRING, 0); }
+		public StringFactorStringContext(Str_factorContext ctx) { copyFrom(ctx); }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof ToolVisitor ) return ((ToolVisitor<? extends T>)visitor).visitStringFactorString(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class StringFactorParenthesisContext extends Str_factorContext {
 		public TerminalNode R_PAREN() { return getToken(ToolParser.R_PAREN, 0); }
 		public TerminalNode L_PAREN() { return getToken(ToolParser.L_PAREN, 0); }
 		public Str_exprContext str_expr() {
 			return getRuleContext(Str_exprContext.class,0);
 		}
-		public StringFaktorParenthesisContext(Str_faktorContext ctx) { copyFrom(ctx); }
+		public StringFactorParenthesisContext(Str_factorContext ctx) { copyFrom(ctx); }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof ToolVisitor ) return ((ToolVisitor<? extends T>)visitor).visitStringFaktorParenthesis(this);
+			if ( visitor instanceof ToolVisitor ) return ((ToolVisitor<? extends T>)visitor).visitStringFactorParenthesis(this);
 			else return visitor.visitChildren(this);
 		}
 	}
 
-	public final Str_faktorContext str_faktor() throws RecognitionException {
-		Str_faktorContext _localctx = new Str_faktorContext(_ctx, getState());
-		enterRule(_localctx, 28, RULE_str_faktor);
+	public final Str_factorContext str_factor() throws RecognitionException {
+		Str_factorContext _localctx = new Str_factorContext(_ctx, getState());
+		enterRule(_localctx, 28, RULE_str_factor);
 		try {
 			setState(224);
 			switch (_input.LA(1)) {
 			case L_PAREN:
-				_localctx = new StringFaktorParenthesisContext(_localctx);
+				_localctx = new StringFactorParenthesisContext(_localctx);
 				enterOuterAlt(_localctx, 1);
 				{
 				setState(218); match(L_PAREN);
@@ -1541,14 +1548,14 @@ public class ToolParser extends Parser {
 				}
 				break;
 			case NAME:
-				_localctx = new StringFaktorFunctionCallContext(_localctx);
+				_localctx = new StringFactorFunctionCallContext(_localctx);
 				enterOuterAlt(_localctx, 2);
 				{
 				setState(222); func_call();
 				}
 				break;
 			case STRING:
-				_localctx = new StringFaktorStringContext(_localctx);
+				_localctx = new StringFactorStringContext(_localctx);
 				enterOuterAlt(_localctx, 3);
 				{
 				setState(223); match(STRING);

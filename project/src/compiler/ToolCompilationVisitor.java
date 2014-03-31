@@ -1,7 +1,5 @@
 package compiler;
 
-import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.LinkedList;
 
 import org.antlr.v4.runtime.misc.NotNull;
@@ -17,14 +15,14 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 	private final static String seperator = ":";
 
 	@Override
-	public String visitStringFaktorString(
-			@NotNull ToolParser.StringFaktorStringContext ctx) {
+	public String visitStringFactorString(
+			@NotNull ToolParser.StringFactorStringContext ctx) {
 		return visitChildren(ctx);
 	}
 
 	@Override
-	public String visitBooleanFaktorString(
-			@NotNull ToolParser.BooleanFaktorStringContext ctx) {
+	public String visitBooleanFactorString(
+			@NotNull ToolParser.BooleanFactorStringContext ctx) {
 		return visitChildren(ctx);
 	}
 
@@ -39,14 +37,14 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 	}
 
 	@Override
-	public String visitIntegerFaktorFunctionCall(
-			@NotNull ToolParser.IntegerFaktorFunctionCallContext ctx) {
+	public String visitIntegerFactorFunctionCall(
+			@NotNull ToolParser.IntegerFactorFunctionCallContext ctx) {
 		return visitChildren(ctx);
 	}
 
 	@Override
-	public String visitBooleanFaktorFunctionCall(
-			@NotNull ToolParser.BooleanFaktorFunctionCallContext ctx) {
+	public String visitBooleanFactorFunctionCall(
+			@NotNull ToolParser.BooleanFactorFunctionCallContext ctx) {
 		return visitChildren(ctx);
 	}
 
@@ -74,8 +72,8 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 	}
 
 	@Override
-	public String visitStringFaktorParenthesis(
-			@NotNull ToolParser.StringFaktorParenthesisContext ctx) {
+	public String visitStringFactorParenthesis(
+			@NotNull ToolParser.StringFactorParenthesisContext ctx) {
 		return visitChildren(ctx);
 	}
 
@@ -96,8 +94,8 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 	}
 
 	@Override
-	public String visitBooleanFaktorParenthesis(
-			@NotNull ToolParser.BooleanFaktorParenthesisContext ctx) {
+	public String visitBooleanFactorParenthesis(
+			@NotNull ToolParser.BooleanFactorParenthesisContext ctx) {
 		return visitChildren(ctx);
 	}
 
@@ -152,8 +150,8 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 	}
 
 	@Override
-	public String visitBooleanFaktorInverted(
-			@NotNull ToolParser.BooleanFaktorInvertedContext ctx) {
+	public String visitBooleanFactorInverted(
+			@NotNull ToolParser.BooleanFactorInvertedContext ctx) {
 		return visitChildren(ctx);
 	}
 
@@ -164,8 +162,8 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 	}
 
 	@Override
-	public String visitIntegerFaktorVariableName(
-			@NotNull ToolParser.IntegerFaktorVariableNameContext ctx) {
+	public String visitIntegerFactorVariableName(
+			@NotNull ToolParser.IntegerFactorVariableNameContext ctx) {
 		return visitChildren(ctx);
 	}
 	
@@ -219,14 +217,14 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 	}
 
 	@Override
-	public String visitBooleanFaktorBoolean(
-			@NotNull ToolParser.BooleanFaktorBooleanContext ctx) {
+	public String visitBooleanFactorBoolean(
+			@NotNull ToolParser.BooleanFactorBooleanContext ctx) {
 		return visitChildren(ctx);
 	}
 
 	@Override
-	public String visitBooleanFaktorInt(
-			@NotNull ToolParser.BooleanFaktorIntContext ctx) {
+	public String visitBooleanFactorInt(
+			@NotNull ToolParser.BooleanFactorIntContext ctx) {
 		return visitChildren(ctx);
 	}
 
@@ -251,14 +249,14 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 	}
 
 	@Override
-	public String visitBooleanFaktorVariableName(
-			@NotNull ToolParser.BooleanFaktorVariableNameContext ctx) {
+	public String visitBooleanFactorVariableName(
+			@NotNull ToolParser.BooleanFactorVariableNameContext ctx) {
 		return visitChildren(ctx);
 	}
 
 	@Override
-	public String visitIntegerFaktor(
-			@NotNull ToolParser.IntegerFaktorContext ctx) {
+	public String visitIntegerFactor(
+			@NotNull ToolParser.IntegerFactorContext ctx) {
 		return visitChildren(ctx);
 	}
 
@@ -357,14 +355,14 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 	}
 
 	@Override
-	public String visitIntegerFaktorParenthesis(
-			@NotNull ToolParser.IntegerFaktorParenthesisContext ctx) {
+	public String visitIntegerFactorParenthesis(
+			@NotNull ToolParser.IntegerFactorParenthesisContext ctx) {
 		return visitChildren(ctx);
 	}
 
 	@Override
-	public String visitStringFaktorFunctionCall(
-			@NotNull ToolParser.StringFaktorFunctionCallContext ctx) {
+	public String visitStringFactorFunctionCall(
+			@NotNull ToolParser.StringFactorFunctionCallContext ctx) {
 		return visitChildren(ctx);
 	}
 
