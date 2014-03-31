@@ -224,7 +224,12 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 
 	@Override
 	public String visitMainFunction(@NotNull ToolParser.MainFunctionContext ctx) {
-		return visitChildren(ctx);
+        String mainStuff = ".method public static main([Ljava/lang/String;)V \n .limit stack 100\n ";
+        for (ToolParser.CodeContext c : ctx.instructions) {
+            mainStuff += visit(c);
+        }
+        mainStuff += "\n return \n.end method";
+		return mainStuff;
 	}
 
 	@Override
@@ -307,7 +312,7 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 			for(ExprContext ec : ctx.remainder) {	
 				
 				param = visit(ec).split(":");	
-				
+								
 				type = Datatype.resolveType(param[1]);
 				if(type.equals(Datatype.TYPE_INVALID)){
 					System.err.println("not able to resolve type from "+param[1]);
@@ -368,7 +373,10 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 		
 		String result = ".class " + applicationName + "\n" + ".super java/lang/Object" + "\n" + definition + "\n";
 		if(staticInitializerBlock.length()>0){
-			result += ".method static public <clinit>()V" +"\n" + staticInitializerBlock + ".end method" + "\n";
+			result += ".method static public <clinit>()V" +"\n";
+			result += ".limit stack 100" + "\n";
+			result += staticInitializerBlock + "return " + "\n";
+			result += ".end method" + "\n";
 		}
 		result += visit(ctx.m) + "\n";
 		
