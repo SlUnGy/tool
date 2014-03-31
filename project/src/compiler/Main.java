@@ -47,6 +47,7 @@ public class Main {
 		for(String line : lines){
 			if(line.contains(".end method")){
 				indent -= 1;
+				line += "\n";
 			}
 			for(int i=0; i<indent; ++i){
 				line = "\t" + line;

@@ -228,7 +228,7 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
         for (ToolParser.CodeContext c : ctx.instructions) {
             mainStuff += visit(c);
         }
-        mainStuff += "\n return \n .end method";
+        mainStuff += "\n return \n.end method";
 		return mainStuff;
 	}
 
@@ -309,7 +309,7 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 			for(ExprContext ec : ctx.remainder) {	
 				
 				param = visit(ec).split(":");	
-				
+								
 				type = Datatype.resolveType(param[1]);
 				if(type.equals(Datatype.TYPE_INVALID)){
 					System.err.println("not able to resolve type from "+param[1]);
