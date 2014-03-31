@@ -259,17 +259,20 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 			System.exit(-1);
 		}
 		
-		String functionName = ctx.fn_name.getText();
-		
-		
-		
-		Function function = new Function(functionName, type, currentScope);
-		System.out.println("New Function: "+functionName+" "+type.getType());
-		
+		String functionName = ctx.fn_name.getText();		
 		if(ctx.parameter_list != null)
 		{
-			visit(ctx.parameter_list);
+			LinkedHashMap<String, Datatype> = visit(ctx.parameter_list);
 		}
+		
+		
+		String function = ".method public static "+functionName+"("++")"+type.getJasminType();
+		System.out.println("New Function: "+functionName+" "+type.getType());
+		
+		
+		
+		String code = visit(ctx.code);
+		
 		
 		return "";
 		//return visitChildren(ctx);
