@@ -1,14 +1,14 @@
 package compiler;
 
-import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.LinkedList;
 
 import org.antlr.v4.runtime.misc.NotNull;
 
+import compiler.Scope.UnknownVariableException;
 import generated.*;
 import generated.ToolParser.ExprContext;
 import generated.ToolParser.ParameterContext;
+import generated.ToolParser.ProductContext;
 
 public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 	
@@ -30,6 +30,14 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 
 	@Override
 	public String visitAssignTo(@NotNull ToolParser.AssignToContext ctx) {
+		//TODO: Bring it to work
+		
+		
+		String name = ctx.variableName.getText();
+		String value = visit(ctx.value);
+		//ldc value
+		//store currentscope.getID(name)
+		
 		return visitChildren(ctx);
 	}
 
@@ -119,7 +127,7 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 				param += ","+visit(ec);	
 			}
 		}
-		
+
 		return param;
 	}
 
@@ -142,6 +150,23 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 
 	@Override
 	public String visitProductCalc(@NotNull ToolParser.ProductCalcContext ctx) {
+		String result = "";
+		String left = visit(ctx.int_faktor());
+		result += left;
+		
+		if(ctx.operator != null && ctx.right != null)
+		{
+			int i = 0;
+			for(ProductContext pc : ctx.right)
+			{
+				System.err.println("op statement");
+				result += ctx.operator.get(i).getText();
+				result += visit(pc);
+				i++;
+			}
+		}
+		
+		System.out.println("Productcalculation: "+result);
 		return visitChildren(ctx);
 	}
 
@@ -164,9 +189,19 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 	}
 
 	@Override
-	public String visitIntegerFaktorVariableName(
-			@NotNull ToolParser.IntegerFaktorVariableNameContext ctx) {
-		return visitChildren(ctx);
+	public String visitIntegerFaktorVariableName(@NotNull ToolParser.IntegerFaktorVariableNameContext ctx) {
+		
+		try{
+			
+			return this.currentScope.getLoadStatement(ctx.var_name().getText());
+			
+		}
+		catch (UnknownVariableException e)
+		{
+			System.exit(-1);
+		}
+		return "";
+		//return visitChildren(ctx);
 	}
 	
 	@Override
@@ -259,7 +294,7 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 	@Override
 	public String visitIntegerFaktor(
 			@NotNull ToolParser.IntegerFaktorContext ctx) {
-		return visitChildren(ctx);
+		return ctx.e.getText();
 	}
 
 	@Override
@@ -359,7 +394,7 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 	@Override
 	public String visitIntegerFaktorParenthesis(
 			@NotNull ToolParser.IntegerFaktorParenthesisContext ctx) {
-		return visitChildren(ctx);
+		return ctx.e.getText();
 	}
 
 	@Override
