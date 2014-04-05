@@ -52,6 +52,35 @@ public class Scope {
 		}
 	}
 	
+	public String getLoadStatement(String pName) throws UnknownVariableException
+	{
+		if(names.containsKey(pName)){
+			String statement;
+			
+			switch(names.get(pName).getType().getType())
+			{
+				case  "Integer":
+					statement = "iload "+ names.get(pName).getId();
+				break;
+				default:
+					statement = "";
+				break;
+			}
+			return statement;
+		}
+		else {
+			if(parent != null){
+				parent.getId(pName);
+			}
+			else {
+				throw new UnknownVariableException("Unknown name: "+pName);
+			}
+		}
+		
+		return "";
+		
+	}
+	
 	public void printInfo(){
 		System.out.println("Info on "+this.toString());
 		System.out.println("parent:"+this.parent);
