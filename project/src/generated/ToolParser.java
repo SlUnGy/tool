@@ -1049,7 +1049,7 @@ public class ToolParser extends Parser {
 		}
 	}
 	public static class IntegerFactorContext extends Int_factorContext {
-		public Token e;
+		public Token factor;
 		public TerminalNode NUMBER() { return getToken(ToolParser.NUMBER, 0); }
 		public IntegerFactorContext(Int_factorContext ctx) { copyFrom(ctx); }
 		@Override
@@ -1059,7 +1059,7 @@ public class ToolParser extends Parser {
 		}
 	}
 	public static class IntegerFactorParenthesisContext extends Int_factorContext {
-		public Int_exprContext e;
+		public Int_exprContext factor;
 		public Int_exprContext int_expr() {
 			return getRuleContext(Int_exprContext.class,0);
 		}
@@ -1073,7 +1073,7 @@ public class ToolParser extends Parser {
 		}
 	}
 	public static class IntegerFactorVariableNameContext extends Int_factorContext {
-		public Var_nameContext e;
+		public Var_nameContext factor;
 		public Var_nameContext var_name() {
 			return getRuleContext(Var_nameContext.class,0);
 		}
@@ -1085,7 +1085,7 @@ public class ToolParser extends Parser {
 		}
 	}
 	public static class IntegerFactorFunctionCallContext extends Int_factorContext {
-		public Func_callContext e;
+		public Func_callContext factor;
 		public Func_callContext func_call() {
 			return getRuleContext(Func_callContext.class,0);
 		}
@@ -1108,7 +1108,7 @@ public class ToolParser extends Parser {
 				enterOuterAlt(_localctx, 1);
 				{
 				setState(180); match(L_PAREN);
-				setState(181); ((IntegerFactorParenthesisContext)_localctx).e = int_expr();
+				setState(181); ((IntegerFactorParenthesisContext)_localctx).factor = int_expr();
 				setState(182); match(R_PAREN);
 				}
 				break;
@@ -1117,7 +1117,7 @@ public class ToolParser extends Parser {
 				_localctx = new IntegerFactorFunctionCallContext(_localctx);
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(184); ((IntegerFactorFunctionCallContext)_localctx).e = func_call();
+				setState(184); ((IntegerFactorFunctionCallContext)_localctx).factor = func_call();
 				}
 				break;
 
@@ -1125,7 +1125,7 @@ public class ToolParser extends Parser {
 				_localctx = new IntegerFactorVariableNameContext(_localctx);
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(185); ((IntegerFactorVariableNameContext)_localctx).e = var_name();
+				setState(185); ((IntegerFactorVariableNameContext)_localctx).factor = var_name();
 				}
 				break;
 
@@ -1133,7 +1133,7 @@ public class ToolParser extends Parser {
 				_localctx = new IntegerFactorContext(_localctx);
 				enterOuterAlt(_localctx, 4);
 				{
-				setState(186); ((IntegerFactorContext)_localctx).e = match(NUMBER);
+				setState(186); ((IntegerFactorContext)_localctx).factor = match(NUMBER);
 				}
 				break;
 			}
@@ -1499,6 +1499,7 @@ public class ToolParser extends Parser {
 		}
 	}
 	public static class StringFactorFunctionCallContext extends Str_factorContext {
+		public Func_callContext factor;
 		public Func_callContext func_call() {
 			return getRuleContext(Func_callContext.class,0);
 		}
@@ -1510,6 +1511,7 @@ public class ToolParser extends Parser {
 		}
 	}
 	public static class StringFactorStringContext extends Str_factorContext {
+		public Token factor;
 		public TerminalNode STRING() { return getToken(ToolParser.STRING, 0); }
 		public StringFactorStringContext(Str_factorContext ctx) { copyFrom(ctx); }
 		@Override
@@ -1519,6 +1521,7 @@ public class ToolParser extends Parser {
 		}
 	}
 	public static class StringFactorParenthesisContext extends Str_factorContext {
+		public Str_exprContext factor;
 		public TerminalNode R_PAREN() { return getToken(ToolParser.R_PAREN, 0); }
 		public TerminalNode L_PAREN() { return getToken(ToolParser.L_PAREN, 0); }
 		public Str_exprContext str_expr() {
@@ -1543,7 +1546,7 @@ public class ToolParser extends Parser {
 				enterOuterAlt(_localctx, 1);
 				{
 				setState(218); match(L_PAREN);
-				setState(219); str_expr();
+				setState(219); ((StringFactorParenthesisContext)_localctx).factor = str_expr();
 				setState(220); match(R_PAREN);
 				}
 				break;
@@ -1551,14 +1554,14 @@ public class ToolParser extends Parser {
 				_localctx = new StringFactorFunctionCallContext(_localctx);
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(222); func_call();
+				setState(222); ((StringFactorFunctionCallContext)_localctx).factor = func_call();
 				}
 				break;
 			case STRING:
 				_localctx = new StringFactorStringContext(_localctx);
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(223); match(STRING);
+				setState(223); ((StringFactorStringContext)_localctx).factor = match(STRING);
 				}
 				break;
 			default:

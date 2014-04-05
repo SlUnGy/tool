@@ -1,7 +1,9 @@
 package compiler;
 
+import java.util.Iterator;
 import java.util.LinkedList;
 
+import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.misc.NotNull;
 
 import generated.*;
@@ -17,13 +19,13 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 	@Override
 	public String visitStringFactorString(
 			@NotNull ToolParser.StringFactorStringContext ctx) {
-		return visitChildren(ctx);
+		return ctx.factor.getText();
 	}
 
 	@Override
 	public String visitBooleanFactorString(
 			@NotNull ToolParser.BooleanFactorStringContext ctx) {
-		return visitChildren(ctx);
+		return visit(ctx.factor);
 	}
 
 	@Override
@@ -33,19 +35,19 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 
 	@Override
 	public String visitExprBoolean(@NotNull ToolParser.ExprBooleanContext ctx) {
-		return visitChildren(ctx);
+		return visit(ctx.e);
 	}
 
 	@Override
 	public String visitIntegerFactorFunctionCall(
 			@NotNull ToolParser.IntegerFactorFunctionCallContext ctx) {
-		return visitChildren(ctx);
+		return visit(ctx.factor);
 	}
 
 	@Override
 	public String visitBooleanFactorFunctionCall(
 			@NotNull ToolParser.BooleanFactorFunctionCallContext ctx) {
-		return visitChildren(ctx);
+		return visit(ctx.factor);
 	}
 
 	@Override
@@ -74,7 +76,7 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 	@Override
 	public String visitStringFactorParenthesis(
 			@NotNull ToolParser.StringFactorParenthesisContext ctx) {
-		return visitChildren(ctx);
+		return visit(ctx.factor);
 	}
 
 	@Override
@@ -96,7 +98,7 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 	@Override
 	public String visitBooleanFactorParenthesis(
 			@NotNull ToolParser.BooleanFactorParenthesisContext ctx) {
-		return visitChildren(ctx);
+		return visit(ctx.factor);
 	}
 
 	@Override
@@ -123,19 +125,19 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 
 	@Override
 	public String visitExprInteger(@NotNull ToolParser.ExprIntegerContext ctx) {
-		return visitChildren(ctx);
+		return visit(ctx.e);
 	}
 
 	@Override
 	public String visitExprVariableName(
 			@NotNull ToolParser.ExprVariableNameContext ctx) {
-		return visitChildren(ctx);
+		return visit(ctx.e);
 	}
 
 	@Override
 	public String visitExprFunctionName(
 			@NotNull ToolParser.ExprFunctionNameContext ctx) {
-		return visitChildren(ctx);
+		return visit(ctx.e);
 	}
 
 	@Override
@@ -152,7 +154,7 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 	@Override
 	public String visitBooleanFactorInverted(
 			@NotNull ToolParser.BooleanFactorInvertedContext ctx) {
-		return visitChildren(ctx);
+		return visit(ctx.factor);
 	}
 
 	@Override
@@ -199,7 +201,7 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 			String definition = ".field static " + ctx.variableName.getText() + " " + type.getJasminType() + "\n";
 			if(value != null){
 				definition += ToolCompilationVisitor.seperator;
-				definition += "ldc " + ctx.value.getText() + "\n";
+				definition += "ldc " + value + "\n";
 				definition += "putstatic " + this.applicationName + "/" + ctx.variableName.getText() + " " + type.getJasminType() + "\n";
 			}
 			return definition;
@@ -212,14 +214,14 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 	@Override
 	public String visitParameterDefinition(
 			@NotNull ToolParser.ParameterDefinitionContext ctx) {
-		System.out.println("Parameter: "+ctx.name.getText()+":"+ctx.type.getText());
-		return ctx.name.getText()+":"+ctx.type.getText();
+		System.out.println("Parameter: "+ctx.name.getText()+ToolCompilationVisitor.seperator+ctx.type.getText());
+		return ctx.name.getText()+ToolCompilationVisitor.seperator+ctx.type.getText();
 	}
 
 	@Override
 	public String visitBooleanFactorBoolean(
 			@NotNull ToolParser.BooleanFactorBooleanContext ctx) {
-		return visitChildren(ctx);
+		return ctx.factor.getText();
 	}
 
 	@Override
@@ -251,13 +253,13 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 	@Override
 	public String visitBooleanFactorVariableName(
 			@NotNull ToolParser.BooleanFactorVariableNameContext ctx) {
-		return visitChildren(ctx);
+		return visit(ctx.factor);
 	}
 
 	@Override
 	public String visitIntegerFactor(
 			@NotNull ToolParser.IntegerFactorContext ctx) {
-		return visitChildren(ctx);
+		return ctx.factor.getText();
 	}
 
 	@Override
@@ -286,7 +288,7 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 			
 			for(String param : parameters)
 			{
-				String[] t = param.split(":");
+				String[] t = param.split(ToolCompilationVisitor.seperator);
 				paramNames.add(t[0]);
 				
 				type = Datatype.resolveType(t[1]);
@@ -351,19 +353,36 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 	@Override
 	public String visitBooleanExpression(
 			@NotNull ToolParser.BooleanExpressionContext ctx) {
-		return visitChildren(ctx);
+		String left = visit(ctx.left);
+		String result = left;
+		if(ctx.operator.size()>0 && ctx.right.size()>0){
+			Iterator<Token> op = ctx.operator.iterator();
+			for(ToolParser.Bool_exprContext expr : ctx.right){
+				result = Datatype.compare(result, op.next().getText(), visit(expr) );
+			}
+		}
+		
+		switch(result){
+		case "_true":
+			result = "true";
+			break;
+		default:
+			result = "false";
+			break;
+		}
+		return result;
 	}
 
 	@Override
 	public String visitIntegerFactorParenthesis(
 			@NotNull ToolParser.IntegerFactorParenthesisContext ctx) {
-		return visitChildren(ctx);
+		return visit(ctx.factor);
 	}
 
 	@Override
 	public String visitStringFactorFunctionCall(
 			@NotNull ToolParser.StringFactorFunctionCallContext ctx) {
-		return visitChildren(ctx);
+		return visit(ctx.factor);
 	}
 
 	@Override

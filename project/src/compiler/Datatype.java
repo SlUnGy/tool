@@ -1,8 +1,11 @@
 package compiler;
 
 public enum Datatype {
-	TYPE_INT("I","Integer"), TYPE_BOOL("Z","Boolean"), TYPE_STRING("Ljava/lang/String;","String"),
-	TYPE_VOID("V","Void/Object"), TYPE_INVALID("Ö","INVALID");
+	TYPE_INT("I","Integer"),
+	TYPE_BOOL("Z","Boolean"),
+	TYPE_STRING("Ljava/lang/String;","String"),
+	TYPE_VOID("V","Void/Object"),
+	TYPE_INVALID("Ö","INVALID");
 
 	private String jasminType;
 	private String naturalType;
@@ -45,5 +48,9 @@ public enum Datatype {
 	
 	public String getType(){
 		return this.naturalType;
+	}
+	
+	public static String compare(String pLeft, String pOperator, String pRight){
+		return "true";
 	}
 }

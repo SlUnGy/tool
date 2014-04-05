@@ -34,10 +34,10 @@ int_expr: left=product (operator+=('+' | '-') right+=int_expr )*#integerExpressi
 
 product: left=int_factor (operator+=('*'|'/') right+=product )*#productCalc;
 
-int_factor: L_PAREN e=int_expr R_PAREN #integerFactorParenthesis
-	| e=func_call #integerFactorFunctionCall
-	| e=var_name #integerFactorVariableName
-	| e=NUMBER #integerFactor
+int_factor: L_PAREN factor=int_expr R_PAREN #integerFactorParenthesis
+	| factor=func_call #integerFactorFunctionCall
+	| factor=var_name #integerFactorVariableName
+	| factor=NUMBER #integerFactor
 	;
 	
 bool_expr: left=bool_factor (operator+=('<' | '>' | '<=' | '>=' | '==' | '!=' | '||' | '&&') right+= bool_expr )*#booleanExpression;
@@ -52,9 +52,9 @@ bool_factor: L_PAREN factor=bool_expr R_PAREN #booleanFactorParenthesis
 
 str_expr: left=str_factor ( CAT right+=str_expr)* #stringExpression;
 
-str_factor: L_PAREN str_expr R_PAREN #stringFactorParenthesis
-		| func_call #stringFactorFunctionCall
-		| STRING #stringFactorString;
+str_factor: L_PAREN factor=str_expr R_PAREN #stringFactorParenthesis
+		| factor=func_call #stringFactorFunctionCall
+		| factor=STRING #stringFactorString;
 
 var_def: type=var_data_type  variableName=NAME (ASSIGN_TO value=expr)? #variableDefinition; 
 
