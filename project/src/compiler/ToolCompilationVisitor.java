@@ -6,6 +6,7 @@ import java.util.LinkedList;
 import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.misc.NotNull;
 
+import compiler.Scope.UnknownFunctionException;
 import compiler.Scope.UnknownVariableException;
 import generated.*;
 import generated.ToolParser.ExprContext;
@@ -68,7 +69,7 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 	@Override
 	public String visitCodeFunctionCall(
 			@NotNull ToolParser.CodeFunctionCallContext ctx) {
-		return visitChildren(ctx);
+		return visit(ctx.instruction);
 	}
 
 	@Override
@@ -96,7 +97,22 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 
 	@Override
 	public String visitFunctionCall(@NotNull ToolParser.FunctionCallContext ctx) {
-		return visitChildren(ctx);
+		String invocation = "invokevirtual "+this.applicationName+"/"+ctx.fn_name.getText();
+		Function called;
+		try {
+			called = this.currentScope.getFun(ctx.fn_name.getText());
+
+			invocation += called.getDescriptor()+"\n";
+			if(ctx.parameters != null){
+				invocation = visit(ctx.parameters) + "\n" + invocation;
+			}
+			return invocation;
+		} catch (UnknownFunctionException e) {
+			//TODO: uncomment on final version
+			//e.printStackTrace();
+			//System.exit(-1);
+			return "";
+		}
 	}
 
 	@Override
@@ -195,7 +211,7 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 		
 		try{
 			
-			return this.currentScope.getLoadStatement(ctx.var_name().getText());
+			return this.currentScope.getVarLoadStatement(ctx.var_name().getText());
 			
 		}
 		catch (UnknownVariableException e)
@@ -227,12 +243,8 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 		}
 		
 		final Datatype type = Datatype.resolveType(ctx.type.getText());
-		if(type.equals(Datatype.TYPE_INVALID)){
-			System.err.println("not able to resolve type from "+ctx.type.getText());
-			System.exit(-1);
-		}
 		
-		int newId = currentScope.define(ctx.variableName.getText(), type);
+		int newId = currentScope.defineVar(ctx.variableName.getText(), type);
 		
 		if(currentScope.isRoot()){
 			String definition = ".field static " + ctx.variableName.getText() + " " + type.getJasminType() + "\n";
@@ -274,11 +286,11 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 
 	@Override
 	public String visitMainFunction(@NotNull ToolParser.MainFunctionContext ctx) {
-        String mainStuff = ".method public static main([Ljava/lang/String;)V \n .limit stack 100\n ";
+        String mainStuff = ".method public static main([Ljava/lang/String;)V\n.limit stack 100\n";
         for (ToolParser.CodeContext c : ctx.instructions) {
             mainStuff += visit(c);
         }
-        mainStuff += "\n return \n.end method";
+        mainStuff += "\nreturn\n.end method";
 		return mainStuff;
 	}
 
@@ -307,17 +319,12 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 	@Override
 	public String visitFunctionDefinition(
 			@NotNull ToolParser.FunctionDefinitionContext ctx) {
-		
-		Datatype type = Datatype.resolveType(ctx.type.getText());
-		if(type.equals(Datatype.TYPE_INVALID)){
-			System.err.println("not able to resolve type from "+ctx.type.getText());
-			System.exit(-1);
-		}
-		
+		Datatype returnType = Datatype.resolveType(ctx.type.getText());
 		String functionName = ctx.fn_name.getText();
+		
 		String[] parameters;
-		LinkedList<String> paramNames= new LinkedList<String>();
-		LinkedList<String> paramTypes= new LinkedList<String>();
+		LinkedList<String> paramNames= new LinkedList<>();
+		LinkedList<Datatype> paramTypes= new LinkedList<>();
 		
 		if(ctx.parameter_list != null)
 		{
@@ -326,41 +333,21 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 			for(String param : parameters)
 			{
 				String[] t = param.split(ToolCompilationVisitor.seperator);
-				paramNames.add(t[0]);
 				
-				type = Datatype.resolveType(t[1]);
-				if(type.equals(Datatype.TYPE_INVALID)){
-					System.err.println("not able to resolve type from '"+ctx.type.getText()+"'");
-					System.exit(-1);
-				}
-				paramTypes.add(type.getJasminType());
+				paramNames.add(t[0]);
+				paramTypes.add(Datatype.resolveType(t[1]));
 			}
 		}		
 				
 		String function = ".method public static "+functionName+"(";
-		for(int i = 0; i < paramTypes.size(); i++)
-		{
-			if(i == paramTypes.size()-1)
-			{
-				function += paramTypes.get(i);
-			}
-			else
-			{
-				function += paramTypes.get(i) + ",";
-			}	
-			
+		for(Datatype paramType : paramTypes){
+			function += paramType.getJasminType();//comma seperation of parameters is not needed by jasmin
 		}
+		function +=	")"+returnType.getJasminType();
 		
-		function +=	")"+type.getJasminType();
-		System.out.println(function);
+		currentScope.defineFun(functionName, new Function(returnType, paramNames, paramTypes));
 		
-		
-		
-		String code = visit(ctx.code);
-		//System.out.print(code);
-		
-		return "";
-		//return visitChildren(ctx);
+		return function + "\n" + visit(ctx.code) + "\n.end method\n";
 	}
 
 	@Override

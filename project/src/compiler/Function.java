@@ -1,24 +1,33 @@
 package compiler;
 
+import java.util.LinkedList;
+
 
 public class Function {
+	Datatype returnType;
+	LinkedList<String> paramNames;
+	LinkedList<Datatype> paramTypes;
 	
-	Scope scope;
-	String name;
-	Datatype type;
-	
-	
-	public Function(String name, Datatype type, Scope parentScop)
+	public Function()
 	{
-		this.name = name;
-		this.type = type;
-		this.scope = new Scope(parentScop);
+		this.returnType = Datatype.TYPE_INVALID;
+		this.paramNames = null;
+		this.paramTypes = null;
 	}
 	
-	public void addVariable()
+	public Function( Datatype type, LinkedList<String> pNames, LinkedList<Datatype> pTypes)
 	{
-		
+		this.returnType = type;
+		this.paramNames = pNames;
+		this.paramTypes = pTypes;
 	}
 	
+	public String getDescriptor(){
+		String descriptor = "(";
+		for(Datatype s : paramTypes){
+			descriptor += s.getJasminType();
+		}
+		return descriptor+")"+returnType.getJasminType();
+	}
 
 }

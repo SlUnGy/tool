@@ -37,6 +37,8 @@ public enum Datatype {
 			break;
 		default:
 			type=TYPE_INVALID;
+			System.err.println("not able to resolve type from '"+pString+"'");
+			System.exit(-1);
 			break;
 		}
 		return type;
