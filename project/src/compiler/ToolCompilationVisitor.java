@@ -1,7 +1,9 @@
 package compiler;
 
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.Map;
 
 import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.misc.NotNull;
@@ -18,6 +20,12 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 	private Scope currentScope = new Scope(null);
 	private String applicationName = "Default";
 	private final static String seperator = ":";
+	
+	@SuppressWarnings("serial")
+	private Map<String,String> reservedFunctions = new HashMap<String,String>(){{
+		put("return","return");
+		put("sprich","invokevirtual java/io/PrintStream/println(Ljava/lang/String;)V");
+	}};
 
 	@Override
 	public String visitStringFactorString(
@@ -97,21 +105,25 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 
 	@Override
 	public String visitFunctionCall(@NotNull ToolParser.FunctionCallContext ctx) {
-		String invocation = "invokevirtual "+this.applicationName+"/"+ctx.fn_name.getText();
-		Function called;
-		try {
-			called = this.currentScope.getFun(ctx.fn_name.getText());
+		if(reservedFunctions.containsKey(ctx.fn_name.getText())){
+			return reservedFunctions.get(ctx.fn_name.getText())+"\n";
+		}
+		else {
+			String invocation = "invokevirtual "+this.applicationName+"/"+ctx.fn_name.getText();
+			Function called;
+			try {
+				called = this.currentScope.getFun(ctx.fn_name.getText());
 
-			invocation += called.getDescriptor()+"\n";
-			if(ctx.parameters != null){
-				invocation = visit(ctx.parameters) + "\n" + invocation;
-			}
-			return invocation;
-		} catch (UnknownFunctionException e) {
-			//TODO: uncomment on final version
-			//e.printStackTrace();
-			//System.exit(-1);
-			return "";
+				invocation += called.getDescriptor()+"\n";
+				if(ctx.parameters != null){
+					invocation = visit(ctx.parameters) + "\n" + invocation;
+				}
+				return invocation;
+			} catch (UnknownFunctionException e) {
+				System.err.println("Unknown function: "+ctx.fn_name.getText());
+				System.exit(-1);
+				return "";
+			}	
 		}
 	}
 
