@@ -1,23 +1,30 @@
 package compiler;
 
 public enum Datatype {
-	TYPE_INT("I","Integer"),
-	TYPE_BOOL("Z","Boolean"),
-	TYPE_STRING("Ljava/lang/String;","String"),
-	TYPE_VOID("V","Void/Object"),
-	TYPE_INVALID("Ö","INVALID");
+	TYPE_INT("I","Integer","iload","istore"), 
+	//TODO: add all the other instructions, jasmin manual doesn't tell you anything though
+	TYPE_BOOL("Z","Boolean","",""),
+	TYPE_STRING("Ljava/lang/String;","String","",""),
+	TYPE_VOID("V","Void/Object","",""),
+	TYPE_INVALID("Ö","INVALID","","");
 
 	private String jasminType;
 	private String naturalType;
+	private String load;
+	private String store;
 	
 	private Datatype(){
 		this.jasminType="";
 		this.naturalType="";
+		this.load="";
+		this.store="";
 	}
 	
-	private Datatype(String pType, String pNatural){
+	private Datatype(String pType, String pNatural, String pLoad, String pStore){
 		this.jasminType = pType;
 		this.naturalType = pNatural;
+		this.load = pLoad;
+		this.store = pStore;
 	}
 	
 	public static Datatype resolveType(String pString){
@@ -42,6 +49,14 @@ public enum Datatype {
 			break;
 		}
 		return type;
+	}
+	
+	public String getLoadInstruction(){
+		return this.load;
+	}
+	
+	public String getStoreInstruction(){
+		return this.store;
 	}
 
 	public String getJasminType() {

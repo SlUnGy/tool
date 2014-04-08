@@ -42,14 +42,16 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 	@Override
 	public String visitAssignTo(@NotNull ToolParser.AssignToContext ctx) {
 		//TODO: Bring it to work
-		
-		
-		String name = ctx.variableName.getText();
-		String value = visit(ctx.value);
-		//ldc value
-		//store currentscope.getID(name)
-		
-		return visitChildren(ctx);
+		try {
+			final Variable var = this.currentScope.getVar(ctx.variableName.getText());
+			final String loadValue = visit(ctx.value);
+			
+			return loadValue + "\n" + var.getType().getStoreInstruction()+" "+var.getId()+"\n";
+		} catch (UnknownVariableException e) {
+			System.err.println("Unknown variable name: "+ctx.variableName.getText());
+			System.exit(-1);
+			return "";
+		}
 	}
 
 	@Override
@@ -220,18 +222,14 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 
 	@Override
 	public String visitIntegerFactorVariableName(@NotNull ToolParser.IntegerFactorVariableNameContext ctx) {
-		
-		try{
-			
-			return this.currentScope.getVarLoadStatement(ctx.var_name().getText());
-			
-		}
-		catch (UnknownVariableException e)
-		{
+		try {
+			final Variable var = this.currentScope.getVar(ctx.factor.getText());
+			return var.getType().getLoadInstruction()+" "+var.getId()+"\n";
+		} catch (UnknownVariableException e) {
+			System.err.println("Unknown variable name: "+ctx.factor.getText());
 			System.exit(-1);
+			return "";
 		}
-		return "";
-		//return visitChildren(ctx);
 	}
 	
 	@Override

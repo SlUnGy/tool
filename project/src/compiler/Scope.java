@@ -61,45 +61,23 @@ public class Scope {
 		}
 	}
 	
-	public Integer getVarId(String pName) throws UnknownVariableException{
+	public Variable getVar(String pName ) throws UnknownVariableException{
 		if(variables.containsKey(pName)){
-			return variables.get(pName).getId();	
+			return variables.get(pName);
 		}
 		else {
 			if(parent != null){
-				return parent.getVarId(pName);
+				return parent.getVar(pName);
 			}
 			else {
 				throw new UnknownVariableException("Unknown variable name: "+pName);
 			}
 		}
+		
 	}
 	
-	public String getVarLoadStatement(String pName) throws UnknownVariableException
-	{
-		if(variables.containsKey(pName)){
-			String statement;
-			
-			switch(variables.get(pName).getType())
-			{
-				case TYPE_INT:
-					statement = "iload "+ variables.get(pName).getId();
-				break;
-				default:
-					statement = "";
-				break;
-			}
-			return statement;
-		}
-		else {
-			if(parent != null){
-				parent.getVarId(pName);
-			}
-			else {
-				throw new UnknownVariableException("Unknown variable name: "+pName);
-			}
-		}
-		return "";
+	public Integer getVarId(String pName) throws UnknownVariableException{
+		return this.getVar(pName).getId();
 	}
 	
 	public void printInfo(){
