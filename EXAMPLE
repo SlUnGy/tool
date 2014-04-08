@@ -23,7 +23,7 @@ _definiere leer Kontrollstrukturen(){
 	_wenn( i == 1){ /* "_wenn" entspricht if */
 		druckeWas(); /* druckt "Schwarze Sonne" aufs stdout */
 	}
-	_oder_dies( !gebeB() ) {/* "_oder_dies" entspricht else-if */
+	_oder_dies( !gebeB(1, 2) ) {/* "_oder_dies" entspricht else-if */
 		i = 2;
 	}
 	_sonst { /* sonst entspricht else*/
