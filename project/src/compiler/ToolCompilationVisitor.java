@@ -24,7 +24,7 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 	@SuppressWarnings("serial")
 	private Map<String,String> reservedFunctions = new HashMap<String,String>(){{
 		put("return","return");
-		put("sprich","getstatic java/lang/System/out Ljava/io/PrintStream;\ninvokevirtual java/io/PrintStream/println(Ljava/lang/String;)V");
+		put("sprich","getstatic java/lang/System/out Ljava/io/PrintStream;"+"\n"+"invokevirtual java/io/PrintStream/println(Ljava/lang/String;)V");
 	}};
 
 	@Override
@@ -361,7 +361,7 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 		
 		currentScope.defineFun(functionName, new Function(returnType, paramNames, paramTypes));
 		
-		return function + "\n" + visit(ctx.code) + "\n.end method\n";
+		return function + "\n" + ".limit stack 100" + "\n" + visit(ctx.code) + "\n.end method\n";
 	}
 
 	@Override
