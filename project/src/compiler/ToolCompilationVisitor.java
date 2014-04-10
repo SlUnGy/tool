@@ -8,6 +8,7 @@ import java.util.Map;
 import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.misc.NotNull;
 
+import compiler.Operator.OperandException;
 import compiler.Scope.UnknownFunctionException;
 import compiler.Scope.UnknownVariableException;
 import generated.*;
@@ -19,7 +20,7 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 
 	private String applicationName = "Default";
 	private Scope currentScope = new Scope(null, this.applicationName);
-	private final static String seperator = ":";
+	private final static String seperator = "#";
 	
 	@SuppressWarnings("serial")
 	private Map<String,String> reservedFunctions = new HashMap<String,String>(){{
@@ -72,7 +73,7 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 
 	@Override
 	public String visitVariableName(@NotNull ToolParser.VariableNameContext ctx) {
-		return visitChildren(ctx);
+		return ctx.name.getText();
 	}
 
 	@Override
@@ -84,13 +85,13 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 	@Override
 	public String visitCodeAssignment(
 			@NotNull ToolParser.CodeAssignmentContext ctx) {
-		return visitChildren(ctx);
+		return visit(ctx.instruction);
 	}
 
 	@Override
 	public String visitCodeVariableDefinition(
 			@NotNull ToolParser.CodeVariableDefinitionContext ctx) {
-		return visitChildren(ctx);
+		return visit(ctx.instruction);
 	}
 
 	@Override
@@ -101,7 +102,25 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 
 	@Override
 	public String visitWhile(@NotNull ToolParser.WhileContext ctx) {
-		return visitChildren(ctx);
+		String cond = visit(ctx.condition);
+		String code = "";
+		for( ToolParser.CodeContext instr : ctx.instructions){
+			code += visit(instr);
+		}
+		String complete = cond+"\n";
+		try {
+			complete += Operator.OP_EQ.compileOperator(new Datatype[]{Datatype.TYPE_BOOL, Datatype.TYPE_BOOL})+"\n";
+		} catch (OperandException e) {
+			System.err.println(e.getMessage());
+			System.exit(-1);
+		}
+		//TODO: label generation with scope
+		complete += "ifnonnull "+"begin_code"+"\n";
+		complete += "goto "+"end_code"+"\n";
+		complete += "begin_code: "+"\n";
+		complete += code;
+		complete += "end_code:"+"\n";
+		return complete;
 	}
 
 	@Override
@@ -201,7 +220,7 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 		}
 		
 		//System.out.println("Productcalculation: "+result);
-		return visitChildren(ctx);
+		return result;
 	}
 
 	@Override
