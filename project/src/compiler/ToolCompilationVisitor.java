@@ -44,8 +44,8 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 		//TODO: Bring it to work
 		try {
 			final String loadValue = visit(ctx.value);
-			
-			return loadValue + "\n" + this.currentScope.getVarStoreInstruction(ctx.variableName.getText())+"\n";
+	
+			return loadValue + "\n" + this.currentScope.getVarStoreInstruction(ctx.variableName.getText()) + "\n";
 		} catch (UnknownVariableException e) {
 			System.err.println("Unknown variable name: "+ctx.variableName.getText());
 			System.exit(-1);
@@ -115,11 +115,14 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 			try {
 				called = this.currentScope.getFun(ctx.fn_name.getText());
 
-				invocation += called.getDescriptor()+"\n";
+				invocation += called.getDescriptor() + "\n";
+				
 				if(ctx.parameters != null){
 					invocation = visit(ctx.parameters) + "\n" + invocation;
 				}
+				
 				return invocation;
+				
 			} catch (UnknownFunctionException e) {
 				System.err.println("Unknown function: "+ctx.fn_name.getText());
 				System.exit(-1);
@@ -197,7 +200,7 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 			}
 		}
 		
-		System.out.println("Productcalculation: "+result);
+		//System.out.println("Productcalculation: "+result);
 		return visitChildren(ctx);
 	}
 
@@ -275,7 +278,7 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 	@Override
 	public String visitParameterDefinition(
 			@NotNull ToolParser.ParameterDefinitionContext ctx) {
-		System.out.println("Parameter: "+ctx.name.getText()+ToolCompilationVisitor.seperator+ctx.type.getText());
+		//System.out.println("Parameter: "+ctx.name.getText()+ToolCompilationVisitor.seperator+ctx.type.getText());
 		return ctx.name.getText()+ToolCompilationVisitor.seperator+ctx.type.getText();
 	}
 
@@ -351,17 +354,13 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 				paramNames.add(t[0]);
 				paramTypes.add(Datatype.resolveType(t[1]));
 			}
-		}		
-				
-		String function = ".method public static "+functionName+"(";
-		for(Datatype paramType : paramTypes){
-			function += paramType.getJasminType();//comma seperation of parameters is not needed by jasmin
-		}
-		function +=	")"+returnType.getJasminType();
+		}						
 		
-		currentScope.defineFun(functionName, new Function(returnType, paramNames, paramTypes));
+		Function function = new Function(functionName, returnType, paramNames, paramTypes);
+		currentScope.defineFun(functionName, function);
 		
-		return function + "\n" + ".limit stack 100" + "\n" + visit(ctx.code) + "\n.end method\n";
+		//Yes, this is ugly!
+		return function.createFunctionStatement(visit(ctx.code));
 	}
 
 	@Override

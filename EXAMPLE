@@ -18,6 +18,8 @@ _definiere bool gebeB(int pA, int pB){
 }
 
 
+
+
 /* Kontrollstrukturen & Funktions-Aufruf */
 _definiere leer Kontrollstrukturen(){
 	_wenn( i == 1){ /* "_wenn" entspricht if */
@@ -64,6 +66,7 @@ _haupt () {
 	Schleifen();
 	Scopes();
 	int local = 21;
+	gebeB(1 , 3);
 	bool localb;
 	localb = _true;
 	local = local + local;
