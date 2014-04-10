@@ -63,6 +63,10 @@ _haupt () {
 	Kontrollstrukturen();
 	Schleifen();
 	Scopes();
+	int local = 21;
+	bool localb;
+	localb = _true;
+	local = local + local;
 }
 
 int unbenutzt = 3;
