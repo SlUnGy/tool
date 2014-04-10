@@ -1,7 +1,5 @@
 package compiler;
 
-import generated.ToolParser;
-
 import java.util.LinkedList;
 
 
