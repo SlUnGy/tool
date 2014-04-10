@@ -38,7 +38,7 @@ public class Function {
 	{
 		String returnString = ".method "+ this.name+ this.getDescriptor()+System.lineSeparator() ;
 		returnString += code;
-		returnString+= ".endmethod"+System.lineSeparator() ;
+		returnString+= ".end method"+System.lineSeparator() ;
 		return returnString;
 	}
 
