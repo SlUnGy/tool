@@ -3,10 +3,10 @@ package compiler;
 public enum Datatype {
 	TYPE_INT("I","Integer","iload","istore"), 
 	//TODO: add all the other instructions, jasmin manual doesn't tell you anything though
-	TYPE_BOOL("Z","Boolean","",""),
-	TYPE_STRING("Ljava/lang/String;","String","",""),
-	TYPE_VOID("V","Void/Object","",""),
-	TYPE_INVALID("Ö","INVALID","","");
+	TYPE_BOOL("Z","Boolean","notset-load","notset-b-store"),
+	TYPE_STRING("Ljava/lang/String;","String","notset-load","notset-store"),
+	TYPE_VOID("V","Void/Object","notset-load","notset-store"),
+	TYPE_INVALID("Ö","INVALID","notset-load","notset-store");
 
 	private String jasminType;
 	private String naturalType;

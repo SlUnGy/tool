@@ -16,15 +16,15 @@ import generated.ToolParser.ParameterContext;
 import generated.ToolParser.ProductContext;
 
 public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
-	
-	private Scope currentScope = new Scope(null);
+
 	private String applicationName = "Default";
+	private Scope currentScope = new Scope(null, this.applicationName);
 	private final static String seperator = ":";
 	
 	@SuppressWarnings("serial")
 	private Map<String,String> reservedFunctions = new HashMap<String,String>(){{
 		put("return","return");
-		put("sprich","invokevirtual java/io/PrintStream/println(Ljava/lang/String;)V");
+		put("sprich","getstatic java/lang/System/out Ljava/io/PrintStream;\ninvokevirtual java/io/PrintStream/println(Ljava/lang/String;)V");
 	}};
 
 	@Override
@@ -43,10 +43,9 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 	public String visitAssignTo(@NotNull ToolParser.AssignToContext ctx) {
 		//TODO: Bring it to work
 		try {
-			final Variable var = this.currentScope.getVar(ctx.variableName.getText());
 			final String loadValue = visit(ctx.value);
 			
-			return loadValue + "\n" + var.getType().getStoreInstruction()+" "+var.getId()+"\n";
+			return loadValue + "\n" + this.currentScope.getVarStoreInstruction(ctx.variableName.getText())+"\n";
 		} catch (UnknownVariableException e) {
 			System.err.println("Unknown variable name: "+ctx.variableName.getText());
 			System.exit(-1);
@@ -65,7 +64,7 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 		return visit(ctx.factor);
 	}
 
-	@Override
+	@Override 
 	public String visitBooleanFactorFunctionCall(
 			@NotNull ToolParser.BooleanFactorFunctionCallContext ctx) {
 		return visit(ctx.factor);
@@ -223,8 +222,7 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 	@Override
 	public String visitIntegerFactorVariableName(@NotNull ToolParser.IntegerFactorVariableNameContext ctx) {
 		try {
-			final Variable var = this.currentScope.getVar(ctx.factor.getText());
-			return var.getType().getLoadInstruction()+" "+var.getId()+"\n";
+			return this.currentScope.getVarLoadInstruction(ctx.factor.getText())+"\n";
 		} catch (UnknownVariableException e) {
 			System.err.println("Unknown variable name: "+ctx.factor.getText());
 			System.exit(-1);
@@ -256,18 +254,22 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 		
 		int newId = currentScope.defineVar(ctx.variableName.getText(), type);
 		
+		String definition = "";
 		if(currentScope.isRoot()){
-			String definition = ".field static " + ctx.variableName.getText() + " " + type.getJasminType() + "\n";
+			definition = ".field static " + ctx.variableName.getText() + " " + type.getJasminType() + "\n";
 			if(value != null){
 				definition += ToolCompilationVisitor.seperator;
-				definition += "ldc " + value + "\n";
-				definition += "putstatic " + this.applicationName + "/" + ctx.variableName.getText() + " " + type.getJasminType() + "\n";
 			}
-			return definition;
 		}
-		else {
-			return "ldc " + value + "\n";
+		
+		definition += "ldc "+value+"\n";
+		try {
+			definition += currentScope.getVarStoreInstruction(ctx.variableName.getText());
+		} catch (UnknownVariableException e) {
+			System.err.println("Definition of variable failed: "+ctx.variableName.getText());
+			System.exit(-1);
 		}
+		return definition;
 	}
 
 	@Override
@@ -296,11 +298,13 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 
 	@Override
 	public String visitMainFunction(@NotNull ToolParser.MainFunctionContext ctx) {
+		this.currentScope = new Scope(currentScope, this.applicationName);
         String mainStuff = ".method public static main([Ljava/lang/String;)V\n.limit stack 100\n";
         for (ToolParser.CodeContext c : ctx.instructions) {
             mainStuff += visit(c);
         }
         mainStuff += "\nreturn\n.end method";
+        this.currentScope = this.currentScope.getParent();
 		return mainStuff;
 	}
 
@@ -432,8 +436,7 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 				 }
 			}
 		}
-		currentScope.printInfo();
-
+		
 		if (ctx.after != null) {
 			for(ToolParser.DefContext ca : ctx.after){
 				 String complete[] = visit(ca).split(ToolCompilationVisitor.seperator);
@@ -443,7 +446,6 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 				 }
 			}
 		}
-		currentScope.printInfo();
 		
 		String result = ".class " + applicationName + "\n" + ".super java/lang/Object" + "\n" + definition + "\n";
 		if(staticInitializerBlock.length()>0){

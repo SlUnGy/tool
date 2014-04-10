@@ -24,13 +24,15 @@ public class Scope {
 	}
 	
 	private Scope parent;
+	private String className;
 	private Map<String, Variable> variables;  
 	private Map<String, Function> functions;
 	
-	public Scope(Scope pParent){
+	public Scope(Scope pParent, String pName){
 		this.parent = pParent;
 		this.variables = new HashMap<>();
 		this.functions = new HashMap<>();
+		this.className = pName;
 	}
 	
 	public boolean isRoot(){
@@ -80,8 +82,29 @@ public class Scope {
 		return this.getVar(pName).getId();
 	}
 	
+	public String getVarStoreInstruction(String pName) throws UnknownVariableException {
+		final Variable var = this.getVar(pName);
+		if(this.isRoot()){
+			return "putstatic "+this.className+"/"+pName+" "+var.getType().getJasminType();
+		}
+		else {
+			return var.getType().getStoreInstruction()+" "+var.getId();
+		}
+	}
+	
+	public String getVarLoadInstruction(String pName) throws UnknownVariableException {
+		final Variable var = this.getVar(pName);
+		if(this.isRoot()){
+			return "getstatic "+this.className+"/"+pName+" "+var.getType().getJasminType();
+		}
+		else {
+			return var.getType().getLoadInstruction()+" "+var.getId();
+		}
+	}
+	
 	public void printInfo(){
 		System.out.println("Info on "+this.toString());
+		System.out.println("belonging to class: "+this.className);
 		System.out.println("parent:"+this.parent);
 		System.out.println("variables:"+this.variables.size());
 		for(final Entry<String, Variable> currentEntry : variables.entrySet()){
@@ -100,7 +123,16 @@ public class Scope {
 			return functions.get(pName);
 		}
 		else {
-			throw new UnknownFunctionException("Unknown function name: "+pName);
+			if(parent != null){
+				return parent.getFun(pName);
+			}
+			else {
+				throw new UnknownFunctionException("Unknown function name: "+pName);
+			}
 		}
+	}
+
+	public Scope getParent() {
+		return this.parent;
 	}
 }
