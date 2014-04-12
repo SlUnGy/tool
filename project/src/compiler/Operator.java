@@ -12,15 +12,33 @@ public enum Operator {
 	OP_OR(2,"or","||") {
 		@Override
 		protected String doOperation(Datatype[] pOperands) {
-			// TODO Auto-generated method stub
-			return null;
+			//TODO generate label from scope/somewhere
+			//TODO instead of ldc 0/1 use Datatype.TYPE_BOOLEAN.TRUE / FALSE or something equivalent
+			String instructions="";
+			instructions += "ior";					//Bitweise and of two integers on the stack
+			instructions += "ifgt "+"success"+"\n"; //Result > 0
+			instructions += "ldc 0"+"\n";
+			instructions += "goto "+"op_end"+"\n";
+			instructions += "success:"+"\n";
+			instructions += "ldc 1"+"\n";
+			instructions += "op_end"+"\n";
+			return instructions;
 		}
 	},
 	OP_AND(2,"and","&&") {
 		@Override
-		protected String doOperation(Datatype[] pOperands) {
-			// TODO Auto-generated method stub
-			return null;
+		protected String doOperation(Datatype[] pOperands) {		  
+			//TODO generate label from scope/somewhere
+			//TODO instead of ldc 0/1 use Datatype.TYPE_BOOLEAN.TRUE / FALSE or something equivalent
+			String instructions="";
+			instructions += "iand";					//Bitweise and of two integers on the stack
+			instructions += "ifgt "+"success"+"\n"; //Result > 0
+			instructions += "ldc 0"+"\n";
+			instructions += "goto "+"op_end"+"\n";
+			instructions += "success:"+"\n";
+			instructions += "ldc 1"+"\n";
+			instructions += "op_end"+"\n";
+			return instructions;
 		}
 	},
 	OP_LE(2,"lower equal","<=") {
