@@ -12,6 +12,7 @@ import compiler.Operator.OperandException;
 import compiler.Scope.UnknownFunctionException;
 import compiler.Scope.UnknownVariableException;
 import generated.*;
+import generated.ToolParser.CodeContext;
 import generated.ToolParser.ExprContext;
 import generated.ToolParser.ParameterContext;
 import generated.ToolParser.ProductContext;
@@ -164,6 +165,17 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 
 	@Override
 	public String visitIf(@NotNull ToolParser.IfContext ctx) {
+		String cond = visit(ctx.if_condition);
+
+				
+		
+		String instructions = "";
+		for(CodeContext cc:ctx.if_instructions)
+		{
+			instructions += visit(cc);
+		}
+		
+		
 		return visitChildren(ctx);
 	}
 
