@@ -378,8 +378,13 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 		Function function = new Function(functionName, returnType, paramNames, paramTypes);
 		currentScope.defineFun(functionName, function);
 		
-		//Yes, this is ugly!
-		return function.createFunctionStatement(visit(ctx.code));
+		String code = "";
+		if(ctx.instructions.size()>0){
+			for(ToolParser.CodeContext cctx : ctx.instructions){
+				code += visit(cctx)+"\n";
+			}
+		}
+		return function.createFunctionStatement(code);
 	}
 
 	@Override
@@ -420,10 +425,10 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 		
 		switch(result){
 		case "_true":
-			result = "true";
+			result = "1";
 			break;
 		default:
-			result = "false";
+			result = "0";
 			break;
 		}
 		return result;
