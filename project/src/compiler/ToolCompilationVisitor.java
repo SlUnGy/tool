@@ -105,8 +105,10 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 	public String visitWhile(@NotNull ToolParser.WhileContext ctx) {
 		String cond = visit(ctx.condition);
 		String code = "";
-		for( ToolParser.CodeContext instr : ctx.instructions){
-			code += visit(instr);
+		if(ctx.instructions != null){
+			for( ToolParser.CodeContext instr : ctx.instructions){
+				code += visit(instr);
+			}
 		}
 		String complete = cond+"\n";
 		try {
@@ -392,12 +394,14 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 		Function function = new Function(functionName, returnType, paramNames, paramTypes);
 		currentScope.defineFun(functionName, function);
 		
+		currentScope = new Scope(currentScope, this.applicationName);
 		String code = "";
 		if(ctx.instructions.size()>0){
 			for(ToolParser.CodeContext cctx : ctx.instructions){
 				code += visit(cctx)+"\n";
 			}
 		}
+		currentScope = currentScope.getParent();
 		return function.createFunctionStatement(code);
 	}
 
@@ -430,7 +434,7 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 			@NotNull ToolParser.BooleanExpressionContext ctx) {
 		String left = visit(ctx.left);
 		String result = left;
-		if(ctx.operator.size()>0 && ctx.right.size()>0){
+		if(ctx.operator != null && ctx.right != null){
 			Iterator<Token> op = ctx.operator.iterator();
 			for(ToolParser.Bool_exprContext expr : ctx.right){
 				result = Datatype.compare(result, op.next().getText(), visit(expr) );

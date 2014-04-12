@@ -34,7 +34,7 @@ public class Function {
 	
 	public String createFunctionStatement(String code)
 	{
-		String returnString = ".method "+ this.name+ this.getDescriptor()+System.lineSeparator() ;
+		String returnString = ".method "+ this.name + this.getDescriptor()+System.lineSeparator() ;
 		returnString += code;
 		returnString+= ".end method"+System.lineSeparator() ;
 		return returnString;

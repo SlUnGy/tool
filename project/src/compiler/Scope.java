@@ -41,7 +41,7 @@ public class Scope {
 	public int defineVar(String pName, Datatype pType){
 		if(!this.variables.containsKey(pName)){
 			final int next = variables.size();
-			variables.put(pName, new Variable(next, pType));
+			variables.put(pName, new Variable(next, pType, this.isRoot()));
 			return next;
 		}
 		else {
@@ -93,7 +93,7 @@ public class Scope {
 	
 	public String getVarLoadInstruction(String pName) throws UnknownVariableException {
 		final Variable var = this.getVar(pName);
-		if(this.isRoot()){
+		if(var.isGlobalVariable()){
 			return "getstatic "+this.className+"/"+pName+" "+var.getType().getJasminType();
 		}
 		else {
