@@ -145,7 +145,6 @@ public enum Operator {
 	private int arity;
 	private String name;
 	private String toolOp;
-	private String jasminOp;
 	
 	private Operator(){
 		this.arity = 0;
