@@ -116,11 +116,13 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 			System.exit(-1);
 		}
 		//TODO: label generation with scope
-		complete += "ifnonnull "+"begin_code"+"\n";
-		complete += "goto "+"end_code"+"\n";
-		complete += "begin_code: "+"\n";
+		final String safeBegin = LabelCounter.createSafeName("begin_code");
+		final String safeEnd = LabelCounter.createSafeName("end_code");
+		complete += "ifnonnull "+ safeBegin +"\n";
+		complete += "goto "+ safeEnd +"\n";
+		complete += safeBegin + ":"+"\n";
 		complete += code;
-		complete += "end_code:"+"\n";
+		complete += safeEnd+":"+"\n";
 		return complete;
 	}
 

@@ -2,6 +2,7 @@ package compiler;
 
 public enum Operator {
 	//adding another operator is done by adding it to this list
+	//TODO instead of ldc 0/1 use Datatype.TYPE_BOOLEAN.TRUE / FALSE or something equivalent
 	OP_NOT(1,"not","!") {
 		@Override
 		protected String doOperation(Datatype[] pOperands) {
@@ -12,119 +13,130 @@ public enum Operator {
 	OP_OR(2,"or","||") {
 		@Override
 		protected String doOperation(Datatype[] pOperands) {
-			//TODO generate label from scope/somewhere
-			//TODO instead of ldc 0/1 use Datatype.TYPE_BOOLEAN.TRUE / FALSE or something equivalent
+			final String safeSuccess = LabelCounter.createSafeName("op_success");
+			final String safeEnd = LabelCounter.createSafeName("op_end");
+			
 			String instructions="";
 			instructions += "ior";					//Bitweise and of two integers on the stack
-			instructions += "ifgt "+"success"+"\n"; //Result > 0
+			instructions += "ifgt "+safeSuccess+"\n"; //Result > 0
 			instructions += "ldc 0"+"\n";
-			instructions += "goto "+"op_end"+"\n";
-			instructions += "success:"+"\n";
+			instructions += "goto "+safeEnd+"\n";
+			instructions += safeSuccess+":"+"\n";
 			instructions += "ldc 1"+"\n";
-			instructions += "op_end"+"\n";
+			instructions += safeEnd + ":" +"\n";
 			return instructions;
 		}
 	},
 	OP_AND(2,"and","&&") {
 		@Override
-		protected String doOperation(Datatype[] pOperands) {		  
-			//TODO generate label from scope/somewhere
-			//TODO instead of ldc 0/1 use Datatype.TYPE_BOOLEAN.TRUE / FALSE or something equivalent
+		protected String doOperation(Datatype[] pOperands) {		
+			final String safeSuccess = LabelCounter.createSafeName("op_success");
+			final String safeEnd = LabelCounter.createSafeName("op_end");
+			
 			String instructions="";
 			instructions += "iand";					//Bitweise and of two integers on the stack
-			instructions += "ifgt "+"success"+"\n"; //Result > 0
+			instructions += "ifgt "+safeSuccess+"\n"; //Result > 0
 			instructions += "ldc 0"+"\n";
-			instructions += "goto "+"op_end"+"\n";
-			instructions += "success:"+"\n";
+			instructions += "goto "+safeEnd+"\n";
+			instructions += safeSuccess+":"+"\n";
 			instructions += "ldc 1"+"\n";
-			instructions += "op_end"+"\n";
+			instructions += safeEnd+":"+"\n";
 			return instructions;
 		}
 	},
 	OP_LE(2,"lower equal","<=") {
 		@Override
 		protected String doOperation(Datatype[] pOperands) {
-			  
-			//TODO generate label from scope/somewhere
-			//TODO instead of ldc 0/1 use Datatype.TYPE_BOOLEAN.TRUE / FALSE or something equivalent
+			final String safeSuccess = LabelCounter.createSafeName("op_success");
+			final String safeEnd = LabelCounter.createSafeName("op_end");
+			
 			String instructions="";
-			instructions += "if_icmple "+"success"+"\n";
+			instructions += "if_icmple "+safeSuccess+"\n";
 			instructions += "ldc 0"+"\n";
-			instructions += "goto "+"op_end"+"\n";
-			instructions += "success:"+"\n";
+			instructions += "goto "+safeEnd+"\n";
+			instructions += safeSuccess+":"+"\n";
 			instructions += "ldc 1"+"\n";
-			instructions += "op_end"+"\n";
+			instructions += safeEnd+":"+"\n";
 			return instructions;
 		}
 	},
 	OP_LT(2,"lower","<") {
 		@Override
 		protected String doOperation(Datatype[] pOperands) {
-			//TODO generate label from scope/somewhere
-			//TODO instead of ldc 0/1 use Datatype.TYPE_BOOLEAN.TRUE / FALSE or something equivalent
+			final String safeSuccess = LabelCounter.createSafeName("op_success");
+			final String safeEnd = LabelCounter.createSafeName("op_end");
+			
 			String instructions="";
-			instructions += "if_icmplt "+"success"+"\n";
+			instructions += "if_icmplt "+safeSuccess+"\n";
 			instructions += "ldc 0"+"\n";
-			instructions += "goto "+"op_end"+"\n";
-			instructions += "success:"+"\n";
+			instructions += "goto "+safeEnd+"\n";
+			instructions += safeSuccess+":"+"\n";
 			instructions += "ldc 1"+"\n";
-			instructions += "op_end"+"\n";
+			instructions += safeEnd+":"+"\n";
 			return instructions;
 		}
 	},
 	OP_GE(2,"greater equal",">=") {
 		@Override
 		protected String doOperation(Datatype[] pOperands) {
-			//TODO generate label from scope/somewhere
-			//TODO instead of ldc 0/1 use Datatype.TYPE_BOOLEAN.TRUE / FALSE or something equivalent
+			final String safeSuccess = LabelCounter.createSafeName("op_success");
+			final String safeEnd = LabelCounter.createSafeName("op_end");
+			
 			String instructions="";
-			instructions += "if_icmpge "+"success"+"\n";
+			instructions += "if_icmpge "+safeSuccess+"\n";
 			instructions += "ldc 0"+"\n";
-			instructions += "goto "+"op_end"+"\n";
-			instructions += "success:"+"\n";
+			instructions += "goto "+safeEnd+"\n";
+			instructions += safeSuccess+":"+"\n";
 			instructions += "ldc 1"+"\n";
-			instructions += "op_end"+"\n";
+			instructions += safeEnd+":"+"\n";
 			return instructions;
 		}
 	},
 	OP_GT(2,"greater",">") {
 		@Override
 		protected String doOperation(Datatype[] pOperands) {
-			//TODO generate label from scope/somewhere
-			//TODO instead of ldc 0/1 use Datatype.TYPE_BOOLEAN.TRUE / FALSE or something equivalent
+			final String safeSuccess = LabelCounter.createSafeName("op_success");
+			final String safeEnd = LabelCounter.createSafeName("op_end");
+			
 			String instructions="";
-			instructions += "if_icmpgt "+"success"+"\n";
+			instructions += "if_icmpgt "+safeSuccess+"\n";
 			instructions += "ldc 0"+"\n";
-			instructions += "goto "+"op_end"+"\n";
-			instructions += "success:"+"\n";
+			instructions += "goto "+safeEnd+"\n";
+			instructions += safeSuccess+":"+"\n";
 			instructions += "ldc 1"+"\n";
-			instructions += "op_end"+"\n";
+			instructions += safeEnd+":"+"\n";
 			return instructions;
 		}
 	},
 	OP_EQ(2,"equal","==") {
 		@Override
 		protected String doOperation(Datatype[] pOperands) {
+			final String safeSuccess = LabelCounter.createSafeName("op_success");
+			final String safeEnd = LabelCounter.createSafeName("op_end");
+			
 			String instructions = "";
-			instructions += "if_icmpeq "+"success"+"\n";
+			instructions += "if_icmpeq "+safeSuccess+"\n";
 			instructions += "ldc 0"+"\n";
-			instructions += "goto "+"op_end"+"\n";
-			instructions += "success:"+"\n";
+			instructions += "goto "+safeEnd+"\n";
+			instructions += safeSuccess+":"+"\n";
 			instructions += "ldc 1"+"\n";
-			instructions += "op_end"+"\n";
+			instructions += safeEnd+":"+"\n";
 			return instructions;
 		}
 	},
 	OP_NEQ(2,"notequal","!=") {
 		@Override
 		protected String doOperation(Datatype[] pOperands) {
+			final String safeSuccess = LabelCounter.createSafeName("op_success");
+			final String safeEnd = LabelCounter.createSafeName("op_end");
+			
 			String instructions = "";
-			instructions += "if_icmpneq "+"success"+"\n";
+			instructions += "if_icmpneq "+safeSuccess+"\n";
 			instructions += "ldc 0"+"\n";
-			instructions += "goto "+"op_end"+"\n";
-			instructions += "success:"+"\n";
+			instructions += "goto "+safeEnd+"\n";
+			instructions += safeSuccess+":"+"\n";
 			instructions += "ldc 1"+"\n";
-			instructions += "op_end"+"\n";
+			instructions += safeEnd+":"+"\n";
 			return instructions;
 		}
 	};
