@@ -181,13 +181,27 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 		String cond = visit(ctx.if_condition);
 
 		String instructions = "";
-		for (CodeContext cc : ctx.if_instructions) {
-			instructions += visit(cc);
+		if(ctx.if_instructions != null){
+			for (CodeContext cc : ctx.if_instructions) {
+				instructions += visit(cc);
+			}
 		}
 
-		return visitChildren(ctx);
+		return cond + instructions+"\n";
 	}
 
+	@Override
+	public String visitElseIf(@NotNull ToolParser.ElseIfContext ctx){
+		String cond = visit(ctx.elif_condition);
+		String instructions = "";
+		if(ctx.elif_instructions != null){
+			for(ToolParser.CodeContext cc : ctx.elif_instructions){
+				instructions += visit(cc);
+			}
+		}
+		return cond + instructions+"\n"; 
+	}
+	
 	@Override
 	public String visitFunctionDefinitionParameters(@NotNull ToolParser.FunctionDefinitionParametersContext ctx) {
 

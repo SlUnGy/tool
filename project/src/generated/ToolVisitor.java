@@ -124,18 +124,18 @@ public interface ToolVisitor<T> extends ParseTreeVisitor<T> {
 	T visitExprInteger(@NotNull ToolParser.ExprIntegerContext ctx);
 
 	/**
-	 * Visit a parse tree produced by {@link ToolParser#exprFunctionName}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitExprFunctionName(@NotNull ToolParser.ExprFunctionNameContext ctx);
-
-	/**
 	 * Visit a parse tree produced by {@link ToolParser#exprVariableName}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitExprVariableName(@NotNull ToolParser.ExprVariableNameContext ctx);
+
+	/**
+	 * Visit a parse tree produced by {@link ToolParser#exprFunctionName}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitExprFunctionName(@NotNull ToolParser.ExprFunctionNameContext ctx);
 
 	/**
 	 * Visit a parse tree produced by {@link ToolParser#productCalc}.
@@ -185,6 +185,13 @@ public interface ToolVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitVariableDefinition(@NotNull ToolParser.VariableDefinitionContext ctx);
+
+	/**
+	 * Visit a parse tree produced by {@link ToolParser#elseIf}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitElseIf(@NotNull ToolParser.ElseIfContext ctx);
 
 	/**
 	 * Visit a parse tree produced by {@link ToolParser#parameterDefinition}.
