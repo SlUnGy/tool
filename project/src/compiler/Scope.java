@@ -6,18 +6,10 @@ import java.util.Map.Entry;
 
 public class Scope {
 	
-	public class UnknownVariableException extends Exception {
+	public class UnknownNameException extends Exception {
 		private static final long serialVersionUID = 4379775796175306144L;
 
-		public UnknownVariableException(String pMsg){
-			super(pMsg);
-		}
-	}
-	
-	public class UnknownFunctionException extends Exception {
-		private static final long serialVersionUID = -4601824032925547441L;
-		
-		public UnknownFunctionException(String pMsg){
+		public UnknownNameException(String pMsg){
 			super(pMsg);
 		}
 	}
@@ -66,7 +58,7 @@ public class Scope {
 		}
 	}
 	
-	public Variable getVar(String pName ) throws UnknownVariableException{
+	public Variable getVar(String pName ) throws UnknownNameException{
 		if(variables.containsKey(pName)){
 			return variables.get(pName);
 		}
@@ -75,17 +67,17 @@ public class Scope {
 				return parent.getVar(pName);
 			}
 			else {
-				throw new UnknownVariableException("Unknown variable name: "+pName);
+				throw new UnknownNameException("Unknown variable name: "+pName);
 			}
 		}
 		
 	}
 	
-	public Integer getVarId(String pName) throws UnknownVariableException{
+	public Integer getVarId(String pName) throws UnknownNameException{
 		return this.getVar(pName).getId();
 	}
 	
-	public String getVarStoreInstruction(String pName) throws UnknownVariableException {
+	public String getVarStoreInstruction(String pName) throws UnknownNameException{
 		final Variable var = this.getVar(pName);
 		if(this.isRoot()){
 			return "putstatic "+this.className+"/"+pName+" "+var.getType().getJasminType();
@@ -95,7 +87,7 @@ public class Scope {
 		}
 	}
 	
-	public String getVarLoadInstruction(String pName) throws UnknownVariableException {
+	public String getVarLoadInstruction(String pName) throws UnknownNameException{
 		final Variable var = this.getVar(pName);
 		if(var.isGlobalVariable()){
 			return "getstatic "+this.className+"/"+pName+" "+var.getType().getJasminType();
@@ -121,7 +113,7 @@ public class Scope {
 		}
 	}
 
-	public Function getFun(String pName) throws UnknownFunctionException {
+	public Function getFun(String pName) throws UnknownNameException {
 		if(functions.containsKey(pName)){
 			return functions.get(pName);
 		}
@@ -130,7 +122,7 @@ public class Scope {
 				return parent.getFun(pName);
 			}
 			else {
-				throw new UnknownFunctionException("Unknown function name: "+pName);
+				throw new UnknownNameException("Unknown function name: "+pName);
 			}
 		}
 	}

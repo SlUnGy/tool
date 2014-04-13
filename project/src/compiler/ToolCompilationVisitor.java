@@ -12,8 +12,7 @@ import org.antlr.v4.runtime.misc.NotNull;
 
 import compiler.Operator.OperandException;
 import compiler.Scope.RedefinitionException;
-import compiler.Scope.UnknownFunctionException;
-import compiler.Scope.UnknownVariableException;
+import compiler.Scope.UnknownNameException;
 import generated.*;
 import generated.ToolParser.CodeContext;
 import generated.ToolParser.ExprContext;
@@ -64,7 +63,7 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 			final String loadValue = visit(ctx.value);
 
 			return loadValue + "\n" + this.currentScope.getVarStoreInstruction(ctx.variableName.getText()) + "\n";
-		} catch (UnknownVariableException e) {
+		} catch (UnknownNameException e) {
 			printError(e.getMessage(), ctx);
 			System.exit(-1);
 			return "";
@@ -159,7 +158,7 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 
 				return invocation;
 
-			} catch (UnknownFunctionException e) {
+			} catch (UnknownNameException e) {
 				printError(e.getMessage(), ctx);
 				System.exit(-1);
 				return "";
@@ -258,7 +257,7 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 	public String visitIntegerFactorVariableName(@NotNull ToolParser.IntegerFactorVariableNameContext ctx) {
 		try {
 			return this.currentScope.getVarLoadInstruction(ctx.factor.getText()) + "\n";
-		} catch (UnknownVariableException e) {
+		} catch (UnknownNameException e) {
 			printError(e.getMessage(), ctx);
 			System.exit(-1);
 			return "";
@@ -298,7 +297,7 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 			definition += "ldc " + value + "\n";
 			try {
 				definition += currentScope.getVarStoreInstruction(ctx.variableName.getText());
-			} catch (UnknownVariableException e) {
+			} catch (UnknownNameException e) {
 				printError(e.getMessage(), ctx);
 				System.exit(-1);
 			}
