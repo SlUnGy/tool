@@ -44,7 +44,7 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 	}
 
 	private void printError(String pError, ParserRuleContext ctx) {
-		System.err.printf("ERROR (line:%d): %s"+System.lineSeparator(), tokenStream.get(ctx.getSourceInterval().a).getLine(), pError);
+		System.err.printf("ERROR (line %d): %s"+System.lineSeparator(), tokenStream.get(ctx.getSourceInterval().a).getLine(), pError);
 	}
 
 	@Override
@@ -113,27 +113,30 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 
 	@Override
 	public String visitWhile(@NotNull ToolParser.WhileContext ctx) {
-		String cond = visit(ctx.condition);
+		final String cond = visit(ctx.condition);
+		final String safeBegin = LabelCounter.createSafeName("begin_code");
+		final String safeEnd = LabelCounter.createSafeName("end_code");
+
 		String code = "";
 		if (ctx.instructions != null) {
 			for (ToolParser.CodeContext instr : ctx.instructions) {
 				code += visit(instr);
 			}
 		}
-		String complete = cond + "\n";
+
+		String complete = "";
+		complete += safeBegin + ":" + "\n";
+		complete += cond + "\n";
 		try {
 			complete += Operator.OP_EQ.compileOperator(new Datatype[] { Datatype.TYPE_BOOL, Datatype.TYPE_BOOL }) + "\n";
 		} catch (OperandException e) {
 			printError(e.getMessage(), ctx);
 			System.exit(-1);
 		}
-		// TODO: label generation with scope
-		final String safeBegin = LabelCounter.createSafeName("begin_code");
-		final String safeEnd = LabelCounter.createSafeName("end_code");
-		complete += "ifnonnull " + safeBegin + "\n";
-		complete += "goto " + safeEnd + "\n";
-		complete += safeBegin + ":" + "\n";
+
+		complete += "ifeq " + safeEnd + "\n";
 		complete += code;
+		complete += "goto "+safeBegin+"\n";
 		complete += safeEnd + ":" + "\n";
 		return complete;
 	}
