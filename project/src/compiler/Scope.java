@@ -22,6 +22,14 @@ public class Scope {
 		}
 	}
 	
+	public class RedefinitionException extends Exception {
+		private static final long serialVersionUID = -939629143408521394L;
+		public RedefinitionException(String pMsg){
+			super(pMsg);
+		}
+		
+	}
+	
 	private Scope parent;
 	private String className;
 	private Map<String, Variable> variables;  
@@ -38,27 +46,23 @@ public class Scope {
 		return this.parent == null;
 	}
 
-	public int defineVar(String pName, Datatype pType){
+	public void defineVar(String pName, Datatype pType) throws RedefinitionException{
 		if(!this.variables.containsKey(pName)){
 			final int next = variables.size();
 			variables.put(pName, new Variable(next, pType, this.isRoot()));
-			return next;
 		}
 		else {
-			System.err.println("variable redefined in same scope: " + pName);
-			return -1;
+			throw new RedefinitionException("variable redefined in same scope: " + pName);
 		}
 	}
 	
 	// only allow happy functions
-	public boolean defineFun(String pName, Function pFunc){
+	public void defineFun(String pName, Function pFunc) throws RedefinitionException{
 		if(!this.functions.containsKey(pName)){
 			functions.put(pName, pFunc);
-			return true;
 		}
 		else {
-			System.err.println("function redefined in same scope: " +  pName);
-			return false;
+			throw new RedefinitionException("function redefined in same scope: " +  pName);
 		}
 	}
 	
