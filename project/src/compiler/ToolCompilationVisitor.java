@@ -38,13 +38,13 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 			{
 				put("return", "return");
 				put("sprich", "getstatic java/lang/System/out Ljava/io/PrintStream;" + "\n" + "invokevirtual java/io/PrintStream/println(Ljava/lang/String;)V");
-				put("toStr"	,"getstatic java/lang/Integer Ljava/lang/Integer;"+"\n"+"invokevirtual java/lang/Integer/toStr(Ljava/lang/Integer;)L");
+				put("toStr", "getstatic java/lang/Integer Ljava/lang/Integer;" + "\n" + "invokevirtual java/lang/Integer/toStr(Ljava/lang/Integer;)L");
 			}
 		};
 	}
 
 	private void printError(String pError, ParserRuleContext ctx) {
-		System.err.printf("ERROR (line %d): %s"+System.lineSeparator(), tokenStream.get(ctx.getSourceInterval().a).getLine(), pError);
+		System.err.printf("ERROR (line %d): %s" + System.lineSeparator(), tokenStream.get(ctx.getSourceInterval().a).getLine(), pError);
 	}
 
 	@Override
@@ -136,7 +136,7 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 
 		complete += "ifeq " + safeEnd + "\n";
 		complete += code;
-		complete += "goto "+safeBegin+"\n";
+		complete += "goto " + safeBegin + "\n";
 		complete += safeEnd + ":" + "\n";
 		return complete;
 	}
@@ -144,16 +144,16 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 	@Override
 	public String visitFunctionCall(@NotNull ToolParser.FunctionCallContext ctx) {
 		if (reservedFunctions.containsKey(ctx.fn_name.getText())) {
-			
+
 			String functionCall = reservedFunctions.get(ctx.fn_name.getText()) + "\n";
 			String parameters = null;
-		
+
 			if (ctx.parameters != null) {
 				parameters = visit(ctx.parameters) + "\n";
 			}
 
 			return parameters + functionCall;
-			
+
 		} else {
 			String invocation = "invokevirtual " + this.applicationName + "/" + ctx.fn_name.getText();
 			Function called;
@@ -191,27 +191,27 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 		String cond = visit(ctx.if_condition);
 
 		String instructions = "";
-		if(ctx.if_instructions != null){
+		if (ctx.if_instructions != null) {
 			for (CodeContext cc : ctx.if_instructions) {
 				instructions += visit(cc);
 			}
 		}
 
-		return cond + instructions+"\n";
+		return cond + instructions + "\n";
 	}
 
 	@Override
-	public String visitElseIf(@NotNull ToolParser.ElseIfContext ctx){
+	public String visitElseIf(@NotNull ToolParser.ElseIfContext ctx) {
 		String cond = visit(ctx.elif_condition);
 		String instructions = "";
-		if(ctx.elif_instructions != null){
-			for(ToolParser.CodeContext cc : ctx.elif_instructions){
+		if (ctx.elif_instructions != null) {
+			for (ToolParser.CodeContext cc : ctx.elif_instructions) {
 				instructions += visit(cc);
 			}
 		}
-		return cond + instructions+"\n"; 
+		return cond + instructions + "\n";
 	}
-	
+
 	@Override
 	public String visitFunctionDefinitionParameters(@NotNull ToolParser.FunctionDefinitionParametersContext ctx) {
 
@@ -243,52 +243,82 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 	}
 
 	/*
-	@Override
-	public String visitProductCalc(@NotNull ToolParser.ProductCalcContext ctx) {
-		String result = "";
-		String left = visit(ctx.int_factor());
-		result += left;
+	 * @Override public String visitProductCalc(@NotNull
+	 * ToolParser.ProductCalcContext ctx) { String result = ""; String left =
+	 * visit(ctx.int_factor()); result += left;
+	 * 
+	 * if (ctx.operator != null && ctx.right != null) { int i = 0; for
+	 * (ProductContext pc : ctx.right) { System.err.println("op statement");
+	 * result += ctx.operator.get(i).getText(); result += visit(pc); i++; } }
+	 * 
+	 * // System.out.println("Productcalculation: "+result); return result; }
+	 */
 
-		if (ctx.operator != null && ctx.right != null) {
-			int i = 0;
-			for (ProductContext pc : ctx.right) {
-				System.err.println("op statement");
-				result += ctx.operator.get(i).getText();
-				result += visit(pc);
-				i++;
-			}
+	@Override
+	public String visitIntegerAddition(@NotNull ToolParser.IntegerAdditionContext ctx) {
+		try {
+			return visit(ctx.left) + "\n" + Operator.OP_ADD.compileOperator(new Datatype[] { Datatype.TYPE_INT, Datatype.TYPE_INT }) + visit(ctx.right);
+		} catch (OperandException e) {
+			printError(e.getMessage(), ctx);
+			System.exit(-1);
+			return "";
 		}
-
-		// System.out.println("Productcalculation: "+result);
-		return result;
-	}
-	*/
-	
-	@Override
-	public String visitIntegerAddition(@NotNull ToolParser.IntegerAdditionContext ctx){
-		return visitChildren(ctx);
 	}
 
 	@Override
-	public String visitIntegerSubtraction(@NotNull ToolParser.IntegerSubtractionContext ctx){
-		return visitChildren(ctx);
-	}
-	
-	@Override
-	public String visitIntegerProductFactor(@NotNull ToolParser.IntegerProductFactorContext ctx){
-		return visitChildren(ctx);
-	}
-	
-	@Override
-	public String visitIntegerMultiplication(@NotNull ToolParser.IntegerMultiplicationContext ctx){
-		return visitChildren(ctx);
+	public String visitIntegerSubtraction(@NotNull ToolParser.IntegerSubtractionContext ctx) {
+		try {
+			return visit(ctx.left) + "\n" + Operator.OP_SUB.compileOperator(new Datatype[] { Datatype.TYPE_INT, Datatype.TYPE_INT }) + visit(ctx.right);
+		} catch (OperandException e) {
+			printError(e.getMessage(), ctx);
+			System.exit(-1);
+			return "";
+		}
 	}
 
 	@Override
-	public String visitIntegerDivision(@NotNull ToolParser.IntegerDivisionContext ctx){
-		return visitChildren(ctx);
+	public String visitIntegerProductFactor(@NotNull ToolParser.IntegerProductFactorContext ctx) {
+		return visit(ctx.left);
 	}
-	
+
+	@Override
+	public String visitIntegerMultiplication(@NotNull ToolParser.IntegerMultiplicationContext ctx) {
+		try {
+			return visit(ctx.left) + "\n" + Operator.OP_MUL.compileOperator(new Datatype[] { Datatype.TYPE_INT, Datatype.TYPE_INT }) + visit(ctx.right);
+		} catch (OperandException e) {
+			printError(e.getMessage(), ctx);
+			System.exit(-1);
+			return "";
+		}
+	}
+
+	@Override
+	public String visitIntegerDivision(@NotNull ToolParser.IntegerDivisionContext ctx) {
+		try {
+			return visit(ctx.left) + "\n" + Operator.OP_DIV.compileOperator(new Datatype[] { Datatype.TYPE_INT, Datatype.TYPE_INT }) + visit(ctx.right);
+		} catch (OperandException e) {
+			printError(e.getMessage(), ctx);
+			System.exit(-1);
+			return "";
+		}
+	}
+
+	@Override
+	public String visitIntegerFactorVariableName(@NotNull ToolParser.IntegerFactorVariableNameContext ctx) {
+		try {
+			return this.currentScope.getVarLoadInstruction(ctx.factor.getText()) + "\n";
+		} catch (UnknownNameException e) {
+			printError(e.getMessage(), ctx);
+			System.exit(-1);
+			return "";
+		}
+	}
+
+	@Override
+	public String visitIntegerFactor(@NotNull ToolParser.IntegerFactorContext ctx) {
+		return "ldc "+ctx.factor.getText()+"\n";
+	}
+
 	@Override
 	public String visitFunctionDataType(@NotNull ToolParser.FunctionDataTypeContext ctx) {
 		return visitChildren(ctx);
@@ -302,17 +332,6 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 	@Override
 	public String visitStringExpression(@NotNull ToolParser.StringExpressionContext ctx) {
 		return visitChildren(ctx);
-	}
-
-	@Override
-	public String visitIntegerFactorVariableName(@NotNull ToolParser.IntegerFactorVariableNameContext ctx) {
-		try {
-			return this.currentScope.getVarLoadInstruction(ctx.factor.getText()) + "\n";
-		} catch (UnknownNameException e) {
-			printError(e.getMessage(), ctx);
-			System.exit(-1);
-			return "";
-		}
 	}
 
 	@Override
@@ -402,11 +421,6 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 	}
 
 	@Override
-	public String visitIntegerFactor(@NotNull ToolParser.IntegerFactorContext ctx) {
-		return ctx.factor.getText();
-	}
-
-	@Override
 	public String visitDataType(@NotNull ToolParser.DataTypeContext ctx) {
 		return visitChildren(ctx);
 	}
@@ -466,28 +480,16 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 	}
 
 	/*
-	@Override
-	public String visitBooleanExpression(@NotNull ToolParser.BooleanExpressionContext ctx) {
-		String left = visit(ctx.left);
-		String result = left;
-		if (ctx.operator != null && ctx.right != null) {
-			Iterator<Token> op = ctx.operator.iterator();
-			for (ToolParser.Bool_exprContext expr : ctx.right) {
-				result = Datatype.compare(result, op.next().getText(), visit(expr));
-			}
-		}
-
-		switch (result) {
-			case "_true":
-				result = "1";
-				break;
-			default:
-				result = "0";
-				break;
-		}
-		return result;
-	}
-	*/
+	 * @Override public String visitBooleanExpression(@NotNull
+	 * ToolParser.BooleanExpressionContext ctx) { String left = visit(ctx.left);
+	 * String result = left; if (ctx.operator != null && ctx.right != null) {
+	 * Iterator<Token> op = ctx.operator.iterator(); for
+	 * (ToolParser.Bool_exprContext expr : ctx.right) { result =
+	 * Datatype.compare(result, op.next().getText(), visit(expr)); } }
+	 * 
+	 * switch (result) { case "_true": result = "1"; break; default: result =
+	 * "0"; break; } return result; }
+	 */
 
 	@Override
 	public String visitIntegerFactorParenthesis(@NotNull ToolParser.IntegerFactorParenthesisContext ctx) {

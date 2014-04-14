@@ -145,6 +145,24 @@ public enum Operator {
 		protected String doOperation(Datatype[] pOperands){
 			return "iadd"+"\n";
 		}
+	},
+	OP_SUB(2,"subtraction","-"){
+		@Override
+		protected String doOperation(Datatype[] pOperands){
+			return "isub"+"\n";
+		}
+	},
+	OP_MUL(2,"multiplication","*"){
+		@Override
+		protected String doOperation(Datatype[] pOperands){
+			return "imul"+"\n";
+		}
+	},
+	OP_DIV(2,"division","/"){
+		@Override
+		protected String doOperation(Datatype[] pOperands){
+			return "idiv"+"\n";
+		}
 	}
 	;
 	
@@ -195,7 +213,7 @@ public enum Operator {
 	
 	//pOperands can be used to convert operands to matching datatypes
 	public String compileOperator(Datatype[] pOperands) throws OperandException{
-		if(pOperands.length == this.arity){
+		if(pOperands.length >= this.arity){
 			return this.doOperation(pOperands);
 		}
 		else {
