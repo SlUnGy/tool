@@ -242,6 +242,7 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 		return visit(ctx.e);
 	}
 
+	/*
 	@Override
 	public String visitProductCalc(@NotNull ToolParser.ProductCalcContext ctx) {
 		String result = "";
@@ -260,6 +261,18 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 
 		// System.out.println("Productcalculation: "+result);
 		return result;
+	}
+	*/
+	
+	@Override
+	public String visitIntegerAddition(@NotNull ToolParser.IntegerAdditionContext ctx){
+		return visitChildren(ctx);
+	}
+
+
+	@Override
+	public String visitIntegerSubstraction(@NotNull ToolParser.IntegerSubstractionContext ctx){
+		return visitChildren(ctx);
 	}
 
 	@Override
@@ -424,11 +437,6 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 	}
 
 	@Override
-	public String visitIntegerExpression(@NotNull ToolParser.IntegerExpressionContext ctx) {
-		return visitChildren(ctx);
-	}
-
-	@Override
 	public String visitFunctionCallParameters(@NotNull ToolParser.FunctionCallParametersContext ctx) {
 
 		// Split param string (name:type)
@@ -443,6 +451,7 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 		return param;
 	}
 
+	/*
 	@Override
 	public String visitBooleanExpression(@NotNull ToolParser.BooleanExpressionContext ctx) {
 		String left = visit(ctx.left);
@@ -464,6 +473,7 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 		}
 		return result;
 	}
+	*/
 
 	@Override
 	public String visitIntegerFactorParenthesis(@NotNull ToolParser.IntegerFactorParenthesisContext ctx) {
