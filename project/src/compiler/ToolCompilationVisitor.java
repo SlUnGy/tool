@@ -59,7 +59,6 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 
 	@Override
 	public String visitAssignTo(@NotNull ToolParser.AssignToContext ctx) {
-		// TODO: Bring it to work
 		try {
 			final String loadValue = visit(ctx.value);
 
@@ -74,11 +73,6 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 	@Override
 	public String visitExprBoolean(@NotNull ToolParser.ExprBooleanContext ctx) {
 		return visit(ctx.e);
-	}
-
-	@Override
-	public String visitIntegerFactorFunctionCall(@NotNull ToolParser.IntegerFactorFunctionCallContext ctx) {
-		return visit(ctx.factor);
 	}
 
 	@Override
@@ -242,22 +236,10 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 		return visit(ctx.e);
 	}
 
-	/*
-	 * @Override public String visitProductCalc(@NotNull
-	 * ToolParser.ProductCalcContext ctx) { String result = ""; String left =
-	 * visit(ctx.int_factor()); result += left;
-	 * 
-	 * if (ctx.operator != null && ctx.right != null) { int i = 0; for
-	 * (ProductContext pc : ctx.right) { System.err.println("op statement");
-	 * result += ctx.operator.get(i).getText(); result += visit(pc); i++; } }
-	 * 
-	 * // System.out.println("Productcalculation: "+result); return result; }
-	 */
-
 	@Override
 	public String visitIntegerAddition(@NotNull ToolParser.IntegerAdditionContext ctx) {
 		try {
-			return visit(ctx.left) + "\n" + Operator.OP_ADD.compileOperator(new Datatype[] { Datatype.TYPE_INT, Datatype.TYPE_INT }) + visit(ctx.right);
+			return visit(ctx.left) + "\n" + visit(ctx.right) + "\n" + Operator.OP_ADD.compileOperator(new Datatype[] { Datatype.TYPE_INT, Datatype.TYPE_INT });
 		} catch (OperandException e) {
 			printError(e.getMessage(), ctx);
 			System.exit(-1);
@@ -268,7 +250,7 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 	@Override
 	public String visitIntegerSubtraction(@NotNull ToolParser.IntegerSubtractionContext ctx) {
 		try {
-			return visit(ctx.left) + "\n" + Operator.OP_SUB.compileOperator(new Datatype[] { Datatype.TYPE_INT, Datatype.TYPE_INT }) + visit(ctx.right);
+			return visit(ctx.left) + "\n" + visit(ctx.right) + "\n" + Operator.OP_SUB.compileOperator(new Datatype[] { Datatype.TYPE_INT, Datatype.TYPE_INT });
 		} catch (OperandException e) {
 			printError(e.getMessage(), ctx);
 			System.exit(-1);
@@ -284,7 +266,7 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 	@Override
 	public String visitIntegerMultiplication(@NotNull ToolParser.IntegerMultiplicationContext ctx) {
 		try {
-			return visit(ctx.left) + "\n" + Operator.OP_MUL.compileOperator(new Datatype[] { Datatype.TYPE_INT, Datatype.TYPE_INT }) + visit(ctx.right);
+			return visit(ctx.left) + "\n" + visit(ctx.right) + "\n" + Operator.OP_MUL.compileOperator(new Datatype[] { Datatype.TYPE_INT, Datatype.TYPE_INT });
 		} catch (OperandException e) {
 			printError(e.getMessage(), ctx);
 			System.exit(-1);
@@ -295,7 +277,7 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 	@Override
 	public String visitIntegerDivision(@NotNull ToolParser.IntegerDivisionContext ctx) {
 		try {
-			return visit(ctx.left) + "\n" + Operator.OP_DIV.compileOperator(new Datatype[] { Datatype.TYPE_INT, Datatype.TYPE_INT }) + visit(ctx.right);
+			return visit(ctx.left) + "\n" + visit(ctx.right) + "\n" + Operator.OP_DIV.compileOperator(new Datatype[] { Datatype.TYPE_INT, Datatype.TYPE_INT });
 		} catch (OperandException e) {
 			printError(e.getMessage(), ctx);
 			System.exit(-1);
@@ -306,7 +288,7 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 	@Override
 	public String visitIntegerFactorVariableName(@NotNull ToolParser.IntegerFactorVariableNameContext ctx) {
 		try {
-			return this.currentScope.getVarLoadInstruction(ctx.factor.getText()) + "\n";
+			return this.currentScope.getVarLoadInstruction(ctx.factor.getText());
 		} catch (UnknownNameException e) {
 			printError(e.getMessage(), ctx);
 			System.exit(-1);
@@ -316,7 +298,17 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 
 	@Override
 	public String visitIntegerFactor(@NotNull ToolParser.IntegerFactorContext ctx) {
-		return "ldc "+ctx.factor.getText()+"\n";
+		return "ldc " + ctx.factor.getText() + "\n";
+	}
+
+	@Override
+	public String visitIntegerFactorParenthesis(@NotNull ToolParser.IntegerFactorParenthesisContext ctx) {
+		return visit(ctx.factor);
+	}
+
+	@Override
+	public String visitIntegerFactorFunctionCall(@NotNull ToolParser.IntegerFactorFunctionCallContext ctx) {
+		return visit(ctx.factor);
 	}
 
 	@Override
@@ -364,7 +356,7 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 				}
 			}
 
-			definition += "ldc " + value + "\n";
+			definition += value + "\n";
 			try {
 				definition += currentScope.getVarStoreInstruction(ctx.variableName.getText());
 			} catch (UnknownNameException e) {
@@ -490,11 +482,6 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 	 * switch (result) { case "_true": result = "1"; break; default: result =
 	 * "0"; break; } return result; }
 	 */
-
-	@Override
-	public String visitIntegerFactorParenthesis(@NotNull ToolParser.IntegerFactorParenthesisContext ctx) {
-		return ctx.factor.getText();
-	}
 
 	@Override
 	public String visitStringFactorFunctionCall(@NotNull ToolParser.StringFactorFunctionCallContext ctx) {

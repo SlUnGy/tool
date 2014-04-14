@@ -79,8 +79,8 @@ public class Scope {
 	
 	public String getVarStoreInstruction(String pName) throws UnknownNameException{
 		final Variable var = this.getVar(pName);
-		if(this.isRoot()){
-			return "putstatic "+this.className+"/"+pName+" "+var.getType().getJasminType();
+		if(var.isGlobalVariable()){
+			return "putstatic "+this.className+"/"+pName+" "+var.getType().getJasminType()+System.lineSeparator();
 		}
 		else {
 			return var.getType().getStoreInstruction()+" "+var.getId();
@@ -90,7 +90,7 @@ public class Scope {
 	public String getVarLoadInstruction(String pName) throws UnknownNameException{
 		final Variable var = this.getVar(pName);
 		if(var.isGlobalVariable()){
-			return "getstatic "+this.className+"/"+pName+" "+var.getType().getJasminType();
+			return "getstatic "+this.className+"/"+pName+" "+var.getType().getJasminType()+System.lineSeparator();
 		}
 		else {
 			return var.getType().getLoadInstruction()+" "+var.getId();
