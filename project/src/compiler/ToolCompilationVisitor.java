@@ -269,12 +269,26 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 		return visitChildren(ctx);
 	}
 
-
 	@Override
 	public String visitIntegerSubstraction(@NotNull ToolParser.IntegerSubstractionContext ctx){
 		return visitChildren(ctx);
 	}
+	
+	@Override
+	public String visitIntegerProductFactor(@NotNull ToolParser.IntegerProductFactorContext ctx){
+		return visitChildren(ctx);
+	}
+	
+	@Override
+	public String visitIntegerMultiplication(@NotNull ToolParser.IntegerMultiplicationContext ctx){
+		return visitChildren(ctx);
+	}
 
+	@Override
+	public String visitIntegerDivision(@NotNull ToolParser.IntegerDivisionContext ctx){
+		return visitChildren(ctx);
+	}
+	
 	@Override
 	public String visitFunctionDataType(@NotNull ToolParser.FunctionDataTypeContext ctx) {
 		return visitChildren(ctx);
