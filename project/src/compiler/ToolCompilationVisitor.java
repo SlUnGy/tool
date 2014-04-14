@@ -49,7 +49,7 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 
 	@Override
 	public String visitStringFactorString(@NotNull ToolParser.StringFactorStringContext ctx) {
-		return ctx.factor.getText();
+		return ctx.factor.getText().substring(1, ctx.factor.getText().length()-1);
 	}
 
 	@Override
@@ -323,7 +323,11 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 
 	@Override
 	public String visitStringExpression(@NotNull ToolParser.StringExpressionContext ctx) {
-		return visitChildren(ctx);
+        String fullString = visit(ctx.left);
+        for (ToolParser.Str_factorContext subStrFactorContext : ctx.right) {
+            fullString+=visit(subStrFactorContext);
+        }
+        return fullString;
 	}
 
 	@Override
