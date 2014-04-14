@@ -38,6 +38,7 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 			{
 				put("return", "return");
 				put("sprich", "getstatic java/lang/System/out Ljava/io/PrintStream;" + "\n" + "invokevirtual java/io/PrintStream/println(Ljava/lang/String;)V");
+				put("toStr"	,"getstatic java/lang/Integer Ljava/lang/Integer;"+"\n"+"invokevirtual java/lang/Integer/toStr(Ljava/lang/Integer;)L");
 			}
 		};
 	}
@@ -143,7 +144,16 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 	@Override
 	public String visitFunctionCall(@NotNull ToolParser.FunctionCallContext ctx) {
 		if (reservedFunctions.containsKey(ctx.fn_name.getText())) {
-			return reservedFunctions.get(ctx.fn_name.getText()) + "\n";
+			
+			String functionCall = reservedFunctions.get(ctx.fn_name.getText()) + "\n";
+			String parameters = null;
+			
+			if (ctx.parameters != null) {
+				parameters = visit(ctx.parameters) + "\n";
+			}
+
+			return parameters + functionCall;
+			
 		} else {
 			String invocation = "invokevirtual " + this.applicationName + "/" + ctx.fn_name.getText();
 			Function called;
