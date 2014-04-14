@@ -352,7 +352,19 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 
 	@Override
 	public String visitBooleanFactorBoolean(@NotNull ToolParser.BooleanFactorBooleanContext ctx) {
-		return ctx.factor.getText();
+		String returnString = null;
+		
+		switch(ctx.factor.getText())
+		{
+			case "_true":
+				returnString = "0";
+			break;
+			case "_false":
+				returnString = "1";
+			break;
+		}
+		
+		return returnString;
 	}
 
 	@Override
