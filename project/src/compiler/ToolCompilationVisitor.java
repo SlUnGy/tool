@@ -352,7 +352,19 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 
 	@Override
 	public String visitBooleanFactorBoolean(@NotNull ToolParser.BooleanFactorBooleanContext ctx) {
-		return ctx.factor.getText();
+		String returnString = null;
+		
+		switch(ctx.factor.getText())
+		{
+			case "_true":
+				returnString = "0";
+			break;
+			case "_false":
+				returnString = "1";
+			break;
+		}
+		
+		return returnString;
 	}
 
 	@Override
@@ -362,7 +374,23 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 
 	@Override
 	public String visitDoWhile(@NotNull ToolParser.DoWhileContext ctx) {
-		return visitChildren(ctx);
+		final String cond = visit(ctx.condition);
+		final String safeBegin = LabelCounter.createSafeName("begin_code");
+
+		String code = "";
+		if (ctx.instructions != null) {
+			for (ToolParser.CodeContext instr : ctx.instructions) {
+				code += visit(instr);
+			}
+		}
+
+		String returnString = null;
+		returnString = safeBegin+":\n";
+		returnString += code;
+		returnString += cond;
+		returnString += "ifeq " + safeBegin + "\n";	
+		
+		return returnString;
 	}
 
 	@Override
@@ -440,11 +468,11 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 	public String visitFunctionCallParameters(@NotNull ToolParser.FunctionCallParametersContext ctx) {
 
 		// Split param string (name:type)
-		String param = visit(ctx.param);
+		String param = visit(ctx.param)+"\n";
 
 		if (ctx.remainder != null) {
 			for (ExprContext ec : ctx.remainder) {
-				param += "," + visit(ec);
+				param += visit(ec)+"\n";
 			}
 		}
 

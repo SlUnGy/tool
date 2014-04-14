@@ -80,20 +80,20 @@ public class Scope {
 	public String getVarStoreInstruction(String pName) throws UnknownNameException{
 		final Variable var = this.getVar(pName);
 		if(this.isRoot()){
-			return "putstatic "+this.className+"/"+pName+" "+var.getType().getJasminType();
+			return "putstatic "+this.className+"/"+pName+" "+var.getType().getJasminType()+"\n";
 		}
 		else {
-			return var.getType().getStoreInstruction()+" "+var.getId();
+			return var.getType().getStoreInstruction()+" "+var.getId()+"\n";
 		}
 	}
 	
 	public String getVarLoadInstruction(String pName) throws UnknownNameException{
 		final Variable var = this.getVar(pName);
 		if(var.isGlobalVariable()){
-			return "getstatic "+this.className+"/"+pName+" "+var.getType().getJasminType();
+			return "getstatic "+this.className+"/"+pName+" "+var.getType().getJasminType()+"\n";
 		}
 		else {
-			return var.getType().getLoadInstruction()+" "+var.getId();
+			return var.getType().getLoadInstruction()+" "+var.getId()+"\n";
 		}
 	}
 	
