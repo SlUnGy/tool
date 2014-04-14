@@ -32,9 +32,19 @@ expr: e=var_name #exprVariableName
 
 var_name: name=NAME #variableName;
 
-int_expr: left=product (operator+=('+' | '-') right+=int_expr )*#integerExpression;
+//int_expr: left=product (operator+=('+' | '-') right+=int_expr )*#integerExpression;
 
-product: left=int_factor (operator+=('*'|'/') right+=product )*#productCalc;
+int_expr: left=int_expr '+' right=product #integerAddition
+	| left=int_expr '-' right=product #integerSubstraction
+	| left=product #integerProduct
+	;
+
+//product: left=int_factor (operator+=('*'|'/') right+=product )*#productCalc;
+
+product: left=product '*' right=int_factor #integerMultiplication
+	| left=product '/' right=int_factor #integerDivision
+	| left=int_factor #integerProductFactor
+	;
 
 int_factor: L_PAREN factor=int_expr R_PAREN #integerFactorParenthesis
 	| factor=func_call #integerFactorFunctionCall
@@ -42,7 +52,18 @@ int_factor: L_PAREN factor=int_expr R_PAREN #integerFactorParenthesis
 	| factor=NUMBER #integerFactor
 	;
 	
-bool_expr: left=bool_factor (operator+=('<' | '>' | '<=' | '>=' | '==' | '!=' | '||' | '&&') right+= bool_expr )*#booleanExpression;
+//bool_expr: left=bool_factor (operator+=('<' | '>' | '<=' | '>=' | '==' | '!=' | '||' | '&&') right+= bool_expr )*#booleanExpression;
+
+bool_expr: left=bool_factor '<' right=bool_expr #booleanLower
+	| left=bool_factor '>' right=bool_expr #booleanGreater
+	| left=bool_factor '<=' right=bool_expr #booleanLE
+	| left=bool_factor '>=' right=bool_expr #booleanGE
+	| left=bool_factor '==' right=bool_expr #booleanEqual
+	| left=bool_factor '!=' right=bool_expr #booleanUnequal
+	| left=bool_factor '||' right=bool_expr #booleanOr
+	| left=bool_factor '&&' right=bool_expr #booleanAnd
+	| left=bool_factor #booleanFactor
+	;
 
 bool_factor: L_PAREN factor=bool_expr R_PAREN #booleanFactorParenthesis
 		| INVERT factor=bool_expr #booleanFactorInverted

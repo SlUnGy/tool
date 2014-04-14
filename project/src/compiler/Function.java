@@ -4,10 +4,10 @@ import java.util.LinkedList;
 
 
 public class Function {
-	String name;
-	Datatype returnType;
-	LinkedList<String> paramNames;
-	LinkedList<Datatype> paramTypes;
+	private String name;
+	private Datatype returnType;
+	private LinkedList<String> paramNames;
+	private LinkedList<Datatype> paramTypes;
 	
 	public Function()
 	{
@@ -22,6 +22,10 @@ public class Function {
 		this.returnType = type;
 		this.paramNames = pNames;
 		this.paramTypes = pTypes;
+	}
+	
+	public Datatype getReturnType(){
+		return this.returnType;
 	}
 	
 	public String getDescriptor(){
