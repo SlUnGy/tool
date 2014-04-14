@@ -62,7 +62,7 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 		try {
 			final String loadValue = visit(ctx.value);
 
-			return loadValue + "\n" + this.currentScope.getVarStoreInstruction(ctx.variableName.getText()) + "\n";
+			return "\n" + loadValue + "\n" + this.currentScope.getVarStoreInstruction(ctx.variableName.getText()) + "\n";
 		} catch (UnknownNameException e) {
 			printError(e.getMessage(), ctx);
 			System.exit(-1);
@@ -355,13 +355,15 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 					definition += ToolCompilationVisitor.seperator;
 				}
 			}
-
-			definition += value + "\n";
-			try {
-				definition += currentScope.getVarStoreInstruction(ctx.variableName.getText());
-			} catch (UnknownNameException e) {
-				printError(e.getMessage(), ctx);
-				System.exit(-1);
+			// if the variable doesn't get a value assigned we don't need to do store a value inside the jasmin code
+			if(value.length() > 0){
+				definition += value + "\n";
+				try {
+					definition += currentScope.getVarStoreInstruction(ctx.variableName.getText());
+				} catch (UnknownNameException e) {
+					printError(e.getMessage(), ctx);
+					System.exit(-1);
+				}
 			}
 		} catch (RedefinitionException e1) {
 			printError(e1.getMessage(), ctx);
