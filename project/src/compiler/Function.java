@@ -28,6 +28,11 @@ public class Function {
 		return this.returnType;
 	}
 	
+	public Datatype getParameterType(int index)
+	{
+		return paramTypes.get(index);
+	}
+	
 	public String getDescriptor(){
 		String descriptor = "(";
 		for(Datatype s : paramTypes){

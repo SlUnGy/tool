@@ -147,7 +147,7 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 			
 			String functionCall = reservedFunctions.get(ctx.fn_name.getText()) + "\n";
 			String parameters = null;
-			
+		
 			if (ctx.parameters != null) {
 				parameters = visit(ctx.parameters) + "\n";
 			}
@@ -437,7 +437,6 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 		if (ctx.remainder != null) {
 			for (ExprContext ec : ctx.remainder) {
 				param += "," + visit(ec);
-				// System.out.print("..."+visit(ec));
 			}
 		}
 
