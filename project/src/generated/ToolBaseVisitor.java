@@ -66,14 +66,6 @@ public class ToolBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements T
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitIntegerSubstraction(@NotNull ToolParser.IntegerSubstractionContext ctx) { return visitChildren(ctx); }
-
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation returns the result of calling
-	 * {@link #visitChildren} on {@code ctx}.</p>
-	 */
 	@Override public T visitFunctionCall(@NotNull ToolParser.FunctionCallContext ctx) { return visitChildren(ctx); }
 
 	/**
@@ -187,6 +179,14 @@ public class ToolBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements T
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
 	@Override public T visitFunctionDefinition(@NotNull ToolParser.FunctionDefinitionContext ctx) { return visitChildren(ctx); }
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.</p>
+	 */
+	@Override public T visitIntegerSubtraction(@NotNull ToolParser.IntegerSubtractionContext ctx) { return visitChildren(ctx); }
 
 	/**
 	 * {@inheritDoc}

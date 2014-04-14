@@ -946,6 +946,22 @@ public class ToolParser extends Parser {
 			super.copyFrom(ctx);
 		}
 	}
+	public static class IntegerSubtractionContext extends Int_exprContext {
+		public Int_exprContext left;
+		public ProductContext right;
+		public Int_exprContext int_expr() {
+			return getRuleContext(Int_exprContext.class,0);
+		}
+		public ProductContext product() {
+			return getRuleContext(ProductContext.class,0);
+		}
+		public IntegerSubtractionContext(Int_exprContext ctx) { copyFrom(ctx); }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof ToolVisitor ) return ((ToolVisitor<? extends T>)visitor).visitIntegerSubtraction(this);
+			else return visitor.visitChildren(this);
+		}
+	}
 	public static class IntegerProductContext extends Int_exprContext {
 		public ProductContext left;
 		public ProductContext product() {
@@ -971,22 +987,6 @@ public class ToolParser extends Parser {
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof ToolVisitor ) return ((ToolVisitor<? extends T>)visitor).visitIntegerAddition(this);
-			else return visitor.visitChildren(this);
-		}
-	}
-	public static class IntegerSubstractionContext extends Int_exprContext {
-		public Int_exprContext left;
-		public ProductContext right;
-		public Int_exprContext int_expr() {
-			return getRuleContext(Int_exprContext.class,0);
-		}
-		public ProductContext product() {
-			return getRuleContext(ProductContext.class,0);
-		}
-		public IntegerSubstractionContext(Int_exprContext ctx) { copyFrom(ctx); }
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof ToolVisitor ) return ((ToolVisitor<? extends T>)visitor).visitIntegerSubstraction(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -1038,13 +1038,13 @@ public class ToolParser extends Parser {
 
 					case 2:
 						{
-						_localctx = new IntegerSubstractionContext(new Int_exprContext(_parentctx, _parentState));
-						((IntegerSubstractionContext)_localctx).left = _prevctx;
+						_localctx = new IntegerSubtractionContext(new Int_exprContext(_parentctx, _parentState));
+						((IntegerSubtractionContext)_localctx).left = _prevctx;
 						pushNewRecursionContext(_localctx, _startState, RULE_int_expr);
 						setState(181);
 						if (!(precpred(_ctx, 2))) throw new FailedPredicateException(this, "precpred(_ctx, 2)");
 						setState(182); match(3);
-						setState(183); ((IntegerSubstractionContext)_localctx).right = product(0);
+						setState(183); ((IntegerSubtractionContext)_localctx).right = product(0);
 						}
 						break;
 					}

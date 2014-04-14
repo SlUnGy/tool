@@ -54,13 +54,6 @@ public interface ToolVisitor<T> extends ParseTreeVisitor<T> {
 	T visitBooleanGE(@NotNull ToolParser.BooleanGEContext ctx);
 
 	/**
-	 * Visit a parse tree produced by {@link ToolParser#integerSubstraction}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitIntegerSubstraction(@NotNull ToolParser.IntegerSubstractionContext ctx);
-
-	/**
 	 * Visit a parse tree produced by {@link ToolParser#functionCall}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -164,6 +157,13 @@ public interface ToolVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitFunctionDefinition(@NotNull ToolParser.FunctionDefinitionContext ctx);
+
+	/**
+	 * Visit a parse tree produced by {@link ToolParser#integerSubtraction}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitIntegerSubtraction(@NotNull ToolParser.IntegerSubtractionContext ctx);
 
 	/**
 	 * Visit a parse tree produced by {@link ToolParser#program}.

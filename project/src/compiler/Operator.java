@@ -139,7 +139,15 @@ public enum Operator {
 			instructions += safeEnd+":"+"\n";
 			return instructions;
 		}
-	};
+	},
+	OP_ADD(2,"addition","+"){
+		@Override
+		protected String doOperation(Datatype[] pOperands){
+			return "iadd"+"\n";
+		}
+	}
+	;
+	
 	
 	public class OperandException extends Exception {
 		private static final long serialVersionUID = 766177523204367548L;

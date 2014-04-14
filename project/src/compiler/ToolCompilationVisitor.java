@@ -270,7 +270,7 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 	}
 
 	@Override
-	public String visitIntegerSubstraction(@NotNull ToolParser.IntegerSubstractionContext ctx){
+	public String visitIntegerSubtraction(@NotNull ToolParser.IntegerSubtractionContext ctx){
 		return visitChildren(ctx);
 	}
 	

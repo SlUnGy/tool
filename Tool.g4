@@ -35,7 +35,7 @@ var_name: name=NAME #variableName;
 //int_expr: left=product (operator+=('+' | '-') right+=int_expr )*#integerExpression;
 
 int_expr: left=int_expr '+' right=product #integerAddition
-	| left=int_expr '-' right=product #integerSubstraction
+	| left=int_expr '-' right=product #integerSubtraction
 	| left=product #integerProduct
 	;
 
