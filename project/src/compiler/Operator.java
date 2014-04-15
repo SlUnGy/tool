@@ -3,16 +3,16 @@ package compiler;
 public enum Operator {
 	//adding another operator is done by adding it to this list
 	//TODO instead of ldc 0/1 use Datatype.TYPE_BOOLEAN.TRUE / FALSE or something equivalent
-	OP_NOT(1,"not","!") {
+	OP_NOT("not","!") {
 		@Override
-		protected String doOperation(Datatype[] pOperands) {
+		protected String doOperation() {
 			// TODO Auto-generated method stub
 			return null;
 		}
 	},
-	OP_OR(2,"or","||") {
+	OP_OR("or","||") {
 		@Override
-		protected String doOperation(Datatype[] pOperands) {
+		protected String doOperation() {
 			final String safeSuccess = LabelCounter.createSafeName("op_success");
 			final String safeEnd = LabelCounter.createSafeName("op_end");
 			
@@ -27,9 +27,9 @@ public enum Operator {
 			return instructions;
 		}
 	},
-	OP_AND(2,"and","&&") {
+	OP_AND("and","&&") {
 		@Override
-		protected String doOperation(Datatype[] pOperands) {		
+		protected String doOperation() {		
 			final String safeSuccess = LabelCounter.createSafeName("op_success");
 			final String safeEnd = LabelCounter.createSafeName("op_end");
 			
@@ -44,9 +44,9 @@ public enum Operator {
 			return instructions;
 		}
 	},
-	OP_LE(2,"lower equal","<=") {
+	OP_LE("lower equal","<=") {
 		@Override
-		protected String doOperation(Datatype[] pOperands) {
+		protected String doOperation() {
 			final String safeSuccess = LabelCounter.createSafeName("op_success");
 			final String safeEnd = LabelCounter.createSafeName("op_end");
 			
@@ -60,9 +60,9 @@ public enum Operator {
 			return instructions;
 		}
 	},
-	OP_LT(2,"lower","<") {
+	OP_LT("lower","<") {
 		@Override
-		protected String doOperation(Datatype[] pOperands) {
+		protected String doOperation() {
 			final String safeSuccess = LabelCounter.createSafeName("op_success");
 			final String safeEnd = LabelCounter.createSafeName("op_end");
 			
@@ -76,9 +76,9 @@ public enum Operator {
 			return instructions;
 		}
 	},
-	OP_GE(2,"greater equal",">=") {
+	OP_GE("greater equal",">=") {
 		@Override
-		protected String doOperation(Datatype[] pOperands) {
+		protected String doOperation() {
 			final String safeSuccess = LabelCounter.createSafeName("op_success");
 			final String safeEnd = LabelCounter.createSafeName("op_end");
 			
@@ -92,9 +92,9 @@ public enum Operator {
 			return instructions;
 		}
 	},
-	OP_GT(2,"greater",">") {
+	OP_GT("greater",">") {
 		@Override
-		protected String doOperation(Datatype[] pOperands) {
+		protected String doOperation() {
 			final String safeSuccess = LabelCounter.createSafeName("op_success");
 			final String safeEnd = LabelCounter.createSafeName("op_end");
 			
@@ -108,9 +108,9 @@ public enum Operator {
 			return instructions;
 		}
 	},
-	OP_EQ(2,"equal","==") {
+	OP_EQ("equal","==") {
 		@Override
-		protected String doOperation(Datatype[] pOperands) {
+		protected String doOperation() {
 			final String safeSuccess = LabelCounter.createSafeName("op_success");
 			final String safeEnd = LabelCounter.createSafeName("op_end");
 			
@@ -124,9 +124,9 @@ public enum Operator {
 			return instructions;
 		}
 	},
-	OP_NEQ(2,"notequal","!=") {
+	OP_NEQ("notequal","!=") {
 		@Override
-		protected String doOperation(Datatype[] pOperands) {
+		protected String doOperation() {
 			final String safeSuccess = LabelCounter.createSafeName("op_success");
 			final String safeEnd = LabelCounter.createSafeName("op_end");
 			
@@ -140,27 +140,27 @@ public enum Operator {
 			return instructions;
 		}
 	},
-	OP_ADD(2,"addition","+"){
+	OP_ADD("addition","+"){
 		@Override
-		protected String doOperation(Datatype[] pOperands){
+		protected String doOperation(){
 			return "iadd"+"\n";
 		}
 	},
-	OP_SUB(2,"subtraction","-"){
+	OP_SUB("subtraction","-"){
 		@Override
-		protected String doOperation(Datatype[] pOperands){
+		protected String doOperation(){
 			return "isub"+"\n";
 		}
 	},
-	OP_MUL(2,"multiplication","*"){
+	OP_MUL("multiplication","*"){
 		@Override
-		protected String doOperation(Datatype[] pOperands){
+		protected String doOperation(){
 			return "imul"+"\n";
 		}
 	},
-	OP_DIV(2,"division","/"){
+	OP_DIV("division","/"){
 		@Override
-		protected String doOperation(Datatype[] pOperands){
+		protected String doOperation(){
 			return "idiv"+"\n";
 		}
 	}
@@ -176,22 +176,15 @@ public enum Operator {
 	}
 	
 	
-	//maybe adding of the following could be useful for compilation:
-	//returntype as a datatype
-	//datatypes of the operands
-	//this would make it possible to cast operands/return values to the needed types
-	private int arity;
 	private String name;
 	private String toolOp;
 	
 	private Operator(){
-		this.arity = 0;
 		this.name = "";
 		this.toolOp ="";
 	}
 	
-	private Operator(int pArity, String pName, String pToolOp ){
-		this.arity = pArity;
+	private Operator(String pName, String pToolOp ){
 		this.name = pName;
 		this.toolOp = pToolOp;
 	}
@@ -211,16 +204,9 @@ public enum Operator {
 		return op;
 	}
 	
-	//pOperands can be used to convert operands to matching datatypes
-	public String compileOperator(Datatype[] pOperands) throws OperandException{
-		if(pOperands.length >= this.arity){
-			return this.doOperation(pOperands);
-		}
-		else {
-			throw new OperandException("wrong amount of operands for: "+this.name+", needed: "+this.arity+", found: "+pOperands.length);
-		}
+	public String compileOperator() throws OperandException{
+		return this.doOperation();
 	}
 
-	protected abstract String doOperation(Datatype[] pOperands);
-	
+	protected abstract String doOperation();
 }
