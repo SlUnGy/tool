@@ -1,12 +1,10 @@
 package compiler;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Map;
 
 import org.antlr.v4.runtime.ParserRuleContext;
-import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.TokenStream;
 import org.antlr.v4.runtime.misc.NotNull;
 
@@ -17,7 +15,6 @@ import generated.*;
 import generated.ToolParser.CodeContext;
 import generated.ToolParser.ExprContext;
 import generated.ToolParser.ParameterContext;
-import generated.ToolParser.ProductContext;
 
 public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 
@@ -45,11 +42,6 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 
 	private void printError(String pError, ParserRuleContext ctx) {
 		System.err.printf("ERROR (line %d): %s" + System.lineSeparator(), tokenStream.get(ctx.getSourceInterval().a).getLine(), pError);
-	}
-
-	@Override
-	public String visitStringFactorString(@NotNull ToolParser.StringFactorStringContext ctx) {
-		return ctx.factor.getText().substring(1, ctx.factor.getText().length()-1);
 	}
 
 	@Override
@@ -98,11 +90,6 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 	@Override
 	public String visitCodeVariableDefinition(@NotNull ToolParser.CodeVariableDefinitionContext ctx) {
 		return visit(ctx.instruction);
-	}
-
-	@Override
-	public String visitStringFactorParenthesis(@NotNull ToolParser.StringFactorParenthesisContext ctx) {
-		return visit(ctx.factor);
 	}
 
 	@Override
@@ -331,6 +318,21 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 	}
 
 	@Override
+	public String visitStringFactorFunctionCall(@NotNull ToolParser.StringFactorFunctionCallContext ctx) {
+		return visit(ctx.factor);
+	}
+
+	@Override
+	public String visitStringFactorParenthesis(@NotNull ToolParser.StringFactorParenthesisContext ctx) {
+		return visit(ctx.factor);
+	}
+
+	@Override
+	public String visitStringFactorString(@NotNull ToolParser.StringFactorStringContext ctx) {
+		return ctx.factor.getText().substring(1, ctx.factor.getText().length()-1);
+	}
+
+	@Override
 	protected String aggregateResult(String aggregate, String nextResult) {
 		String result = "";
 		if (aggregate != null) {
@@ -503,23 +505,6 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 		}
 
 		return param;
-	}
-
-	/*
-	 * @Override public String visitBooleanExpression(@NotNull
-	 * ToolParser.BooleanExpressionContext ctx) { String left = visit(ctx.left);
-	 * String result = left; if (ctx.operator != null && ctx.right != null) {
-	 * Iterator<Token> op = ctx.operator.iterator(); for
-	 * (ToolParser.Bool_exprContext expr : ctx.right) { result =
-	 * Datatype.compare(result, op.next().getText(), visit(expr)); } }
-	 * 
-	 * switch (result) { case "_true": result = "1"; break; default: result =
-	 * "0"; break; } return result; }
-	 */
-
-	@Override
-	public String visitStringFactorFunctionCall(@NotNull ToolParser.StringFactorFunctionCallContext ctx) {
-		return visit(ctx.factor);
 	}
 
 	@Override
