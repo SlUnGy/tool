@@ -122,7 +122,7 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 		complete += safeBegin + ":" + "\n";
 		complete += cond + "\n";
 		try {
-			complete += Operator.OP_EQ.compileOperator(new Datatype[] { Datatype.TYPE_BOOL, Datatype.TYPE_BOOL }) + "\n";
+			complete += Operator.OP_EQ.compileOperator() + "\n";
 		} catch (OperandException e) {
 			printError(e.getMessage(), ctx);
 			System.exit(-1);
@@ -239,7 +239,7 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 	@Override
 	public String visitIntegerAddition(@NotNull ToolParser.IntegerAdditionContext ctx) {
 		try {
-			return visit(ctx.left) + "\n" + visit(ctx.right) + "\n" + Operator.OP_ADD.compileOperator(new Datatype[] { Datatype.TYPE_INT, Datatype.TYPE_INT });
+			return visit(ctx.left) + "\n" + visit(ctx.right) + "\n" + Operator.OP_ADD.compileOperator();
 		} catch (OperandException e) {
 			printError(e.getMessage(), ctx);
 			System.exit(-1);
@@ -250,7 +250,7 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 	@Override
 	public String visitIntegerSubtraction(@NotNull ToolParser.IntegerSubtractionContext ctx) {
 		try {
-			return visit(ctx.left) + "\n" + visit(ctx.right) + "\n" + Operator.OP_SUB.compileOperator(new Datatype[] { Datatype.TYPE_INT, Datatype.TYPE_INT });
+			return visit(ctx.left) + "\n" + visit(ctx.right) + "\n" + Operator.OP_SUB.compileOperator();
 		} catch (OperandException e) {
 			printError(e.getMessage(), ctx);
 			System.exit(-1);
@@ -266,7 +266,7 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 	@Override
 	public String visitIntegerMultiplication(@NotNull ToolParser.IntegerMultiplicationContext ctx) {
 		try {
-			return visit(ctx.left) + "\n" + visit(ctx.right) + "\n" + Operator.OP_MUL.compileOperator(new Datatype[] { Datatype.TYPE_INT, Datatype.TYPE_INT });
+			return visit(ctx.left) + "\n" + visit(ctx.right) + "\n" + Operator.OP_MUL.compileOperator();
 		} catch (OperandException e) {
 			printError(e.getMessage(), ctx);
 			System.exit(-1);
@@ -277,7 +277,7 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 	@Override
 	public String visitIntegerDivision(@NotNull ToolParser.IntegerDivisionContext ctx) {
 		try {
-			return visit(ctx.left) + "\n" + visit(ctx.right) + "\n" + Operator.OP_DIV.compileOperator(new Datatype[] { Datatype.TYPE_INT, Datatype.TYPE_INT });
+			return visit(ctx.left) + "\n" + visit(ctx.right) + "\n" + Operator.OP_DIV.compileOperator();
 		} catch (OperandException e) {
 			printError(e.getMessage(), ctx);
 			System.exit(-1);
