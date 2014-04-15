@@ -73,7 +73,7 @@ bool_factor: L_PAREN factor=bool_expr R_PAREN #booleanFactorParenthesis
 		| factor=var_name #booleanFactorVariableName
 		| factor=BOOLEAN #booleanFactorBoolean;
 
-str_expr: left=str_factor ( CAT right+=str_expr)* #stringExpression;
+str_expr: left=str_factor ( CAT right+=str_factor)* #stringExpression;
 
 str_factor: L_PAREN factor=str_expr R_PAREN #stringFactorParenthesis
 		| factor=func_call #stringFactorFunctionCall

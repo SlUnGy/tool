@@ -1756,19 +1756,16 @@ public class ToolParser extends Parser {
 	}
 	public static class StringExpressionContext extends Str_exprContext {
 		public Str_factorContext left;
-		public Str_exprContext str_expr;
-		public List<Str_exprContext> right = new ArrayList<Str_exprContext>();
-		public Str_exprContext str_expr(int i) {
-			return getRuleContext(Str_exprContext.class,i);
+		public Str_factorContext str_factor;
+		public List<Str_factorContext> right = new ArrayList<Str_factorContext>();
+		public Str_factorContext str_factor(int i) {
+			return getRuleContext(Str_factorContext.class,i);
 		}
-		public Str_factorContext str_factor() {
-			return getRuleContext(Str_factorContext.class,0);
+		public List<Str_factorContext> str_factor() {
+			return getRuleContexts(Str_factorContext.class);
 		}
 		public TerminalNode CAT(int i) {
 			return getToken(ToolParser.CAT, i);
-		}
-		public List<Str_exprContext> str_expr() {
-			return getRuleContexts(Str_exprContext.class);
 		}
 		public List<TerminalNode> CAT() { return getTokens(ToolParser.CAT); }
 		public StringExpressionContext(Str_exprContext ctx) { copyFrom(ctx); }
@@ -1782,28 +1779,26 @@ public class ToolParser extends Parser {
 	public final Str_exprContext str_expr() throws RecognitionException {
 		Str_exprContext _localctx = new Str_exprContext(_ctx, getState());
 		enterRule(_localctx, 28, RULE_str_expr);
+		int _la;
 		try {
-			int _alt;
 			_localctx = new StringExpressionContext(_localctx);
 			enterOuterAlt(_localctx, 1);
 			{
 			setState(260); ((StringExpressionContext)_localctx).left = str_factor();
 			setState(265);
 			_errHandler.sync(this);
-			_alt = getInterpreter().adaptivePredict(_input,21,_ctx);
-			while ( _alt!=2 && _alt!=-1 ) {
-				if ( _alt==1 ) {
-					{
-					{
-					setState(261); match(CAT);
-					setState(262); ((StringExpressionContext)_localctx).str_expr = str_expr();
-					((StringExpressionContext)_localctx).right.add(((StringExpressionContext)_localctx).str_expr);
-					}
-					} 
+			_la = _input.LA(1);
+			while (_la==CAT) {
+				{
+				{
+				setState(261); match(CAT);
+				setState(262); ((StringExpressionContext)_localctx).str_factor = str_factor();
+				((StringExpressionContext)_localctx).right.add(((StringExpressionContext)_localctx).str_factor);
+				}
 				}
 				setState(267);
 				_errHandler.sync(this);
-				_alt = getInterpreter().adaptivePredict(_input,21,_ctx);
+				_la = _input.LA(1);
 			}
 			}
 		}
@@ -2556,8 +2551,8 @@ public class ToolParser extends Parser {
 		"\n\2\u0103\u0105\7$\2\2\u0104\u00f9\3\2\2\2\u0104\u00fd\3\2\2\2\u0104"+
 		"\u00ff\3\2\2\2\u0104\u0100\3\2\2\2\u0104\u0101\3\2\2\2\u0104\u0102\3\2"+
 		"\2\2\u0104\u0103\3\2\2\2\u0105\35\3\2\2\2\u0106\u010b\5 \21\2\u0107\u0108"+
-		"\7\25\2\2\u0108\u010a\5\36\20\2\u0109\u0107\3\2\2\2\u010a\u010d\3\2\2"+
-		"\2\u010b\u0109\3\2\2\2\u010b\u010c\3\2\2\2\u010c\37\3\2\2\2\u010d\u010b"+
+		"\7\25\2\2\u0108\u010a\5 \21\2\u0109\u0107\3\2\2\2\u010a\u010d\3\2\2\2"+
+		"\u010b\u0109\3\2\2\2\u010b\u010c\3\2\2\2\u010c\37\3\2\2\2\u010d\u010b"+
 		"\3\2\2\2\u010e\u010f\7\16\2\2\u010f\u0110\5\36\20\2\u0110\u0111\7\17\2"+
 		"\2\u0111\u0115\3\2\2\2\u0112\u0115\5,\27\2\u0113\u0115\7#\2\2\u0114\u010e"+
 		"\3\2\2\2\u0114\u0112\3\2\2\2\u0114\u0113\3\2\2\2\u0115!\3\2\2\2\u0116"+
