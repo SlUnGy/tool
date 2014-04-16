@@ -8,7 +8,6 @@ import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.TokenStream;
 import org.antlr.v4.runtime.misc.NotNull;
 
-import compiler.Operator.OperandException;
 import compiler.Scope.RedefinitionException;
 import compiler.Scope.UnknownNameException;
 import generated.*;
@@ -108,12 +107,7 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 		String complete = "";
 		complete += safeBegin + ":" + "\n";
 		complete += cond + "\n";
-		try {
-			complete += Operator.OP_EQ.compileOperator() + "\n";
-		} catch (OperandException e) {
-			printError(e.getMessage(), ctx);
-			System.exit(-1);
-		}
+		complete += Operator.OP_EQ.compileOperator() + "\n";
 
 		complete += "ifeq " + safeEnd + "\n";
 		complete += code;
@@ -225,24 +219,12 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 
 	@Override
 	public String visitIntegerAddition(@NotNull ToolParser.IntegerAdditionContext ctx) {
-		try {
-			return visit(ctx.left) + "\n" + visit(ctx.right) + "\n" + Operator.OP_ADD.compileOperator();
-		} catch (OperandException e) {
-			printError(e.getMessage(), ctx);
-			System.exit(-1);
-			return "";
-		}
+		return visit(ctx.left) + "\n" + visit(ctx.right) + "\n" + Operator.OP_ADD.compileOperator();
 	}
 
 	@Override
 	public String visitIntegerSubtraction(@NotNull ToolParser.IntegerSubtractionContext ctx) {
-		try {
-			return visit(ctx.left) + "\n" + visit(ctx.right) + "\n" + Operator.OP_SUB.compileOperator();
-		} catch (OperandException e) {
-			printError(e.getMessage(), ctx);
-			System.exit(-1);
-			return "";
-		}
+		return visit(ctx.left) + "\n" + visit(ctx.right) + "\n" + Operator.OP_SUB.compileOperator();
 	}
 
 	@Override
@@ -252,24 +234,12 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 
 	@Override
 	public String visitIntegerMultiplication(@NotNull ToolParser.IntegerMultiplicationContext ctx) {
-		try {
-			return visit(ctx.left) + "\n" + visit(ctx.right) + "\n" + Operator.OP_MUL.compileOperator();
-		} catch (OperandException e) {
-			printError(e.getMessage(), ctx);
-			System.exit(-1);
-			return "";
-		}
+		return visit(ctx.left) + "\n" + visit(ctx.right) + "\n" + Operator.OP_MUL.compileOperator();
 	}
 
 	@Override
 	public String visitIntegerDivision(@NotNull ToolParser.IntegerDivisionContext ctx) {
-		try {
-			return visit(ctx.left) + "\n" + visit(ctx.right) + "\n" + Operator.OP_DIV.compileOperator();
-		} catch (OperandException e) {
-			printError(e.getMessage(), ctx);
-			System.exit(-1);
-			return "";
-		}
+		return visit(ctx.left) + "\n" + visit(ctx.right) + "\n" + Operator.OP_DIV.compileOperator();
 	}
 
 	@Override
@@ -312,7 +282,7 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 	public String visitStringExpression(@NotNull ToolParser.StringExpressionContext ctx) {
         String fullString = visit(ctx.left);
         for (ToolParser.Str_factorContext subStrFactorContext : ctx.right) {
-            fullString+=visit(subStrFactorContext);
+            fullString += visit(subStrFactorContext) + Operator.OP_CAT.compileOperator();
         }
         return fullString;
 	}
@@ -329,7 +299,7 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 
 	@Override
 	public String visitStringFactorString(@NotNull ToolParser.StringFactorStringContext ctx) {
-		return ctx.factor.getText().substring(1, ctx.factor.getText().length()-1);
+		return "ldc "+ctx.factor.getText()+"\n";
 	}
 
 	@Override

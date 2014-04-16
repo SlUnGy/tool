@@ -172,14 +172,6 @@ public enum Operator {
 		}
 	};
 
-	public class OperandException extends Exception {
-		private static final long serialVersionUID = 766177523204367548L;
-
-		public OperandException(String pMsg) {
-			super(pMsg);
-		}
-	}
-
 	private String name;
 	private String toolOp;
 
@@ -208,7 +200,7 @@ public enum Operator {
 		return op;
 	}
 
-	public String compileOperator() throws OperandException {
+	public String compileOperator(){
 		return this.doOperation();
 	}
 
