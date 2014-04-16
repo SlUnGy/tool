@@ -50,6 +50,14 @@ public class ToolBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements T
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
+	@Override public T visitStringFactorVariableName(@NotNull ToolParser.StringFactorVariableNameContext ctx) { return visitChildren(ctx); }
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.</p>
+	 */
 	@Override public T visitIntegerMultiplication(@NotNull ToolParser.IntegerMultiplicationContext ctx) { return visitChildren(ctx); }
 
 	/**
@@ -354,7 +362,7 @@ public class ToolBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements T
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitElseIf(@NotNull ToolParser.ElseIfContext ctx) { return visitChildren(ctx); }
+	@Override public T visitVariableDefinition(@NotNull ToolParser.VariableDefinitionContext ctx) { return visitChildren(ctx); }
 
 	/**
 	 * {@inheritDoc}
@@ -362,7 +370,7 @@ public class ToolBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements T
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitVariableDefinition(@NotNull ToolParser.VariableDefinitionContext ctx) { return visitChildren(ctx); }
+	@Override public T visitElseIf(@NotNull ToolParser.ElseIfContext ctx) { return visitChildren(ctx); }
 
 	/**
 	 * {@inheritDoc}
