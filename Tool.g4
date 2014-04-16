@@ -77,6 +77,7 @@ str_expr: left=str_factor ( CAT right+=str_factor)* #stringExpression;
 
 str_factor: L_PAREN factor=str_expr R_PAREN #stringFactorParenthesis
 		| factor=func_call #stringFactorFunctionCall
+		| factor=var_name #stringFactorVariableName
 		| factor=STRING #stringFactorString;
 
 var_def: type=var_data_type  variableName=NAME (ASSIGN_TO value=expr)? #variableDefinition; 

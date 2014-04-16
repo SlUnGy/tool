@@ -280,9 +280,9 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 
 	@Override
 	public String visitStringExpression(@NotNull ToolParser.StringExpressionContext ctx) {
-        String fullString = visit(ctx.left);
+        String fullString = visit(ctx.left)+System.lineSeparator();
         for (ToolParser.Str_factorContext subStrFactorContext : ctx.right) {
-            fullString += visit(subStrFactorContext) + Operator.OP_CAT.compileOperator();
+            fullString += visit(subStrFactorContext) + Operator.OP_CAT.compileOperator()+System.lineSeparator();
         }
         return fullString;
 	}
@@ -290,6 +290,17 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 	@Override
 	public String visitStringFactorFunctionCall(@NotNull ToolParser.StringFactorFunctionCallContext ctx) {
 		return visit(ctx.factor);
+	}
+	
+	@Override
+	public String visitStringFactorVariableName(@NotNull ToolParser.StringFactorVariableNameContext ctx){
+		try {
+			return this.currentScope.getVarLoadInstruction(visit(ctx.factor));
+		} catch (UnknownNameException e) {
+			printError(e.getMessage(), ctx);
+			System.exit(-1);
+			return "";
+		}
 	}
 
 	@Override

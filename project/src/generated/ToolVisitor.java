@@ -40,6 +40,13 @@ public interface ToolVisitor<T> extends ParseTreeVisitor<T> {
 	T visitVariableName(@NotNull ToolParser.VariableNameContext ctx);
 
 	/**
+	 * Visit a parse tree produced by {@link ToolParser#stringFactorVariableName}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitStringFactorVariableName(@NotNull ToolParser.StringFactorVariableNameContext ctx);
+
+	/**
 	 * Visit a parse tree produced by {@link ToolParser#integerMultiplication}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -306,18 +313,18 @@ public interface ToolVisitor<T> extends ParseTreeVisitor<T> {
 	T visitIntegerDivision(@NotNull ToolParser.IntegerDivisionContext ctx);
 
 	/**
-	 * Visit a parse tree produced by {@link ToolParser#elseIf}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitElseIf(@NotNull ToolParser.ElseIfContext ctx);
-
-	/**
 	 * Visit a parse tree produced by {@link ToolParser#variableDefinition}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitVariableDefinition(@NotNull ToolParser.VariableDefinitionContext ctx);
+
+	/**
+	 * Visit a parse tree produced by {@link ToolParser#elseIf}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitElseIf(@NotNull ToolParser.ElseIfContext ctx);
 
 	/**
 	 * Visit a parse tree produced by {@link ToolParser#parameterDefinition}.
