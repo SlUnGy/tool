@@ -19,12 +19,12 @@ public enum Operator {
 
 			String instructions = "";
 			instructions += "ior"; // Bitweise and of two integers on the stack
-			instructions += "ifgt " + safeSuccess + "\n"; // Result > 0
-			instructions += "ldc 0" + "\n";
-			instructions += "goto " + safeEnd + "\n";
-			instructions += safeSuccess + ":" + "\n";
-			instructions += "ldc 1" + "\n";
-			instructions += safeEnd + ":" + "\n";
+			instructions += "ifgt " + safeSuccess + System.lineSeparator(); // Result > 0
+			instructions += "ldc 0" + System.lineSeparator();
+			instructions += "goto " + safeEnd + System.lineSeparator();
+			instructions += safeSuccess + ":" + System.lineSeparator();
+			instructions += "ldc 1" + System.lineSeparator();
+			instructions += safeEnd + ":" + System.lineSeparator();
 			return instructions;
 		}
 	},
@@ -36,12 +36,12 @@ public enum Operator {
 
 			String instructions = "";
 			instructions += "iand"; // Bitweise and of two integers on the stack
-			instructions += "ifgt " + safeSuccess + "\n"; // Result > 0
-			instructions += "ldc 0" + "\n";
-			instructions += "goto " + safeEnd + "\n";
-			instructions += safeSuccess + ":" + "\n";
-			instructions += "ldc 1" + "\n";
-			instructions += safeEnd + ":" + "\n";
+			instructions += "ifgt " + safeSuccess + System.lineSeparator(); // Result > 0
+			instructions += "ldc 0" + System.lineSeparator();
+			instructions += "goto " + safeEnd + System.lineSeparator();
+			instructions += safeSuccess + ":" + System.lineSeparator();
+			instructions += "ldc 1" + System.lineSeparator();
+			instructions += safeEnd + ":" + System.lineSeparator();
 			return instructions;
 		}
 	},
@@ -52,12 +52,12 @@ public enum Operator {
 			final String safeEnd = LabelCounter.createSafeName("op_end");
 
 			String instructions = "";
-			instructions += "if_icmple " + safeSuccess + "\n";
-			instructions += "ldc 0" + "\n";
-			instructions += "goto " + safeEnd + "\n";
-			instructions += safeSuccess + ":" + "\n";
-			instructions += "ldc 1" + "\n";
-			instructions += safeEnd + ":" + "\n";
+			instructions += "if_icmple " + safeSuccess + System.lineSeparator();
+			instructions += "ldc 0" + System.lineSeparator();
+			instructions += "goto " + safeEnd + System.lineSeparator();
+			instructions += safeSuccess + ":" + System.lineSeparator();
+			instructions += "ldc 1" + System.lineSeparator();
+			instructions += safeEnd + ":" + System.lineSeparator();
 			return instructions;
 		}
 	},
@@ -68,12 +68,12 @@ public enum Operator {
 			final String safeEnd = LabelCounter.createSafeName("op_end");
 
 			String instructions = "";
-			instructions += "if_icmplt " + safeSuccess + "\n";
-			instructions += "ldc 0" + "\n";
-			instructions += "goto " + safeEnd + "\n";
-			instructions += safeSuccess + ":" + "\n";
-			instructions += "ldc 1" + "\n";
-			instructions += safeEnd + ":" + "\n";
+			instructions += "if_icmplt " + safeSuccess + System.lineSeparator();
+			instructions += "ldc 0" + System.lineSeparator();
+			instructions += "goto " + safeEnd + System.lineSeparator();
+			instructions += safeSuccess + ":" + System.lineSeparator();
+			instructions += "ldc 1" + System.lineSeparator();
+			instructions += safeEnd + ":" + System.lineSeparator();
 			return instructions;
 		}
 	},
@@ -84,12 +84,12 @@ public enum Operator {
 			final String safeEnd = LabelCounter.createSafeName("op_end");
 
 			String instructions = "";
-			instructions += "if_icmpge " + safeSuccess + "\n";
-			instructions += "ldc 0" + "\n";
-			instructions += "goto " + safeEnd + "\n";
-			instructions += safeSuccess + ":" + "\n";
-			instructions += "ldc 1" + "\n";
-			instructions += safeEnd + ":" + "\n";
+			instructions += "if_icmpge " + safeSuccess + System.lineSeparator();
+			instructions += "ldc 0" + System.lineSeparator();
+			instructions += "goto " + safeEnd + System.lineSeparator();
+			instructions += safeSuccess + ":" + System.lineSeparator();
+			instructions += "ldc 1" + System.lineSeparator();
+			instructions += safeEnd + ":" + System.lineSeparator();
 			return instructions;
 		}
 	},
@@ -100,12 +100,12 @@ public enum Operator {
 			final String safeEnd = LabelCounter.createSafeName("op_end");
 
 			String instructions = "";
-			instructions += "if_icmpgt " + safeSuccess + "\n";
-			instructions += "ldc 0" + "\n";
-			instructions += "goto " + safeEnd + "\n";
-			instructions += safeSuccess + ":" + "\n";
-			instructions += "ldc 1" + "\n";
-			instructions += safeEnd + ":" + "\n";
+			instructions += "if_icmpgt " + safeSuccess + System.lineSeparator();
+			instructions += "ldc 0" + System.lineSeparator();
+			instructions += "goto " + safeEnd + System.lineSeparator();
+			instructions += safeSuccess + ":" + System.lineSeparator();
+			instructions += "ldc 1" + System.lineSeparator();
+			instructions += safeEnd + ":" + System.lineSeparator();
 			return instructions;
 		}
 	},
@@ -116,12 +116,12 @@ public enum Operator {
 			final String safeEnd = LabelCounter.createSafeName("op_end");
 
 			String instructions = "";
-			instructions += "if_icmpeq " + safeSuccess + "\n";
-			instructions += "ldc 0" + "\n";
-			instructions += "goto " + safeEnd + "\n";
-			instructions += safeSuccess + ":" + "\n";
-			instructions += "ldc 1" + "\n";
-			instructions += safeEnd + ":" + "\n";
+			instructions += "if_icmpeq " + safeSuccess + System.lineSeparator();
+			instructions += "ldc 0" + System.lineSeparator();
+			instructions += "goto " + safeEnd + System.lineSeparator();
+			instructions += safeSuccess + ":" + System.lineSeparator();
+			instructions += "ldc 1" + System.lineSeparator();
+			instructions += safeEnd + ":" + System.lineSeparator();
 			return instructions;
 		}
 	},
@@ -132,43 +132,43 @@ public enum Operator {
 			final String safeEnd = LabelCounter.createSafeName("op_end");
 
 			String instructions = "";
-			instructions += "if_icmpneq " + safeSuccess + "\n";
-			instructions += "ldc 0" + "\n";
-			instructions += "goto " + safeEnd + "\n";
-			instructions += safeSuccess + ":" + "\n";
-			instructions += "ldc 1" + "\n";
-			instructions += safeEnd + ":" + "\n";
+			instructions += "if_icmpneq " + safeSuccess + System.lineSeparator();
+			instructions += "ldc 0" + System.lineSeparator();
+			instructions += "goto " + safeEnd + System.lineSeparator();
+			instructions += safeSuccess + ":" + System.lineSeparator();
+			instructions += "ldc 1" + System.lineSeparator();
+			instructions += safeEnd + ":" + System.lineSeparator();
 			return instructions;
 		}
 	},
 	OP_ADD("addition", "+") {
 		@Override
 		protected String doOperation() {
-			return "iadd" + "\n";
+			return "iadd" + System.lineSeparator();
 		}
 	},
 	OP_SUB("subtraction", "-") {
 		@Override
 		protected String doOperation() {
-			return "isub" + "\n";
+			return "isub" + System.lineSeparator();
 		}
 	},
 	OP_MUL("multiplication", "*") {
 		@Override
 		protected String doOperation() {
-			return "imul" + "\n";
+			return "imul" + System.lineSeparator();
 		}
 	},
 	OP_DIV("division", "/") {
 		@Override
 		protected String doOperation() {
-			return "idiv" + "\n";
+			return "idiv" + System.lineSeparator();
 		}
 	},
 	OP_CAT("concatenation", "+") {
 		@Override
 		protected String doOperation() {
-			return "invokevirtual java/lang/String/concat(Ljava/lang/String;)" + "Ljava/lang/String;" + "\n";
+			return "invokevirtual java/lang/String/concat(Ljava/lang/String;)" + "Ljava/lang/String;" + System.lineSeparator();
 		}
 	};
 
