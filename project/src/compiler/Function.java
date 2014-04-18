@@ -41,10 +41,11 @@ public class Function {
 		return descriptor+")"+returnType.getJasminType();
 	}
 	
-	public String createFunctionStatement(String code, int numberLocalVars)
+	public String createFunctionStatement(String code, int numberLocalVars, int stackSize)
 	{
 		String returnString = ".method "+ this.name + this.getDescriptor()+System.lineSeparator() ;
 		returnString += ".limit locals "+numberLocalVars + "\n";
+		returnString += ".limit stack "+stackSize + "\n";
 		returnString += code;
 		returnString+= ".end method"+System.lineSeparator() ;
 		return returnString;

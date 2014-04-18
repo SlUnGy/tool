@@ -20,6 +20,7 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 	private TokenStream tokenStream;
 	private String applicationName;
 	private Scope currentScope;
+	private Stack currentStack;
 	private Map<String, String> reservedFunctions;
 
 	private final static String seperator = "#";
@@ -29,6 +30,7 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 		this.tokenStream = pTS;
 		this.applicationName = "Default";
 		this.currentScope = new Scope(null, this.applicationName);
+		this.currentStack = new Stack(null);
 		this.reservedFunctions = new HashMap<String, String>() {
 			private static final long serialVersionUID = -1000729011127015471L;
 			{
@@ -52,8 +54,9 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 	public String visitAssignTo(@NotNull ToolParser.AssignToContext ctx) {
 		try {
 			final String loadValue = visit(ctx.value);
-
+			currentStack.pop(this.currentScope.getVar(ctx.variableName.getText()).getType());
 			return "\n" + loadValue + "\n" + this.currentScope.getVarStoreInstruction(ctx.variableName.getText()) + "\n";
+
 		} catch (UnknownNameException e) {
 			printError(e.getMessage(), ctx);
 			System.exit(-1);
@@ -126,7 +129,7 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 			if (ctx.parameters != null) {
 				parameters = visit(ctx.parameters) + "\n";
 			}
-
+			
 			return parameters + functionCall;
 
 		} else {
@@ -139,6 +142,11 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 
 				if (ctx.parameters != null) {
 					invocation = visit(ctx.parameters) + "\n" + invocation;
+				}
+				
+				if(this.currentScope.getFun(ctx.fn_name.getText()).getReturnType() != Datatype.TYPE_VOID)
+				{
+					currentStack.push(this.currentScope.getFun(ctx.fn_name.getText()).getReturnType());
 				}
 
 				return invocation;
@@ -245,6 +253,7 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 	@Override
 	public String visitIntegerFactorVariableName(@NotNull ToolParser.IntegerFactorVariableNameContext ctx) {
 		try {
+			currentStack.push(Datatype.TYPE_INT);
 			return this.currentScope.getVarLoadInstruction(ctx.factor.getText());
 		} catch (UnknownNameException e) {
 			printError(e.getMessage(), ctx);
@@ -255,6 +264,7 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 
 	@Override
 	public String visitIntegerFactor(@NotNull ToolParser.IntegerFactorContext ctx) {
+		currentStack.push(Datatype.TYPE_INT);
 		return "ldc " + ctx.factor.getText() + "\n";
 	}
 
@@ -295,6 +305,7 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 	@Override
 	public String visitStringFactorVariableName(@NotNull ToolParser.StringFactorVariableNameContext ctx){
 		try {
+			currentStack.push(Datatype.TYPE_STRING);
 			return this.currentScope.getVarLoadInstruction(visit(ctx.factor));
 		} catch (UnknownNameException e) {
 			printError(e.getMessage(), ctx);
@@ -310,6 +321,7 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 
 	@Override
 	public String visitStringFactorString(@NotNull ToolParser.StringFactorStringContext ctx) {
+		currentStack.push(Datatype.TYPE_INT);
 		return "ldc "+ctx.factor.getText()+"\n";
 	}
 
@@ -352,9 +364,11 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 					System.exit(-1);
 				}
 			}
+			currentStack.pop(type);
 		} catch (RedefinitionException e1) {
 			printError(e1.getMessage(), ctx);
 		}
+
 		return definition;
 	}
 
@@ -377,7 +391,7 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 				returnString = "ldc 1";
 			break;
 		}
-		
+		currentStack.pop(Datatype.TYPE_BOOL);
 		return returnString;
 	}
 
@@ -457,9 +471,11 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 		Function function = new Function(functionName, returnType, paramNames, paramTypes);
 		String code = "";
 		int localVarSize = 0;
+		int localStackSize = 0;
 		try {
 			currentScope.defineFun(functionName, function);
 			currentScope = new Scope(currentScope, this.applicationName);
+			currentStack = new Stack(currentStack);
 
 			if (ctx.instructions.size() > 0) {
 				for (ToolParser.CodeContext cctx : ctx.instructions) {
@@ -467,17 +483,19 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 				}
 			}
 			localVarSize = currentScope.getLocalSize();
+			localStackSize = currentStack.getMaxStackSize();
 			currentScope = currentScope.getParent();
+			currentStack = currentStack.getParent();
 		} catch (RedefinitionException e) {
 			printError(e.getMessage(), ctx);
 		}
 
-		return function.createFunctionStatement(code, localVarSize);
+		return function.createFunctionStatement(code, localVarSize, localStackSize);
 	}
 
 	@Override
 	public String visitFunctionCallParameters(@NotNull ToolParser.FunctionCallParametersContext ctx) {
-
+		//TODO: Clean up this datatype mess
 		// Split param string (name:type)
 		String param = visit(ctx.param);
 		
