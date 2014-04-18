@@ -371,10 +371,10 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 		switch(ctx.factor.getText())
 		{
 			case "_true":
-				returnString = "0";
+				returnString = "ldc 0";
 			break;
 			case "_false":
-				returnString = "1";
+				returnString = "ldc 1";
 			break;
 		}
 		
@@ -477,11 +477,35 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 	public String visitFunctionCallParameters(@NotNull ToolParser.FunctionCallParametersContext ctx) {
 
 		// Split param string (name:type)
-		String param = visit(ctx.param)+"\n";
+		String param = visit(ctx.param);
+		
+		if(param.matches("[a-zA-Z]+"))
+		{
+			try {
+				param = currentScope.getVarLoadInstruction(param);
+			} catch (UnknownNameException e) {
+				printError("Variable not found", ctx);
+				e.printStackTrace();
+			}
+		}
 
 		if (ctx.remainder != null) {
+			String remainder = null;
 			for (ExprContext ec : ctx.remainder) {
-				param += visit(ec)+"\n";
+				
+				remainder= visit(ec);
+				
+				if(remainder.matches("[a-zA-Z]+"))
+				{
+					try {
+						param = currentScope.getVarLoadInstruction(param);
+					} catch (UnknownNameException e) {
+						printError("Variable not found", ctx);
+						e.printStackTrace();
+					}
+				}
+				
+				remainder= visit(ec)+"\n";
 			}
 		}
 
