@@ -371,10 +371,10 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 		switch(ctx.factor.getText())
 		{
 			case "_true":
-				returnString = "ldc 0";
+				returnString = "0";
 			break;
 			case "_false":
-				returnString = "ldc 1";
+				returnString = "1";
 			break;
 		}
 		
@@ -492,9 +492,7 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 		if (ctx.remainder != null) {
 			String remainder = null;
 			for (ExprContext ec : ctx.remainder) {
-				
 				remainder= visit(ec);
-				
 				if(remainder.matches("[a-zA-Z]+"))
 				{
 					try {
@@ -505,7 +503,7 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 					}
 				}
 				
-				remainder= visit(ec)+"\n";
+				remainder = visit(ec);
 			}
 		}
 
