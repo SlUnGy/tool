@@ -33,8 +33,8 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 			private static final long serialVersionUID = -1000729011127015471L;
 			{
 				put("return", "return");
-				put("sprich", "getstatic java/lang/System/out Ljava/io/PrintStream;" + "\n" + "invokevirtual java/io/PrintStream/println(Ljava/lang/String;)V");
-				put("toStr", "getstatic java/lang/Integer Ljava/lang/Integer;" + "\n" + "invokevirtual java/lang/Integer/toStr(Ljava/lang/Integer;)L");
+				put("sprich", "getstatic java/lang/System/out Ljava/io/PrintStream;\n"+ "swap\n" + "\n" + "invokevirtual java/io/PrintStream/println(Ljava/lang/String;)V");
+				put("toStr",  "invokestatic java/lang/Integer/toString(I)Ljava/lang/String;");
 			}
 		};
 	}
@@ -121,7 +121,7 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 		if (reservedFunctions.containsKey(ctx.fn_name.getText())) {
 
 			String functionCall = reservedFunctions.get(ctx.fn_name.getText()) + "\n";
-			String parameters = null;
+			String parameters = "";
 
 			if (ctx.parameters != null) {
 				parameters = visit(ctx.parameters) + "\n";
@@ -492,9 +492,7 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 		if (ctx.remainder != null) {
 			String remainder = null;
 			for (ExprContext ec : ctx.remainder) {
-				
 				remainder= visit(ec);
-				
 				if(remainder.matches("[a-zA-Z]+"))
 				{
 					try {
@@ -505,7 +503,7 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 					}
 				}
 				
-				remainder= visit(ec)+"\n";
+				remainder = visit(ec);
 			}
 		}
 

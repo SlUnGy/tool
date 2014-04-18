@@ -12,6 +12,7 @@ bool b = _true;
 /* "leer" entspricht "void" typ, der Ort der Definition ist jedoch nicht wichtig. Das heißt Funktionen können auch nach der "Main" deklariert werden.*/
 _definiere leer druckeWas(){
 	sprich(mussManWissen);
+	return();
 }
 _definiere bool gebeB(int pA, int pB){
 	return(b);
