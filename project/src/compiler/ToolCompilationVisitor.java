@@ -121,7 +121,7 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 		if (reservedFunctions.containsKey(ctx.fn_name.getText())) {
 
 			String functionCall = reservedFunctions.get(ctx.fn_name.getText()) + "\n";
-			String parameters = null;
+			String parameters = "";
 
 			if (ctx.parameters != null) {
 				parameters = visit(ctx.parameters) + "\n";
