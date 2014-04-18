@@ -37,6 +37,11 @@ public class Scope {
 	public boolean isRoot(){
 		return this.parent == null;
 	}
+	
+	public int getLocalSize()
+	{
+		return variables.size();
+	}
 
 	public void defineVar(String pName, Datatype pType) throws RedefinitionException{
 		if(!this.variables.containsKey(pName)){

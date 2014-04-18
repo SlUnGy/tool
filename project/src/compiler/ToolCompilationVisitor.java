@@ -456,6 +456,7 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 
 		Function function = new Function(functionName, returnType, paramNames, paramTypes);
 		String code = "";
+		int localVarSize = 0;
 		try {
 			currentScope.defineFun(functionName, function);
 			currentScope = new Scope(currentScope, this.applicationName);
@@ -465,12 +466,13 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 					code += visit(cctx) + "\n";
 				}
 			}
+			localVarSize = currentScope.getLocalSize();
 			currentScope = currentScope.getParent();
 		} catch (RedefinitionException e) {
 			printError(e.getMessage(), ctx);
 		}
 
-		return function.createFunctionStatement(code);
+		return function.createFunctionStatement(code, localVarSize);
 	}
 
 	@Override
