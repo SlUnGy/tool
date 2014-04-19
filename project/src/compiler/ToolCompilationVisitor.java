@@ -346,7 +346,7 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 			if(value.length() > 0){
 				definition += value + "\n";
 				try {
-					definition += currentScope.getVarStoreInstruction(ctx.variableName.getText());
+					definition += currentScope.getVarStoreInstruction(ctx.variableName.getText())+System.lineSeparator();
 				} catch (UnknownNameException e) {
 					printError(e.getMessage(), ctx);
 					System.exit(-1);
