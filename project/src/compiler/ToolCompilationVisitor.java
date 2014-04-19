@@ -77,7 +77,7 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 	public String visitVariableName(@NotNull ToolParser.VariableNameContext ctx) {
 		return ctx.name.getText();
 	}
-
+	
 	@Override
 	public String visitCodeFunctionCall(@NotNull ToolParser.CodeFunctionCallContext ctx) {
 		return visit(ctx.instruction);
@@ -210,8 +210,19 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 	}
 
 	@Override
-	public String visitExprVariableName(@NotNull ToolParser.ExprVariableNameContext ctx) {
+	public String visitExprString(@NotNull ToolParser.ExprStringContext ctx) {
 		return visit(ctx.e);
+	}
+
+	@Override
+	public String visitExprVariableName(@NotNull ToolParser.ExprVariableNameContext ctx) {
+		try {
+			return currentScope.getVarLoadInstruction(visit(ctx.e));
+		} catch (UnknownNameException e) {
+			printError(e.getMessage(), ctx);
+			System.exit(-1);
+			return "";
+		}
 	}
 
 	@Override
@@ -422,11 +433,6 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 	}
 
 	@Override
-	public String visitExprString(@NotNull ToolParser.ExprStringContext ctx) {
-		return visitChildren(ctx);
-	}
-
-	@Override
 	public String visitBooleanFactorVariableName(@NotNull ToolParser.BooleanFactorVariableNameContext ctx) {
 		return visit(ctx.factor);
 	}
@@ -479,8 +485,6 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 
 	@Override
 	public String visitFunctionCallParameters(@NotNull ToolParser.FunctionCallParametersContext ctx) {
-
-		// Split param string (name:type)
 		String param = visit(ctx.param)+System.lineSeparator();
 
 		if(ctx.remainder != null && ctx.remainder.size()>0){
@@ -488,42 +492,13 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 				param += visit(expr)+System.lineSeparator();
 			}
 		}
-		/*
-		if(param.matches("[a-zA-Z]+"))
-		{
-			try {
-				param = currentScope.getVarLoadInstruction(param);
-			} catch (UnknownNameException e) {
-				printError("Variable not found", ctx);
-				e.printStackTrace();
-			}
-		}
-
-		if (ctx.remainder != null) {
-			String remainder = null;
-			for (ExprContext ec : ctx.remainder) {
-				remainder= visit(ec);
-				if(remainder.matches("[a-zA-Z]+"))
-				{
-					try {
-						param = currentScope.getVarLoadInstruction(param);
-					} catch (UnknownNameException e) {
-						printError("Variable not found", ctx);
-						e.printStackTrace();
-					}
-				}
-				
-				remainder = visit(ec);
-			}
-		}
-		*/
 
 		return param;
 	}
 
 	
 	/*
-	 * takes definitions and returns it ike that {static variable definitions, method definitions} 
+	 * takes definitions and returns it formatted like {static variable definitions, method definitions} 
 	 */
 	private String[] splitDefinition(String pDefinitions){
 		String split[]= new String[]{"",""};
