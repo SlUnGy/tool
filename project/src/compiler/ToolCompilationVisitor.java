@@ -485,8 +485,6 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 
 	@Override
 	public String visitFunctionCallParameters(@NotNull ToolParser.FunctionCallParametersContext ctx) {
-
-		// Split param string (name:type)
 		String param = visit(ctx.param)+System.lineSeparator();
 
 		if(ctx.remainder != null && ctx.remainder.size()>0){
@@ -495,42 +493,12 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 			}
 		}
 
-		/*
-		if(param.matches("[a-zA-Z]+"))
-		{
-			try {
-				param = currentScope.getVarLoadInstruction(param);
-			} catch (UnknownNameException e) {
-				printError("Variable not found", ctx);
-				e.printStackTrace();
-			}
-		}
-
-		if (ctx.remainder != null) {
-			String remainder = null;
-			for (ExprContext ec : ctx.remainder) {
-				remainder= visit(ec);
-				if(remainder.matches("[a-zA-Z]+"))
-				{
-					try {
-						param = currentScope.getVarLoadInstruction(param);
-					} catch (UnknownNameException e) {
-						printError("Variable not found", ctx);
-						e.printStackTrace();
-					}
-				}
-				
-				remainder = visit(ec);
-			}
-		}
-		*/
-
 		return param;
 	}
 
 	
 	/*
-	 * takes definitions and returns it ike that {static variable definitions, method definitions} 
+	 * takes definitions and returns it formatted like {static variable definitions, method definitions} 
 	 */
 	private String[] splitDefinition(String pDefinitions){
 		String split[]= new String[]{"",""};
