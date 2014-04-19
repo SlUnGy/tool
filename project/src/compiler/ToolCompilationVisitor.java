@@ -210,6 +210,11 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 	}
 
 	@Override
+	public String visitExprString(@NotNull ToolParser.ExprStringContext ctx) {
+		return visit(ctx.e);
+	}
+
+	@Override
 	public String visitExprVariableName(@NotNull ToolParser.ExprVariableNameContext ctx) {
 		try {
 			return currentScope.getVarLoadInstruction(visit(ctx.e));
@@ -425,11 +430,6 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 		mainStuff += "\nreturn\n.end method";
 		this.currentScope = this.currentScope.getParent();
 		return mainStuff;
-	}
-
-	@Override
-	public String visitExprString(@NotNull ToolParser.ExprStringContext ctx) {
-		return visitChildren(ctx);
 	}
 
 	@Override
