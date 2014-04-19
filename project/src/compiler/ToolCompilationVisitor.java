@@ -2,6 +2,7 @@ package compiler;
 
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 import org.antlr.v4.runtime.ParserRuleContext;
@@ -12,6 +13,7 @@ import compiler.Scope.RedefinitionException;
 import compiler.Scope.UnknownNameException;
 import generated.*;
 import generated.ToolParser.CodeContext;
+import generated.ToolParser.DefContext;
 import generated.ToolParser.ExprContext;
 import generated.ToolParser.ParameterContext;
 
@@ -346,7 +348,7 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 			if(value.length() > 0){
 				definition += value + "\n";
 				try {
-					definition += currentScope.getVarStoreInstruction(ctx.variableName.getText());
+					definition += currentScope.getVarStoreInstruction(ctx.variableName.getText())+System.lineSeparator();
 				} catch (UnknownNameException e) {
 					printError(e.getMessage(), ctx);
 					System.exit(-1);
@@ -479,8 +481,14 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 	public String visitFunctionCallParameters(@NotNull ToolParser.FunctionCallParametersContext ctx) {
 
 		// Split param string (name:type)
-		String param = visit(ctx.param);
-		
+		String param = visit(ctx.param)+System.lineSeparator();
+
+		if(ctx.remainder != null && ctx.remainder.size()>0){
+			for(ToolParser.ExprContext expr : ctx.remainder){
+				param += visit(expr)+System.lineSeparator();
+			}
+		}
+		/*
 		if(param.matches("[a-zA-Z]+"))
 		{
 			try {
@@ -508,39 +516,70 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 				remainder = visit(ec);
 			}
 		}
+		*/
 
 		return param;
 	}
 
+	
+	/*
+	 * takes definitions and returns it ike that {static variable definitions, method definitions} 
+	 */
+	private String[] splitDefinition(String pDefinitions){
+		String split[]= new String[]{"",""};
+		
+        for(String part : pDefinitions.split(System.lineSeparator())){
+        	if(part.startsWith(".field static")){
+        		split[0] += part + System.lineSeparator();
+			}
+			else {
+				split[1] += part + System.lineSeparator();
+			}
+        }
+		return split;
+	}
+
+	/*
+	 * parses context information to return {static variable def, method def, static variable initialization}
+	 */
+	private String[] processContextInformation(List<DefContext> pList){
+		String def[] = new String[]{"","",""};
+		for (ToolParser.DefContext cb : pList) {
+			String complete[] = visit(cb).split(ToolCompilationVisitor.seperator);
+			String tmp[] = splitDefinition(complete[0]);
+			def[0]+=tmp[0];
+			def[1]+=tmp[1];
+			if (complete.length == 2) {
+				def[2] += complete[1];
+			}
+		}
+		return def;
+	}
+
 	@Override
 	public String visitProgram(@NotNull ToolParser.ProgramContext ctx) {
-		String staticInitializerBlock = "";
-		String definition = "";
+		String def[] = new String[]{"","",""};
+
 		if (ctx.before != null) {
-			for (ToolParser.DefContext cb : ctx.before) {
-				String complete[] = visit(cb).split(ToolCompilationVisitor.seperator);
-				definition += complete[0];
-				if (complete.length == 2) {
-					staticInitializerBlock += complete[1];
-				}
-			}
+			String tmp[] = processContextInformation(ctx.before);
+			def[0]+=tmp[0];
+			def[1]+=tmp[1];
+			def[2]+=tmp[2];
 		}
 
 		if (ctx.after != null) {
-			for (ToolParser.DefContext ca : ctx.after) {
-				String complete[] = visit(ca).split(ToolCompilationVisitor.seperator);
-				definition += complete[0];
-				if (complete.length == 2) {
-					staticInitializerBlock += complete[1];
-				}
-			}
+			String tmp[] = processContextInformation(ctx.after);
+			def[0]+=tmp[0];
+			def[1]+=tmp[1];
+			def[2]+=tmp[2];
 		}
 
-		String result = ".class " + applicationName + "\n" + ".super java/lang/Object" + "\n" + definition + "\n";
-		if (staticInitializerBlock.length() > 0) {
+		String result = ".class " + applicationName + System.lineSeparator() + ".super java/lang/Object" + System.lineSeparator();
+		result += def[0] + System.lineSeparator() + def[1] + System.lineSeparator();
+		if (def[2].length() > 0) {
 			result += ".method static public <clinit>()V" + "\n";
 			result += ".limit stack 100" + "\n";
-			result += staticInitializerBlock + "return " + "\n";
+			result += def[2] + "return " + "\n";
 			result += ".end method" + "\n";
 		}
 		result += visit(ctx.m) + "\n";
