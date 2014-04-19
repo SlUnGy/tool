@@ -77,7 +77,7 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 	public String visitVariableName(@NotNull ToolParser.VariableNameContext ctx) {
 		return ctx.name.getText();
 	}
-
+	
 	@Override
 	public String visitCodeFunctionCall(@NotNull ToolParser.CodeFunctionCallContext ctx) {
 		return visit(ctx.instruction);
@@ -211,7 +211,13 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 
 	@Override
 	public String visitExprVariableName(@NotNull ToolParser.ExprVariableNameContext ctx) {
-		return visit(ctx.e);
+		try {
+			return currentScope.getVarLoadInstruction(visit(ctx.e));
+		} catch (UnknownNameException e) {
+			printError(e.getMessage(), ctx);
+			System.exit(-1);
+			return "";
+		}
 	}
 
 	@Override
@@ -488,6 +494,7 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 				param += visit(expr)+System.lineSeparator();
 			}
 		}
+
 		/*
 		if(param.matches("[a-zA-Z]+"))
 		{
