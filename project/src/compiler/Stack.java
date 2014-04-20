@@ -35,7 +35,7 @@ public class Stack {
 			}
 			else
 			{
-				System.err.println("Stack missmatch line: "+line+". Found "+Stack.getLast().getType()+ " expected "+ datatype.getType());
+				System.err.println("Stack mismatch line: "+line+". Found "+Stack.getLast().getType()+ " expected "+ datatype.getType());
 				//System.exit(0);
 			}
 		}
