@@ -51,8 +51,12 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 		};
 	}
 
+	private int getLine(ParserRuleContext ctx){
+		return tokenStream.get(ctx.getSourceInterval().a).getLine();
+	}
+	
 	private void printError(String pError, ParserRuleContext ctx) {
-		System.err.printf("ERROR (line %d): %s" + System.lineSeparator(), tokenStream.get(ctx.getSourceInterval().a).getLine(), pError);
+		System.err.printf("ERROR (line %d): %s" + System.lineSeparator(), getLine(ctx), pError);
 	}
 
 	@Override
@@ -64,7 +68,7 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 	public String visitAssignTo(@NotNull ToolParser.AssignToContext ctx) {
 		try {
 			final String loadValue = visit(ctx.value);
-			currentStack.pop(this.currentScope.getVar(ctx.variableName.getText()).getType(), tokenStream.get(ctx.getSourceInterval().a).getLine());
+			currentStack.pop(this.currentScope.getVar(ctx.variableName.getText()).getType(), getLine(ctx));
 			return System.lineSeparator() + loadValue + System.lineSeparator() + this.currentScope.getVarStoreInstruction(ctx.variableName.getText()) + System.lineSeparator();
 
 		} catch (UnknownNameException e) {
@@ -249,16 +253,16 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 
 	@Override
 	public String visitIntegerAddition(@NotNull ToolParser.IntegerAdditionContext ctx) {
-		currentStack.pop(Datatype.TYPE_INT, tokenStream.get(ctx.getSourceInterval().a).getLine());
-		currentStack.pop(Datatype.TYPE_INT, tokenStream.get(ctx.getSourceInterval().a).getLine());
+		currentStack.pop(Datatype.TYPE_INT, getLine(ctx));
+		currentStack.pop(Datatype.TYPE_INT, getLine(ctx));
 		currentStack.push(Datatype.TYPE_INT);
 		return visit(ctx.left) + System.lineSeparator() + visit(ctx.right) + System.lineSeparator() + Operator.OP_ADD.compileOperator();
 	}
 
 	@Override
 	public String visitIntegerSubtraction(@NotNull ToolParser.IntegerSubtractionContext ctx) {
-		currentStack.pop(Datatype.TYPE_INT, tokenStream.get(ctx.getSourceInterval().a).getLine());
-		currentStack.pop(Datatype.TYPE_INT, tokenStream.get(ctx.getSourceInterval().a).getLine());
+		currentStack.pop(Datatype.TYPE_INT, getLine(ctx));
+		currentStack.pop(Datatype.TYPE_INT, getLine(ctx));
 		currentStack.push(Datatype.TYPE_INT);
 		return visit(ctx.left) + System.lineSeparator() + visit(ctx.right) + System.lineSeparator() + Operator.OP_SUB.compileOperator();
 	}
@@ -270,16 +274,16 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 
 	@Override
 	public String visitIntegerMultiplication(@NotNull ToolParser.IntegerMultiplicationContext ctx) {
-		currentStack.pop(Datatype.TYPE_INT, tokenStream.get(ctx.getSourceInterval().a).getLine());
-		currentStack.pop(Datatype.TYPE_INT, tokenStream.get(ctx.getSourceInterval().a).getLine());
+		currentStack.pop(Datatype.TYPE_INT, getLine(ctx));
+		currentStack.pop(Datatype.TYPE_INT, getLine(ctx));
 		currentStack.push(Datatype.TYPE_INT);
 		return visit(ctx.left) + System.lineSeparator() + visit(ctx.right) + System.lineSeparator() + Operator.OP_MUL.compileOperator();
 	}
 
 	@Override
 	public String visitIntegerDivision(@NotNull ToolParser.IntegerDivisionContext ctx) {
-		currentStack.pop(Datatype.TYPE_INT, tokenStream.get(ctx.getSourceInterval().a).getLine());
-		currentStack.pop(Datatype.TYPE_INT, tokenStream.get(ctx.getSourceInterval().a).getLine());
+		currentStack.pop(Datatype.TYPE_INT, getLine(ctx));
+		currentStack.pop(Datatype.TYPE_INT, getLine(ctx));
 		currentStack.push(Datatype.TYPE_INT);
 		return visit(ctx.left) + System.lineSeparator() + visit(ctx.right) + System.lineSeparator() + Operator.OP_DIV.compileOperator();
 	}
@@ -447,7 +451,7 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 		}
 
 		String returnString = null;
-		returnString = safeBegin+":\n";
+		returnString = safeBegin+":"+System.lineSeparator();
 		returnString += code;
 		returnString += cond;
 		returnString += "ifeq " + safeBegin + System.lineSeparator();	
