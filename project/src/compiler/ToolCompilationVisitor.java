@@ -359,7 +359,7 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 
 	@Override
 	public String visitStringFactorString(@NotNull ToolParser.StringFactorStringContext ctx) {
-		currentStack.push(Datatype.TYPE_INT);
+		currentStack.push(Datatype.TYPE_STRING);
 		return "ldc "+ctx.factor.getText()+System.lineSeparator();
 	}
 
