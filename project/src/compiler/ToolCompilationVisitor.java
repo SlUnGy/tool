@@ -587,7 +587,8 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 	@Override
 	public String visitProgram(@NotNull ToolParser.ProgramContext ctx) {
 		String def[] = new String[]{"","",""};
-
+		this.currentStack = new Stack(this.currentStack);
+		
 		if (ctx.before != null) {
 			String tmp[] = processContextInformation(ctx.before);
 			def[0]+=tmp[0];
@@ -606,11 +607,12 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 		result += def[0] + System.lineSeparator() + def[1] + System.lineSeparator();
 		if (def[2].length() > 0) {
 			result += ".method static public <clinit>()V" + System.lineSeparator();
-			result += ".limit stack 100" + System.lineSeparator();
-			result += ".limit locals 100" + System.lineSeparator();
+			result += ".limit stack "+ this.currentStack.getMaxStackSize() + System.lineSeparator();
+			result += ".limit locals 0" + System.lineSeparator();
 			result += def[2] + "return " + System.lineSeparator();
 			result += ".end method" + System.lineSeparator();
 		}
+		this.currentStack = this.currentStack.getParent();
 		result += visit(ctx.m) + System.lineSeparator();
 
 		return result;
