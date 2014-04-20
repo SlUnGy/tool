@@ -1,6 +1,9 @@
 package compiler;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 
 import org.antlr.v4.runtime.ANTLRFileStream;
 import org.antlr.v4.runtime.CommonTokenStream;
@@ -16,12 +19,14 @@ public class Main {
 	*/
 	public static void main(String[] args) {
 		String file;
+
 		if( args.length != 1){
 			 file = "EXAMPLE";
 		}
 		else {
 			file = args[0];
 		}
+		
 		
 		try {
 			ANTLRFileStream filestream = new ANTLRFileStream( file );
@@ -34,10 +39,28 @@ public class Main {
 			String compiled = tcv.visit(tree);
 			String nice = makeReadable(compiled);
 			System.out.print(nice);
+			
+			if( args.length == 2){
+				printToFile(args[1], nice);
+			}
+			
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 
+	}
+	
+	private static void printToFile(String fileName, String output)
+	{
+		PrintWriter writer;
+		try {
+			writer = new PrintWriter(fileName, "UTF-8");		
+			writer.print(output);
+			writer.close();
+		} catch (FileNotFoundException | UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	private static String makeReadable(String pWhat){

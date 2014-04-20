@@ -22,21 +22,32 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 	private TokenStream tokenStream;
 	private String applicationName;
 	private Scope currentScope;
-	private Map<String, String> reservedFunctions;
+	private Stack currentStack;
+	private Map<String, Function> reservedFunctions;
 
 	private final static String seperator = "#";
 
 	public ToolCompilationVisitor(TokenStream pTS) {
 		super();
 		this.tokenStream = pTS;
-		this.applicationName = "Default";
+		this.applicationName = "Default/default";
 		this.currentScope = new Scope(null, this.applicationName);
-		this.reservedFunctions = new HashMap<String, String>() {
+		this.currentStack = new Stack(null);
+		this.reservedFunctions = new HashMap<String, Function>() {
 			private static final long serialVersionUID = -1000729011127015471L;
 			{
-				put("return", "return");
-				put("sprich", "getstatic java/lang/System/out Ljava/io/PrintStream;\n"+ "swap\n" + "\n" + "invokevirtual java/io/PrintStream/println(Ljava/lang/String;)V");
-				put("toStr",  "invokestatic java/lang/Integer/toString(I)Ljava/lang/String;");
+				put("return", new Function(	"return",
+											"return", 
+											Datatype.TYPE_VOID
+											));
+				put("sprich", new Function(	"sprich",
+											"getstatic java/lang/System/out Ljava/io/PrintStream;\n"+ "swap\n" + System.lineSeparator() + "invokevirtual java/io/PrintStream/println(Ljava/lang/String;)V",
+											Datatype.TYPE_VOID
+											));
+				put("toStr",  new Function(	"toStr",
+											"invokestatic java/lang/Integer/toString(I)Ljava/lang/String;", 
+											Datatype.TYPE_STRING
+											));
 			}
 		};
 	}
@@ -54,8 +65,9 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 	public String visitAssignTo(@NotNull ToolParser.AssignToContext ctx) {
 		try {
 			final String loadValue = visit(ctx.value);
+			currentStack.pop(this.currentScope.getVar(ctx.variableName.getText()).getType(), tokenStream.get(ctx.getSourceInterval().a).getLine());
+			return System.lineSeparator() + loadValue + System.lineSeparator() + this.currentScope.getVarStoreInstruction(ctx.variableName.getText()) + System.lineSeparator();
 
-			return "\n" + loadValue + "\n" + this.currentScope.getVarStoreInstruction(ctx.variableName.getText()) + "\n";
 		} catch (UnknownNameException e) {
 			printError(e.getMessage(), ctx);
 			System.exit(-1);
@@ -80,6 +92,7 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 	
 	@Override
 	public String visitCodeFunctionCall(@NotNull ToolParser.CodeFunctionCallContext ctx) {
+		//TODO: This is the point where all the orphaned values on the stack come from
 		return visit(ctx.instruction);
 	}
 
@@ -107,29 +120,29 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 		}
 
 		String complete = "";
-		complete += safeBegin + ":" + "\n";
-		complete += cond + "\n";
-		complete += Operator.OP_EQ.compileOperator() + "\n";
+		complete += safeBegin + ":" + System.lineSeparator();
+		complete += cond + System.lineSeparator();
+		complete += Operator.OP_EQ.compileOperator() + System.lineSeparator();
 
-		complete += "ifeq " + safeEnd + "\n";
+		complete += "ifeq " + safeEnd + System.lineSeparator();
 		complete += code;
-		complete += "goto " + safeBegin + "\n";
-		complete += safeEnd + ":" + "\n";
+		complete += "goto " + safeBegin + System.lineSeparator();
+		complete += safeEnd + ":" + System.lineSeparator();
 		return complete;
 	}
 
 	@Override
 	public String visitFunctionCall(@NotNull ToolParser.FunctionCallContext ctx) {
 		if (reservedFunctions.containsKey(ctx.fn_name.getText())) {
-
-			String functionCall = reservedFunctions.get(ctx.fn_name.getText()) + "\n";
-			String parameters = "";
+			
+			Function functionCall = reservedFunctions.get(ctx.fn_name.getText());
+			String parameters = "";		
 
 			if (ctx.parameters != null) {
-				parameters = visit(ctx.parameters) + "\n";
+				parameters = visit(ctx.parameters) + System.lineSeparator();
 			}
-
-			return parameters + functionCall;
+			currentStack.push(functionCall.getReturnType());
+			return parameters + functionCall.getInvocation()+System.lineSeparator();
 
 		} else {
 			String invocation = "invokevirtual " + this.applicationName + "/" + ctx.fn_name.getText();
@@ -137,10 +150,15 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 			try {
 				called = this.currentScope.getFun(ctx.fn_name.getText());
 
-				invocation += called.getDescriptor() + "\n";
+				invocation += called.getDescriptor() + System.lineSeparator();
 
 				if (ctx.parameters != null) {
-					invocation = visit(ctx.parameters) + "\n" + invocation;
+					invocation = visit(ctx.parameters) + System.lineSeparator() + invocation;
+				}
+				
+				if(this.currentScope.getFun(ctx.fn_name.getText()).getReturnType() != Datatype.TYPE_VOID)
+				{
+					currentStack.push(this.currentScope.getFun(ctx.fn_name.getText()).getReturnType());
 				}
 
 				return invocation;
@@ -174,7 +192,7 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 			}
 		}
 
-		return cond + instructions + "\n";
+		return cond + instructions + System.lineSeparator();
 	}
 
 	@Override
@@ -186,7 +204,7 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 				instructions += visit(cc);
 			}
 		}
-		return cond + instructions + "\n";
+		return cond + instructions + System.lineSeparator();
 	}
 
 	@Override
@@ -232,12 +250,18 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 
 	@Override
 	public String visitIntegerAddition(@NotNull ToolParser.IntegerAdditionContext ctx) {
-		return visit(ctx.left) + "\n" + visit(ctx.right) + "\n" + Operator.OP_ADD.compileOperator();
+		currentStack.pop(Datatype.TYPE_INT, tokenStream.get(ctx.getSourceInterval().a).getLine());
+		currentStack.pop(Datatype.TYPE_INT, tokenStream.get(ctx.getSourceInterval().a).getLine());
+		currentStack.push(Datatype.TYPE_INT);
+		return visit(ctx.left) + System.lineSeparator() + visit(ctx.right) + System.lineSeparator() + Operator.OP_ADD.compileOperator();
 	}
 
 	@Override
 	public String visitIntegerSubtraction(@NotNull ToolParser.IntegerSubtractionContext ctx) {
-		return visit(ctx.left) + "\n" + visit(ctx.right) + "\n" + Operator.OP_SUB.compileOperator();
+		currentStack.pop(Datatype.TYPE_INT, tokenStream.get(ctx.getSourceInterval().a).getLine());
+		currentStack.pop(Datatype.TYPE_INT, tokenStream.get(ctx.getSourceInterval().a).getLine());
+		currentStack.push(Datatype.TYPE_INT);
+		return visit(ctx.left) + System.lineSeparator() + visit(ctx.right) + System.lineSeparator() + Operator.OP_SUB.compileOperator();
 	}
 
 	@Override
@@ -247,17 +271,24 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 
 	@Override
 	public String visitIntegerMultiplication(@NotNull ToolParser.IntegerMultiplicationContext ctx) {
-		return visit(ctx.left) + "\n" + visit(ctx.right) + "\n" + Operator.OP_MUL.compileOperator();
+		currentStack.pop(Datatype.TYPE_INT, tokenStream.get(ctx.getSourceInterval().a).getLine());
+		currentStack.pop(Datatype.TYPE_INT, tokenStream.get(ctx.getSourceInterval().a).getLine());
+		currentStack.push(Datatype.TYPE_INT);
+		return visit(ctx.left) + System.lineSeparator() + visit(ctx.right) + System.lineSeparator() + Operator.OP_MUL.compileOperator();
 	}
 
 	@Override
 	public String visitIntegerDivision(@NotNull ToolParser.IntegerDivisionContext ctx) {
-		return visit(ctx.left) + "\n" + visit(ctx.right) + "\n" + Operator.OP_DIV.compileOperator();
+		currentStack.pop(Datatype.TYPE_INT, tokenStream.get(ctx.getSourceInterval().a).getLine());
+		currentStack.pop(Datatype.TYPE_INT, tokenStream.get(ctx.getSourceInterval().a).getLine());
+		currentStack.push(Datatype.TYPE_INT);
+		return visit(ctx.left) + System.lineSeparator() + visit(ctx.right) + System.lineSeparator() + Operator.OP_DIV.compileOperator();
 	}
 
 	@Override
 	public String visitIntegerFactorVariableName(@NotNull ToolParser.IntegerFactorVariableNameContext ctx) {
 		try {
+			currentStack.push(Datatype.TYPE_INT);
 			return this.currentScope.getVarLoadInstruction(ctx.factor.getText());
 		} catch (UnknownNameException e) {
 			printError(e.getMessage(), ctx);
@@ -268,7 +299,8 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 
 	@Override
 	public String visitIntegerFactor(@NotNull ToolParser.IntegerFactorContext ctx) {
-		return "ldc " + ctx.factor.getText() + "\n";
+		currentStack.push(Datatype.TYPE_INT);
+		return "ldc " + ctx.factor.getText() + System.lineSeparator();
 	}
 
 	@Override
@@ -308,6 +340,7 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 	@Override
 	public String visitStringFactorVariableName(@NotNull ToolParser.StringFactorVariableNameContext ctx){
 		try {
+			currentStack.push(Datatype.TYPE_STRING);
 			return this.currentScope.getVarLoadInstruction(visit(ctx.factor));
 		} catch (UnknownNameException e) {
 			printError(e.getMessage(), ctx);
@@ -323,17 +356,18 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 
 	@Override
 	public String visitStringFactorString(@NotNull ToolParser.StringFactorStringContext ctx) {
-		return "ldc "+ctx.factor.getText()+"\n";
+		currentStack.push(Datatype.TYPE_INT);
+		return "ldc "+ctx.factor.getText()+System.lineSeparator();
 	}
 
 	@Override
 	protected String aggregateResult(String aggregate, String nextResult) {
 		String result = "";
 		if (aggregate != null) {
-			result += aggregate + "\n";
+			result += aggregate + System.lineSeparator();
 		}
 		if (nextResult != null) {
-			result += nextResult + "\n";
+			result += nextResult + System.lineSeparator();
 		}
 		return result;
 	}
@@ -350,14 +384,14 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 		try {
 			currentScope.defineVar(ctx.variableName.getText(), type);
 			if (currentScope.isRoot()) {
-				definition = ".field static " + ctx.variableName.getText() + " " + type.getJasminType() + "\n";
+				definition = ".field static " + ctx.variableName.getText() + " " + type.getJasminType() + System.lineSeparator();
 				if (value != null) {
 					definition += ToolCompilationVisitor.seperator;
 				}
 			}
 			// if the variable doesn't get a value assigned we don't need to do store a value inside the jasmin code
 			if(value.length() > 0){
-				definition += value + "\n";
+				definition += value + System.lineSeparator();
 				try {
 					definition += currentScope.getVarStoreInstruction(ctx.variableName.getText())+System.lineSeparator();
 				} catch (UnknownNameException e) {
@@ -365,15 +399,17 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 					System.exit(-1);
 				}
 			}
+			//POP the value from stack as it has been stored
+			currentStack.pop(type, tokenStream.get(ctx.getSourceInterval().a).getLine());
 		} catch (RedefinitionException e1) {
 			printError(e1.getMessage(), ctx);
 		}
+
 		return definition;
 	}
 
 	@Override
 	public String visitParameterDefinition(@NotNull ToolParser.ParameterDefinitionContext ctx) {
-		// System.out.println("Parameter: "+ctx.name.getText()+ToolCompilationVisitor.seperator+ctx.type.getText());
 		return ctx.name.getText() + ToolCompilationVisitor.seperator + ctx.type.getText();
 	}
 
@@ -390,7 +426,7 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 				returnString = "ldc 1";
 			break;
 		}
-		
+		currentStack.push(Datatype.TYPE_BOOL);
 		return returnString;
 	}
 
@@ -415,20 +451,30 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 		returnString = safeBegin+":\n";
 		returnString += code;
 		returnString += cond;
-		returnString += "ifeq " + safeBegin + "\n";	
+		returnString += "ifeq " + safeBegin + System.lineSeparator();	
 		
 		return returnString;
 	}
 
 	@Override
 	public String visitMainFunction(@NotNull ToolParser.MainFunctionContext ctx) {
+		String code ="";
+		
 		this.currentScope = new Scope(currentScope, this.applicationName);
-		String mainStuff = ".method public static main([Ljava/lang/String;)V\n.limit stack 100\n";
+		this.currentStack = new Stack(currentStack);
+		
 		for (ToolParser.CodeContext c : ctx.instructions) {
-			mainStuff += visit(c);
+			code += visit(c);
 		}
-		mainStuff += "\nreturn\n.end method";
+		
+		String mainStuff = ".method public static main([Ljava/lang/String;)V"+System.lineSeparator();
+		mainStuff+=	".limit stack "+this.currentStack.getMaxStackSize()+System.lineSeparator();
+		mainStuff+= ".limit locals "+this.currentScope.getLocalSize()+System.lineSeparator();
+		mainStuff+= code;
+	
+		mainStuff += System.lineSeparator()+"return"+System.lineSeparator()+".end method";
 		this.currentScope = this.currentScope.getParent();
+		this.currentStack = this.currentStack.getParent();
 		return mainStuff;
 	}
 
@@ -465,28 +511,32 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 		Function function = new Function(functionName, returnType, paramNames, paramTypes);
 		String code = "";
 		int localVarSize = 0;
+		int localStackSize = 0;
 		try {
 			currentScope.defineFun(functionName, function);
 			currentScope = new Scope(currentScope, this.applicationName);
+			currentStack = new Stack(currentStack);
 
 			if (ctx.instructions.size() > 0) {
 				for (ToolParser.CodeContext cctx : ctx.instructions) {
-					code += visit(cctx) + "\n";
+					code += visit(cctx) + System.lineSeparator();
 				}
 			}
 			localVarSize = currentScope.getLocalSize();
+			localStackSize = currentStack.getMaxStackSize();
 			currentScope = currentScope.getParent();
+			currentStack = currentStack.getParent();
 		} catch (RedefinitionException e) {
 			printError(e.getMessage(), ctx);
 		}
 
-		return function.createFunctionStatement(code, localVarSize);
+		return function.createFunctionStatement(code, localVarSize, localStackSize);
 	}
 
 	@Override
 	public String visitFunctionCallParameters(@NotNull ToolParser.FunctionCallParametersContext ctx) {
 		String param = visit(ctx.param)+System.lineSeparator();
-
+		//TODO: Clean up this datatype mess
 		if(ctx.remainder != null && ctx.remainder.size()>0){
 			for(ToolParser.ExprContext expr : ctx.remainder){
 				param += visit(expr)+System.lineSeparator();
@@ -552,12 +602,13 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 		String result = ".class " + applicationName + System.lineSeparator() + ".super java/lang/Object" + System.lineSeparator();
 		result += def[0] + System.lineSeparator() + def[1] + System.lineSeparator();
 		if (def[2].length() > 0) {
-			result += ".method static public <clinit>()V" + "\n";
-			result += ".limit stack 100" + "\n";
-			result += def[2] + "return " + "\n";
-			result += ".end method" + "\n";
+			result += ".method static public <clinit>()V" + System.lineSeparator();
+			result += ".limit stack 100" + System.lineSeparator();
+			result += ".limit locals 100" + System.lineSeparator();
+			result += def[2] + "return " + System.lineSeparator();
+			result += ".end method" + System.lineSeparator();
 		}
-		result += visit(ctx.m) + "\n";
+		result += visit(ctx.m) + System.lineSeparator();
 
 		return result;
 	}
