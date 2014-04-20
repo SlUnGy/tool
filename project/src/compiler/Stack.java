@@ -32,9 +32,23 @@ public class Stack {
 			}
 			else
 			{
-				//System.err.println("Stack missmatch. Found "+Stack.getLast().getType()+ " expected "+ datatype.getType());
+				System.err.println("Stack missmatch. Found "+Stack.getLast().getType()+ " expected "+ datatype.getType());
 				//System.exit(0);
 			}
+		}
+		catch (Exception e)
+		{
+			
+		}
+	}
+	
+	public void popUnchecked()
+	{
+		try
+		{
+
+				Stack.removeLast();
+				stackSize--;
 		}
 		catch (Exception e)
 		{

@@ -9,6 +9,7 @@ public class Function {
 	private Datatype returnType;
 	private LinkedList<String> paramNames;
 	private LinkedList<Datatype> paramTypes;
+	private String invocation = null;
 	
 	public Function()
 	{
@@ -25,8 +26,20 @@ public class Function {
 		this.paramTypes = pTypes;
 	}
 	
+	public Function(String name, String invocation, Datatype type)
+	{
+		this.name = name;
+		this.invocation = invocation;
+		this.returnType = type;
+	}
+	
 	public Datatype getReturnType(){
 		return this.returnType;
+	}
+	
+	public String getInvocation()
+	{
+		return this.invocation;
 	}
 	
 	public Datatype getParameterType(int index)
@@ -45,7 +58,7 @@ public class Function {
 	public String createFunctionStatement(String code, int numberLocalVars, int stackSize)
 	{
 		String returnString = ".method "+ this.name + this.getDescriptor()+System.lineSeparator() ;
-		returnString += ".limit stack " + Function.defaultStackSize+System.lineSeparator();
+		returnString += ".limit stack " + stackSize+System.lineSeparator();
 		returnString += ".limit locals "+numberLocalVars + System.lineSeparator();
 		returnString += code;
 		returnString += ".end method"+System.lineSeparator() ;

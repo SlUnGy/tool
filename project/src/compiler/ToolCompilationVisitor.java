@@ -23,7 +23,7 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 	private String applicationName;
 	private Scope currentScope;
 	private Stack currentStack;
-	private Map<String, String> reservedFunctions;
+	private Map<String, Function> reservedFunctions;
 
 	private final static String seperator = "#";
 
@@ -33,12 +33,21 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 		this.applicationName = "Default";
 		this.currentScope = new Scope(null, this.applicationName);
 		this.currentStack = new Stack(null);
-		this.reservedFunctions = new HashMap<String, String>() {
+		this.reservedFunctions = new HashMap<String, Function>() {
 			private static final long serialVersionUID = -1000729011127015471L;
 			{
-				put("return", "return");
-				put("sprich", "getstatic java/lang/System/out Ljava/io/PrintStream;\n"+ "swap\n" + "\n" + "invokevirtual java/io/PrintStream/println(Ljava/lang/String;)V");
-				put("toStr",  "invokestatic java/lang/Integer/toString(I)Ljava/lang/String;");
+				put("return", new Function(	"return",
+											"return", 
+											Datatype.TYPE_VOID
+											));
+				put("sprich", new Function(	"sprich",
+											"getstatic java/lang/System/out Ljava/io/PrintStream;\n"+ "swap\n" + "\n" + "invokevirtual java/io/PrintStream/println(Ljava/lang/String;)V",
+											Datatype.TYPE_VOID
+											));
+				put("toStr",  new Function(	"toStr",
+											"invokestatic java/lang/Integer/toString(I)Ljava/lang/String;", 
+											Datatype.TYPE_STRING
+											));
 			}
 		};
 	}
@@ -124,15 +133,16 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 	@Override
 	public String visitFunctionCall(@NotNull ToolParser.FunctionCallContext ctx) {
 		if (reservedFunctions.containsKey(ctx.fn_name.getText())) {
-
-			String functionCall = reservedFunctions.get(ctx.fn_name.getText()) + "\n";
+			
+			Function functionCall = reservedFunctions.get(ctx.fn_name.getText());
 			String parameters = "";
+			
 
 			if (ctx.parameters != null) {
 				parameters = visit(ctx.parameters) + "\n";
 			}
 			
-			return parameters + functionCall;
+			return parameters + functionCall.getInvocation();
 
 		} else {
 			String invocation = "invokevirtual " + this.applicationName + "/" + ctx.fn_name.getText();
@@ -240,11 +250,17 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 
 	@Override
 	public String visitIntegerAddition(@NotNull ToolParser.IntegerAdditionContext ctx) {
+		currentStack.pop(Datatype.TYPE_INT);
+		currentStack.pop(Datatype.TYPE_INT);
+		currentStack.push(Datatype.TYPE_INT);
 		return visit(ctx.left) + "\n" + visit(ctx.right) + "\n" + Operator.OP_ADD.compileOperator();
 	}
 
 	@Override
 	public String visitIntegerSubtraction(@NotNull ToolParser.IntegerSubtractionContext ctx) {
+		currentStack.pop(Datatype.TYPE_INT);
+		currentStack.pop(Datatype.TYPE_INT);
+		currentStack.push(Datatype.TYPE_INT);
 		return visit(ctx.left) + "\n" + visit(ctx.right) + "\n" + Operator.OP_SUB.compileOperator();
 	}
 
@@ -255,11 +271,17 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 
 	@Override
 	public String visitIntegerMultiplication(@NotNull ToolParser.IntegerMultiplicationContext ctx) {
+		currentStack.pop(Datatype.TYPE_INT);
+		currentStack.pop(Datatype.TYPE_INT);
+		currentStack.push(Datatype.TYPE_INT);
 		return visit(ctx.left) + "\n" + visit(ctx.right) + "\n" + Operator.OP_MUL.compileOperator();
 	}
 
 	@Override
 	public String visitIntegerDivision(@NotNull ToolParser.IntegerDivisionContext ctx) {
+		currentStack.pop(Datatype.TYPE_INT);
+		currentStack.pop(Datatype.TYPE_INT);
+		currentStack.push(Datatype.TYPE_INT);
 		return visit(ctx.left) + "\n" + visit(ctx.right) + "\n" + Operator.OP_DIV.compileOperator();
 	}
 
@@ -377,6 +399,7 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 					System.exit(-1);
 				}
 			}
+			//POP the value from stack as it has been stored
 			currentStack.pop(type);
 		} catch (RedefinitionException e1) {
 			printError(e1.getMessage(), ctx);
@@ -387,7 +410,6 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 
 	@Override
 	public String visitParameterDefinition(@NotNull ToolParser.ParameterDefinitionContext ctx) {
-		// System.out.println("Parameter: "+ctx.name.getText()+ToolCompilationVisitor.seperator+ctx.type.getText());
 		return ctx.name.getText() + ToolCompilationVisitor.seperator + ctx.type.getText();
 	}
 
@@ -404,7 +426,7 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 				returnString = "ldc 1";
 			break;
 		}
-		currentStack.pop(Datatype.TYPE_BOOL);
+		currentStack.push(Datatype.TYPE_BOOL);
 		return returnString;
 	}
 
