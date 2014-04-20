@@ -4,7 +4,6 @@ import java.util.LinkedList;
 
 
 public class Function {
-	private static final String defaultStackSize = "100";
 	private String name;
 	private Datatype returnType;
 	private LinkedList<String> paramNames;
