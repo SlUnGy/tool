@@ -2,6 +2,7 @@ package compiler;
 
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 import org.antlr.v4.runtime.ParserRuleContext;
@@ -12,6 +13,7 @@ import compiler.Scope.RedefinitionException;
 import compiler.Scope.UnknownNameException;
 import generated.*;
 import generated.ToolParser.CodeContext;
+import generated.ToolParser.DefContext;
 import generated.ToolParser.ExprContext;
 import generated.ToolParser.ParameterContext;
 
@@ -78,7 +80,7 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 	public String visitVariableName(@NotNull ToolParser.VariableNameContext ctx) {
 		return ctx.name.getText();
 	}
-
+	
 	@Override
 	public String visitCodeFunctionCall(@NotNull ToolParser.CodeFunctionCallContext ctx) {
 		return visit(ctx.instruction);
@@ -216,8 +218,19 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 	}
 
 	@Override
-	public String visitExprVariableName(@NotNull ToolParser.ExprVariableNameContext ctx) {
+	public String visitExprString(@NotNull ToolParser.ExprStringContext ctx) {
 		return visit(ctx.e);
+	}
+
+	@Override
+	public String visitExprVariableName(@NotNull ToolParser.ExprVariableNameContext ctx) {
+		try {
+			return currentScope.getVarLoadInstruction(visit(ctx.e));
+		} catch (UnknownNameException e) {
+			printError(e.getMessage(), ctx);
+			System.exit(-1);
+			return "";
+		}
 	}
 
 	@Override
@@ -358,7 +371,7 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 			if(value.length() > 0){
 				definition += value + "\n";
 				try {
-					definition += currentScope.getVarStoreInstruction(ctx.variableName.getText());
+					definition += currentScope.getVarStoreInstruction(ctx.variableName.getText())+System.lineSeparator();
 				} catch (UnknownNameException e) {
 					printError(e.getMessage(), ctx);
 					System.exit(-1);
@@ -434,11 +447,6 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 	}
 
 	@Override
-	public String visitExprString(@NotNull ToolParser.ExprStringContext ctx) {
-		return visitChildren(ctx);
-	}
-
-	@Override
 	public String visitBooleanFactorVariableName(@NotNull ToolParser.BooleanFactorVariableNameContext ctx) {
 		return visit(ctx.factor);
 	}
@@ -495,70 +503,76 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 
 	@Override
 	public String visitFunctionCallParameters(@NotNull ToolParser.FunctionCallParametersContext ctx) {
+		String param = visit(ctx.param)+System.lineSeparator();
 		//TODO: Clean up this datatype mess
-		// Split param string (name:type)
-		String param = visit(ctx.param);
-		
-		if(param.matches("[a-zA-Z]+"))
-		{
-			try {
-				param = currentScope.getVarLoadInstruction(param);
-			} catch (UnknownNameException e) {
-				printError("Variable not found", ctx);
-				e.printStackTrace();
-			}
-		}
-
-		if (ctx.remainder != null) {
-			String remainder = null;
-			for (ExprContext ec : ctx.remainder) {
-				remainder= visit(ec);
-				if(remainder.matches("[a-zA-Z]+"))
-				{
-					try {
-						param = currentScope.getVarLoadInstruction(param);
-					} catch (UnknownNameException e) {
-						printError("Variable not found", ctx);
-						e.printStackTrace();
-					}
-				}
-				
-				remainder = visit(ec);
+		if(ctx.remainder != null && ctx.remainder.size()>0){
+			for(ToolParser.ExprContext expr : ctx.remainder){
+				param += visit(expr)+System.lineSeparator();
 			}
 		}
 
 		return param;
 	}
 
+	
+	/*
+	 * takes definitions and returns it formatted like {static variable definitions, method definitions} 
+	 */
+	private String[] splitDefinition(String pDefinitions){
+		String split[]= new String[]{"",""};
+		
+        for(String part : pDefinitions.split(System.lineSeparator())){
+        	if(part.startsWith(".field static")){
+        		split[0] += part + System.lineSeparator();
+			}
+			else {
+				split[1] += part + System.lineSeparator();
+			}
+        }
+		return split;
+	}
+
+	/*
+	 * parses context information to return {static variable def, method def, static variable initialization}
+	 */
+	private String[] processContextInformation(List<DefContext> pList){
+		String def[] = new String[]{"","",""};
+		for (ToolParser.DefContext cb : pList) {
+			String complete[] = visit(cb).split(ToolCompilationVisitor.seperator);
+			String tmp[] = splitDefinition(complete[0]);
+			def[0]+=tmp[0];
+			def[1]+=tmp[1];
+			if (complete.length == 2) {
+				def[2] += complete[1];
+			}
+		}
+		return def;
+	}
+
 	@Override
 	public String visitProgram(@NotNull ToolParser.ProgramContext ctx) {
-		String staticInitializerBlock = "";
-		String definition = "";
+		String def[] = new String[]{"","",""};
+
 		if (ctx.before != null) {
-			for (ToolParser.DefContext cb : ctx.before) {
-				String complete[] = visit(cb).split(ToolCompilationVisitor.seperator);
-				definition += complete[0];
-				if (complete.length == 2) {
-					staticInitializerBlock += complete[1];
-				}
-			}
+			String tmp[] = processContextInformation(ctx.before);
+			def[0]+=tmp[0];
+			def[1]+=tmp[1];
+			def[2]+=tmp[2];
 		}
 
 		if (ctx.after != null) {
-			for (ToolParser.DefContext ca : ctx.after) {
-				String complete[] = visit(ca).split(ToolCompilationVisitor.seperator);
-				definition += complete[0];
-				if (complete.length == 2) {
-					staticInitializerBlock += complete[1];
-				}
-			}
+			String tmp[] = processContextInformation(ctx.after);
+			def[0]+=tmp[0];
+			def[1]+=tmp[1];
+			def[2]+=tmp[2];
 		}
 
-		String result = ".class " + applicationName + "\n" + ".super java/lang/Object" + "\n" + definition + "\n";
-		if (staticInitializerBlock.length() > 0) {
+		String result = ".class " + applicationName + System.lineSeparator() + ".super java/lang/Object" + System.lineSeparator();
+		result += def[0] + System.lineSeparator() + def[1] + System.lineSeparator();
+		if (def[2].length() > 0) {
 			result += ".method static public <clinit>()V" + "\n";
 			result += ".limit stack 100" + "\n";
-			result += staticInitializerBlock + "return " + "\n";
+			result += def[2] + "return " + "\n";
 			result += ".end method" + "\n";
 		}
 		result += visit(ctx.m) + "\n";

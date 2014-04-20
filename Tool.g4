@@ -32,14 +32,10 @@ expr: e=var_name #exprVariableName
 
 var_name: name=NAME #variableName;
 
-//int_expr: left=product (operator+=('+' | '-') right+=int_expr )*#integerExpression;
-
 int_expr: left=int_expr '+' right=product #integerAddition
 	| left=int_expr '-' right=product #integerSubtraction
 	| left=product #integerProduct
 	;
-
-//product: left=int_factor (operator+=('*'|'/') right+=product )*#productCalc;
 
 product: left=product '*' right=int_factor #integerMultiplication
 	| left=product '/' right=int_factor #integerDivision
@@ -52,8 +48,6 @@ int_factor: L_PAREN factor=int_expr R_PAREN #integerFactorParenthesis
 	| factor=NUMBER #integerFactor
 	;
 	
-//bool_expr: left=bool_factor (operator+=('<' | '>' | '<=' | '>=' | '==' | '!=' | '||' | '&&') right+= bool_expr )*#booleanExpression;
-
 bool_expr: left=bool_factor '<' right=bool_expr #booleanLower
 	| left=bool_factor '>' right=bool_expr #booleanGreater
 	| left=bool_factor '<=' right=bool_expr #booleanLE

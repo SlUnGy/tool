@@ -4,6 +4,7 @@ import java.util.LinkedList;
 
 
 public class Function {
+	private static final String defaultStackSize = "100";
 	private String name;
 	private Datatype returnType;
 	private LinkedList<String> paramNames;
@@ -44,10 +45,10 @@ public class Function {
 	public String createFunctionStatement(String code, int numberLocalVars, int stackSize)
 	{
 		String returnString = ".method "+ this.name + this.getDescriptor()+System.lineSeparator() ;
-		returnString += ".limit locals "+numberLocalVars + "\n";
-		returnString += ".limit stack "+stackSize + "\n";
+		returnString += ".limit stack " + Function.defaultStackSize+System.lineSeparator();
+		returnString += ".limit locals "+numberLocalVars + System.lineSeparator();
 		returnString += code;
-		returnString+= ".end method"+System.lineSeparator() ;
+		returnString += ".end method"+System.lineSeparator() ;
 		return returnString;
 	}
 
