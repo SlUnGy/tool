@@ -16,12 +16,15 @@ public class Stack {
 	
 	public void push(Datatype datatype)
 	{
-		Stack.add(datatype);
-		stackSize++;
-		if(stackSize > maxStackSize) maxStackSize++;
+		if(datatype != Datatype.TYPE_VOID && datatype != Datatype.TYPE_INVALID)
+		{
+			Stack.add(datatype);
+			stackSize++;
+			if(stackSize > maxStackSize) maxStackSize++;
+		}
 	}
 	
-	public void pop(Datatype datatype)
+	public void pop(Datatype datatype, int line)
 	{
 		try
 		{
@@ -32,7 +35,7 @@ public class Stack {
 			}
 			else
 			{
-				System.err.println("Stack missmatch. Found "+Stack.getLast().getType()+ " expected "+ datatype.getType());
+				System.err.println("Stack missmatch line: "+line+". Found "+Stack.getLast().getType()+ " expected "+ datatype.getType());
 				//System.exit(0);
 			}
 		}
@@ -46,7 +49,6 @@ public class Stack {
 	{
 		try
 		{
-
 				Stack.removeLast();
 				stackSize--;
 		}

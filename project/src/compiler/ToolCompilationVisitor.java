@@ -65,7 +65,7 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 	public String visitAssignTo(@NotNull ToolParser.AssignToContext ctx) {
 		try {
 			final String loadValue = visit(ctx.value);
-			currentStack.pop(this.currentScope.getVar(ctx.variableName.getText()).getType());
+			currentStack.pop(this.currentScope.getVar(ctx.variableName.getText()).getType(), tokenStream.get(ctx.getSourceInterval().a).getLine());
 			return "\n" + loadValue + "\n" + this.currentScope.getVarStoreInstruction(ctx.variableName.getText()) + "\n";
 
 		} catch (UnknownNameException e) {
@@ -92,6 +92,7 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 	
 	@Override
 	public String visitCodeFunctionCall(@NotNull ToolParser.CodeFunctionCallContext ctx) {
+		//TODO: This is the point where all the orphaned values on the stack come from
 		return visit(ctx.instruction);
 	}
 
@@ -135,13 +136,12 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 		if (reservedFunctions.containsKey(ctx.fn_name.getText())) {
 			
 			Function functionCall = reservedFunctions.get(ctx.fn_name.getText());
-			String parameters = "";
-			
+			String parameters = "";		
 
 			if (ctx.parameters != null) {
 				parameters = visit(ctx.parameters) + "\n";
 			}
-			
+			currentStack.push(functionCall.getReturnType());
 			return parameters + functionCall.getInvocation();
 
 		} else {
@@ -250,16 +250,16 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 
 	@Override
 	public String visitIntegerAddition(@NotNull ToolParser.IntegerAdditionContext ctx) {
-		currentStack.pop(Datatype.TYPE_INT);
-		currentStack.pop(Datatype.TYPE_INT);
+		currentStack.pop(Datatype.TYPE_INT, tokenStream.get(ctx.getSourceInterval().a).getLine());
+		currentStack.pop(Datatype.TYPE_INT, tokenStream.get(ctx.getSourceInterval().a).getLine());
 		currentStack.push(Datatype.TYPE_INT);
 		return visit(ctx.left) + "\n" + visit(ctx.right) + "\n" + Operator.OP_ADD.compileOperator();
 	}
 
 	@Override
 	public String visitIntegerSubtraction(@NotNull ToolParser.IntegerSubtractionContext ctx) {
-		currentStack.pop(Datatype.TYPE_INT);
-		currentStack.pop(Datatype.TYPE_INT);
+		currentStack.pop(Datatype.TYPE_INT, tokenStream.get(ctx.getSourceInterval().a).getLine());
+		currentStack.pop(Datatype.TYPE_INT, tokenStream.get(ctx.getSourceInterval().a).getLine());
 		currentStack.push(Datatype.TYPE_INT);
 		return visit(ctx.left) + "\n" + visit(ctx.right) + "\n" + Operator.OP_SUB.compileOperator();
 	}
@@ -271,16 +271,16 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 
 	@Override
 	public String visitIntegerMultiplication(@NotNull ToolParser.IntegerMultiplicationContext ctx) {
-		currentStack.pop(Datatype.TYPE_INT);
-		currentStack.pop(Datatype.TYPE_INT);
+		currentStack.pop(Datatype.TYPE_INT, tokenStream.get(ctx.getSourceInterval().a).getLine());
+		currentStack.pop(Datatype.TYPE_INT, tokenStream.get(ctx.getSourceInterval().a).getLine());
 		currentStack.push(Datatype.TYPE_INT);
 		return visit(ctx.left) + "\n" + visit(ctx.right) + "\n" + Operator.OP_MUL.compileOperator();
 	}
 
 	@Override
 	public String visitIntegerDivision(@NotNull ToolParser.IntegerDivisionContext ctx) {
-		currentStack.pop(Datatype.TYPE_INT);
-		currentStack.pop(Datatype.TYPE_INT);
+		currentStack.pop(Datatype.TYPE_INT, tokenStream.get(ctx.getSourceInterval().a).getLine());
+		currentStack.pop(Datatype.TYPE_INT, tokenStream.get(ctx.getSourceInterval().a).getLine());
 		currentStack.push(Datatype.TYPE_INT);
 		return visit(ctx.left) + "\n" + visit(ctx.right) + "\n" + Operator.OP_DIV.compileOperator();
 	}
@@ -400,7 +400,7 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 				}
 			}
 			//POP the value from stack as it has been stored
-			currentStack.pop(type);
+			currentStack.pop(type, tokenStream.get(ctx.getSourceInterval().a).getLine());
 		} catch (RedefinitionException e1) {
 			printError(e1.getMessage(), ctx);
 		}
