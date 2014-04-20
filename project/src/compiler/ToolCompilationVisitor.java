@@ -14,7 +14,6 @@ import compiler.Scope.UnknownNameException;
 import generated.*;
 import generated.ToolParser.CodeContext;
 import generated.ToolParser.DefContext;
-import generated.ToolParser.ExprContext;
 import generated.ToolParser.ParameterContext;
 
 public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
@@ -25,7 +24,7 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 	private Stack currentStack;
 	private Map<String, Function> reservedFunctions;
 
-	private final static String seperator = "#";
+	private final static String separator = "#";
 
 	public ToolCompilationVisitor(TokenStream pTS) {
 		super();
@@ -386,7 +385,7 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 			if (currentScope.isRoot()) {
 				definition = ".field static " + ctx.variableName.getText() + " " + type.getJasminType() + System.lineSeparator();
 				if (value != null) {
-					definition += ToolCompilationVisitor.seperator;
+					definition += ToolCompilationVisitor.separator;
 				}
 			}
 			// if the variable doesn't get a value assigned we don't need to do store a value inside the jasmin code
@@ -410,7 +409,7 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 
 	@Override
 	public String visitParameterDefinition(@NotNull ToolParser.ParameterDefinitionContext ctx) {
-		return ctx.name.getText() + ToolCompilationVisitor.seperator + ctx.type.getText();
+		return ctx.name.getText() + ToolCompilationVisitor.separator + ctx.type.getText();
 	}
 
 	@Override
@@ -501,7 +500,7 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 			parameters = visit(ctx.parameter_list).split(",");
 
 			for (String param : parameters) {
-				String[] t = param.split(ToolCompilationVisitor.seperator);
+				String[] t = param.split(ToolCompilationVisitor.separator);
 
 				paramNames.add(t[0]);
 				paramTypes.add(Datatype.resolveType(t[1]));
@@ -570,7 +569,7 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 	private String[] processContextInformation(List<DefContext> pList){
 		String def[] = new String[]{"","",""};
 		for (ToolParser.DefContext cb : pList) {
-			String complete[] = visit(cb).split(ToolCompilationVisitor.seperator);
+			String complete[] = visit(cb).split(ToolCompilationVisitor.separator);
 			String tmp[] = splitDefinition(complete[0]);
 			def[0]+=tmp[0];
 			def[1]+=tmp[1];
