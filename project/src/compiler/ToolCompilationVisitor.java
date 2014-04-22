@@ -231,7 +231,9 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 	@Override
 	public String visitExprVariableName(@NotNull ToolParser.ExprVariableNameContext ctx) {
 		try {
-			return currentScope.getVarLoadInstruction(visit(ctx.e));
+			String name = visit(ctx.e);
+			currentStack.push(currentScope.getVar(name).getType());
+			return currentScope.getVarLoadInstruction(name);
 		} catch (UnknownNameException e) {
 			printError(e.getMessage(), ctx);
 			System.exit(-1);
