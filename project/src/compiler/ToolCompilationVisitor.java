@@ -16,13 +16,15 @@ import generated.ToolParser.CodeContext;
 import generated.ToolParser.DefContext;
 import generated.ToolParser.ParameterContext;
 
+import reservedFunctions.*;
+
 public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 
 	private TokenStream tokenStream;
 	private String applicationName;
 	private Scope currentScope;
 	private Stack currentStack;
-	private Map<String, Function> reservedFunctions;
+	private Map<String, ReservedFunction> reservedFunctions;
 
 	private final static String separator = "#";
 
@@ -32,21 +34,12 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 		this.applicationName = "Default/default";
 		this.currentScope = new Scope(null, this.applicationName);
 		this.currentStack = new Stack(null);
-		this.reservedFunctions = new HashMap<String, Function>() {
+		this.reservedFunctions = new HashMap<String, ReservedFunction>() {
 			private static final long serialVersionUID = -1000729011127015471L;
 			{
-				put("return", new Function(	"return",
-											"return", 
-											Datatype.TYPE_VOID
-											));
-				put("sprich", new Function(	"sprich",
-											"getstatic java/lang/System/out Ljava/io/PrintStream;\n"+ "swap\n" + System.lineSeparator() + "invokevirtual java/io/PrintStream/println(Ljava/lang/String;)V",
-											Datatype.TYPE_VOID
-											));
-				put("toStr",  new Function(	"toStr",
-											"invokestatic java/lang/Integer/toString(I)Ljava/lang/String;", 
-											Datatype.TYPE_STRING
-											));
+				put("return", new reservedFunctions.Return());
+				put("sprich", new reservedFunctions.Sprich());
+				put("toStr",  new reservedFunctions.ToStr());
 			}
 		};
 	}
@@ -138,14 +131,14 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 	public String visitFunctionCall(@NotNull ToolParser.FunctionCallContext ctx) {
 		if (reservedFunctions.containsKey(ctx.fn_name.getText())) {
 			
-			Function functionCall = reservedFunctions.get(ctx.fn_name.getText());
+			ReservedFunction functionCall = reservedFunctions.get(ctx.fn_name.getText());
 			String parameters = "";		
 
 			if (ctx.parameters != null) {
 				parameters = visit(ctx.parameters) + System.lineSeparator();
 			}
-			currentStack.push(functionCall.getReturnType());
-			return parameters + functionCall.getInvocation()+System.lineSeparator();
+
+			return parameters + functionCall.getJasmineStatements(parameters, currentStack, getLine(ctx))+System.lineSeparator();
 
 		} else {
 			String invocation = "invokevirtual " + this.applicationName + "/" + ctx.fn_name.getText();

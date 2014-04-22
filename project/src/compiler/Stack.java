@@ -45,6 +45,33 @@ public class Stack {
 		}
 	}
 	
+	public void swap(int line)
+	{
+		try
+		{
+			Datatype last = Stack.getLast();
+			Datatype beforeLast = Stack.get(Stack.size()-2); // last index == size - 1
+			
+			Stack.removeLast();
+			Stack.removeLast();
+			
+			Stack.add(last);
+			Stack.add(beforeLast);
+
+		}
+		catch (Exception e)
+		{
+			System.err.println("Stack to small for swap: "+line);
+		}
+		
+	}
+	
+	public Datatype getLastStackEntry()
+	{
+		if(Stack.size() > 0) return Stack.getLast();
+		else {System.err.println("Something somewhere went terribly wrong..."); return Datatype.TYPE_INVALID;}
+	}
+	
 	public void popUnchecked()
 	{
 		try
@@ -54,7 +81,7 @@ public class Stack {
 		}
 		catch (Exception e)
 		{
-			
+			System.err.println("Something somewhere went terribly wrong...");
 		}
 	}
 
