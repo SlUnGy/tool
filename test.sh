@@ -1,3 +1,4 @@
 #! /bin/bash
+rm -rf Default/
 java -jar project/jasmin.jar output.j
-java -jar Default.default
+java Default.default
