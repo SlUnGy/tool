@@ -71,7 +71,7 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 			return parameters + functionCall.getJasmineStatements(parameters, currentStack, line)+System.lineSeparator();
 
 		} else {
-			String invocation = "invokevirtual " + this.applicationName + "/" + fName;
+			String invocation = "invokestatic " + this.applicationName + "/" + fName;
 			Function called;
 
 				called = this.currentScope.getFun(fName);
