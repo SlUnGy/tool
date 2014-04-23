@@ -3,8 +3,9 @@ package compiler;
 public enum Datatype {
 	TYPE_INT("I","Integer","iload","istore"), 
 	//TODO: add all the other instructions, jasmin manual doesn't tell you anything though
-	TYPE_BOOL("Z","Boolean","iload","istore"),
+	TYPE_BOOL("I","Boolean","iload","istore"),
 	TYPE_STRING("Ljava/lang/String;","String","aload","astore"),
+	TYPE_OBJECT("Ljava/lang/Object;","Object","aload","astore"),
 	TYPE_VOID("V","Void/Object","void-load","void-store"),
 	TYPE_INVALID("�","INVALID","invalid-load","invalid-store");
 

@@ -5,7 +5,7 @@ import java.util.LinkedList;
 
 public class Function {
 	private String name;
-	private Datatype returnType;
+	protected Datatype returnType;
 	private LinkedList<String> paramNames;
 	private LinkedList<Datatype> paramTypes;
 	private String invocation = null;
@@ -34,6 +34,15 @@ public class Function {
 	
 	public Datatype getReturnType(){
 		return this.returnType;
+	}
+	
+	public void popParameters(Stack currentStack, int line){
+		
+		for(Datatype type : paramTypes)
+		{
+			currentStack.pop(type, line);
+		}
+		
 	}
 	
 	public String getInvocation()

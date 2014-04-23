@@ -14,7 +14,9 @@ import compiler.Scope.UnknownNameException;
 import generated.*;
 import generated.ToolParser.CodeContext;
 import generated.ToolParser.DefContext;
+import generated.ToolParser.FunctionCallContext;
 import generated.ToolParser.ParameterContext;
+import reservedFunctions.*;
 
 public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 
@@ -22,7 +24,7 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 	private String applicationName;
 	private Scope currentScope;
 	private Stack currentStack;
-	private Map<String, Function> reservedFunctions;
+	private Map<String, ReservedFunctions> reservedFunctions;
 
 	private final static String separator = "#";
 
@@ -32,31 +34,65 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 		this.applicationName = "Default/default";
 		this.currentScope = new Scope(null, this.applicationName);
 		this.currentStack = new Stack(null);
-		this.reservedFunctions = new HashMap<String, Function>() {
+		this.reservedFunctions = new HashMap<String, ReservedFunctions>() {
 			private static final long serialVersionUID = -1000729011127015471L;
 			{
-				put("return", new Function(	"return",
-											"return", 
-											Datatype.TYPE_VOID
-											));
-				put("sprich", new Function(	"sprich",
-											"getstatic java/lang/System/out Ljava/io/PrintStream;\n"+ "swap\n" + System.lineSeparator() + "invokevirtual java/io/PrintStream/println(Ljava/lang/String;)V",
-											Datatype.TYPE_VOID
-											));
-				put("toStr",  new Function(	"toStr",
-											"invokestatic java/lang/Integer/toString(I)Ljava/lang/String;", 
-											Datatype.TYPE_STRING
-											));
+				put("return", new reservedFunctions.Return());
+				put("sprich", new reservedFunctions.Sprich());
+				put("toStr",  new reservedFunctions.ToStr());
 			}
 		};
 	}
 
 	private int getLine(ParserRuleContext ctx){
-		return tokenStream.get(ctx.getSourceInterval().a).getLine();
+		if(ctx != null){
+			return tokenStream.get(ctx.getSourceInterval().a).getLine();
+		}
+		else {
+			return 0;
+		}
 	}
 	
 	private void printError(String pError, ParserRuleContext ctx) {
 		System.err.printf("ERROR (line %d): %s" + System.lineSeparator(), getLine(ctx), pError);
+	}
+	
+	private String functionCall(String fName, String fParams, int line) throws UnknownNameException {
+		
+		if (reservedFunctions.containsKey(fName)) {
+			
+			ReservedFunctions functionCall = reservedFunctions.get(fName);
+			String parameters = "";		
+
+			if (fParams != null) {
+				parameters = fParams + System.lineSeparator();
+			}
+			
+			return parameters + functionCall.getJasmineStatements(parameters, currentStack, line)+System.lineSeparator();
+
+		} else {
+			String invocation = "invokevirtual " + this.applicationName + "/" + fName;
+			Function called;
+
+				called = this.currentScope.getFun(fName);
+				
+				called.popParameters(currentStack, line);	
+
+				invocation += called.getDescriptor() + System.lineSeparator();
+
+				if (fParams != null) {
+					invocation = fParams + System.lineSeparator() + invocation;
+				}
+				
+				if(this.currentScope.getFun(fName).getReturnType() != Datatype.TYPE_VOID)
+				{
+					currentStack.push(this.currentScope.getFun(fName).getReturnType());
+				}
+				
+				
+				
+				return invocation;
+			}
 	}
 
 	@Override
@@ -95,8 +131,33 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 	
 	@Override
 	public String visitCodeFunctionCall(@NotNull ToolParser.CodeFunctionCallContext ctx) {
-		//TODO: This is the point where all the orphaned values on the stack come from
-		return visit(ctx.instruction);
+		try {
+			String fCall = functionCall(ctx.fn_name.getText(), (ctx.parameters != null) ? visit(ctx.parameters) : null, getLine(ctx));
+			
+			if (reservedFunctions.containsKey(ctx.fn_name.getText())) {
+				
+				if(reservedFunctions.get(ctx.fn_name.getText()).getReturnType() != Datatype.TYPE_VOID)
+				{
+					currentStack.pop(reservedFunctions.get(ctx.fn_name.getText()).getReturnType(), getLine(ctx));
+					fCall = fCall + System.lineSeparator() + "pop" + System.lineSeparator();
+				}
+				
+			}
+			else
+			{
+				if(currentScope.getFun(ctx.fn_name.getText()).getReturnType() != Datatype.TYPE_VOID)
+				{
+					currentStack.pop(currentScope.getFun(ctx.fn_name.getText()).getReturnType(), getLine(ctx));
+					fCall = fCall + System.lineSeparator() + "pop" + System.lineSeparator();
+				}
+			}
+				
+			return fCall;
+		} catch (UnknownNameException e) {
+			printError(e.getMessage(), ctx);
+			System.exit(-1);
+			return "";
+		}
 	}
 
 	@Override
@@ -136,41 +197,12 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 
 	@Override
 	public String visitFunctionCall(@NotNull ToolParser.FunctionCallContext ctx) {
-		if (reservedFunctions.containsKey(ctx.fn_name.getText())) {
-			
-			Function functionCall = reservedFunctions.get(ctx.fn_name.getText());
-			String parameters = "";		
-
-			if (ctx.parameters != null) {
-				parameters = visit(ctx.parameters) + System.lineSeparator();
-			}
-			currentStack.push(functionCall.getReturnType());
-			return parameters + functionCall.getInvocation()+System.lineSeparator();
-
-		} else {
-			String invocation = "invokevirtual " + this.applicationName + "/" + ctx.fn_name.getText();
-			Function called;
-			try {
-				called = this.currentScope.getFun(ctx.fn_name.getText());
-
-				invocation += called.getDescriptor() + System.lineSeparator();
-
-				if (ctx.parameters != null) {
-					invocation = visit(ctx.parameters) + System.lineSeparator() + invocation;
-				}
-				
-				if(this.currentScope.getFun(ctx.fn_name.getText()).getReturnType() != Datatype.TYPE_VOID)
-				{
-					currentStack.push(this.currentScope.getFun(ctx.fn_name.getText()).getReturnType());
-				}
-
-				return invocation;
-
-			} catch (UnknownNameException e) {
-				printError(e.getMessage(), ctx);
-				System.exit(-1);
-				return "";
-			}
+		try {
+			return functionCall(ctx.fn_name.getText(),(ctx.parameters != null) ? visit(ctx.parameters) : null, getLine(ctx));
+		} catch (UnknownNameException e) {
+			printError(e.getMessage(), ctx);
+			System.exit(-1);
+			return "";
 		}
 	}
 
@@ -238,7 +270,9 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 	@Override
 	public String visitExprVariableName(@NotNull ToolParser.ExprVariableNameContext ctx) {
 		try {
-			return currentScope.getVarLoadInstruction(visit(ctx.e));
+			String name = visit(ctx.e);
+			currentStack.push(currentScope.getVar(name).getType());
+			return currentScope.getVarLoadInstruction(name);
 		} catch (UnknownNameException e) {
 			printError(e.getMessage(), ctx);
 			System.exit(-1);
@@ -587,7 +621,8 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 	@Override
 	public String visitProgram(@NotNull ToolParser.ProgramContext ctx) {
 		String def[] = new String[]{"","",""};
-
+		this.currentStack = new Stack(this.currentStack);
+		
 		if (ctx.before != null) {
 			String tmp[] = processContextInformation(ctx.before);
 			def[0]+=tmp[0];
@@ -606,11 +641,12 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 		result += def[0] + System.lineSeparator() + def[1] + System.lineSeparator();
 		if (def[2].length() > 0) {
 			result += ".method static public <clinit>()V" + System.lineSeparator();
-			result += ".limit stack 100" + System.lineSeparator();
-			result += ".limit locals 100" + System.lineSeparator();
+			result += ".limit stack "+ this.currentStack.getMaxStackSize() + System.lineSeparator();
+			result += ".limit locals 0" + System.lineSeparator();
 			result += def[2] + "return " + System.lineSeparator();
 			result += ".end method" + System.lineSeparator();
 		}
+		this.currentStack = this.currentStack.getParent();
 		result += visit(ctx.m) + System.lineSeparator();
 
 		return result;

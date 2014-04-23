@@ -10,7 +10,7 @@ def: variableDef=var_def SEMICOLON
 
 code: instruction=var_def SEMICOLON #codeVariableDefinition
 	| instruction=assignment SEMICOLON #codeAssignment
-	| instruction=func_call SEMICOLON #codeFunctionCall
+	| fn_name=NAME L_PAREN parameters=func_call_params?  R_PAREN SEMICOLON #codeFunctionCall
 	| instruction=contr_structure #codeControllStructure
 	;
 
