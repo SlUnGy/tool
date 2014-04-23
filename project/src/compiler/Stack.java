@@ -69,7 +69,7 @@ public class Stack {
 	public Datatype getLastStackEntry()
 	{
 		if(Stack.size() > 0) return Stack.getLast();
-		else {System.err.println("Something somewhere went terribly wrong..."); return Datatype.TYPE_INVALID;}
+		else {return Datatype.TYPE_VOID;}
 	}
 	
 	public void popUnchecked()

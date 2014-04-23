@@ -12,6 +12,7 @@ public class Return implements ReservedFunction {
 			switch(currentStack.getLastStackEntry())
 			{
 				case TYPE_INT:
+				case TYPE_BOOL:
 					returnString = "ireturn";
 				break;
 				case TYPE_STRING:
