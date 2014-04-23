@@ -36,6 +36,15 @@ public class Function {
 		return this.returnType;
 	}
 	
+	public void popParameters(Stack currentStack, int line){
+		
+		for(Datatype type : paramTypes)
+		{
+			currentStack.pop(type, line);
+		}
+		
+	}
+	
 	public String getInvocation()
 	{
 		return this.invocation;

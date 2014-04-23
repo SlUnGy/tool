@@ -67,7 +67,7 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 			if (fParams != null) {
 				parameters = fParams + System.lineSeparator();
 			}
-
+			
 			return parameters + functionCall.getJasmineStatements(parameters, currentStack, line)+System.lineSeparator();
 
 		} else {
@@ -75,6 +75,8 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 			Function called;
 
 				called = this.currentScope.getFun(fName);
+				
+				called.popParameters(currentStack, line);	
 
 				invocation += called.getDescriptor() + System.lineSeparator();
 
@@ -86,7 +88,9 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 				{
 					currentStack.push(this.currentScope.getFun(fName).getReturnType());
 				}
-
+				
+				
+				
 				return invocation;
 			}
 	}
