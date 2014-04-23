@@ -552,6 +552,12 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 		try {
 			currentScope.defineFun(functionName, function);
 			currentScope = new Scope(currentScope, this.applicationName);
+			
+			for(int i = 0; i<=paramNames.size()-1; i++)
+			{
+				currentScope.defineVar(paramNames.get(i), paramTypes.get(i));
+			}
+			
 			currentStack = new Stack(currentStack);
 
 			if (ctx.instructions.size() > 0) {
