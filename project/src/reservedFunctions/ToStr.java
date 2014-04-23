@@ -3,7 +3,11 @@ package reservedFunctions;
 import compiler.Datatype;
 import compiler.Stack;
 
-public class ToStr implements ReservedFunction {
+public class ToStr extends ReservedFunctions {
+	
+	public ToStr() {
+		this.returnType = Datatype.TYPE_STRING;
+	}
 
 	@Override
 	public String getJasmineStatements(String arguments , Stack currentStack, int line) {

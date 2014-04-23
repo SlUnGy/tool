@@ -3,7 +3,13 @@ package reservedFunctions;
 import compiler.Datatype;
 import compiler.Stack;
 
-public class Sprich implements ReservedFunction {
+public class Sprich extends ReservedFunctions {
+	
+	public Sprich()
+	{
+		this.returnType = Datatype.TYPE_VOID;
+	}
+
 
 	@Override
 	public String getJasmineStatements(String arguments, Stack currentStack, int line) {

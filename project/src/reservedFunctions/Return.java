@@ -2,7 +2,11 @@ package reservedFunctions;
 import compiler.Datatype;
 import compiler.Stack;
 
-public class Return implements ReservedFunction {
+public class Return extends ReservedFunctions {
+	
+	public Return()	{
+		this.returnType = Datatype.TYPE_VOID;
+	}
 
 	@Override
 	public String getJasmineStatements(String arguments, Stack currentStack, int line) {
