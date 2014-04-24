@@ -339,42 +339,42 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 
 	@Override
 	public String visitBooleanLower(@NotNull ToolParser.BooleanLowerContext ctx) {
-		return applicationName;
+		return visit(ctx.left)+System.lineSeparator()+visit(ctx.right)+Operator.OP_LT.compileOperator()+System.lineSeparator();
 	}
 
 	@Override
 	public String visitBooleanGreater(@NotNull ToolParser.BooleanGreaterContext ctx) {
-		return applicationName;
+		return visit(ctx.left)+System.lineSeparator()+visit(ctx.right)+Operator.OP_GT.compileOperator()+System.lineSeparator();
 	}
 
 	@Override
 	public String visitBooleanLE(@NotNull ToolParser.BooleanLEContext ctx) {
-		return applicationName;
+		return visit(ctx.left)+System.lineSeparator()+visit(ctx.right)+Operator.OP_LE.compileOperator()+System.lineSeparator();
 	}
 
 	@Override
 	public String visitBooleanGE(@NotNull ToolParser.BooleanGEContext ctx) {
-		return applicationName;
+		return visit(ctx.left)+System.lineSeparator()+visit(ctx.right)+Operator.OP_GE.compileOperator()+System.lineSeparator();
 	}
 
 	@Override
 	public String visitBooleanEqual(@NotNull ToolParser.BooleanEqualContext ctx) {
-		return applicationName;
+		return visit(ctx.left)+System.lineSeparator()+visit(ctx.right)+Operator.OP_EQ.compileOperator()+System.lineSeparator();
 	}
 
 	@Override
 	public String visitBooleanUnequal(@NotNull ToolParser.BooleanUnequalContext ctx) {
-		return applicationName;
+		return visit(ctx.left)+System.lineSeparator()+visit(ctx.right)+Operator.OP_NEQ.compileOperator()+System.lineSeparator();
 	}
 
 	@Override
 	public String visitBooleanOr(@NotNull ToolParser.BooleanOrContext ctx) {
-		return applicationName;
+		return visit(ctx.left)+System.lineSeparator()+visit(ctx.right)+Operator.OP_OR.compileOperator()+System.lineSeparator();
 	}
 
 	@Override
 	public String visitBooleanAnd(@NotNull ToolParser.BooleanAndContext ctx) {
-		return applicationName;
+		return visit(ctx.left)+System.lineSeparator()+visit(ctx.right)+Operator.OP_AND.compileOperator()+System.lineSeparator();
 	}
 
 	@Override
