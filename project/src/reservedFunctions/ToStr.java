@@ -18,7 +18,16 @@ public class ToStr extends ReservedFunctions {
 	@Override
 	public void executeStackOperations(Stack currentStack, String arguments,
 			int line) {
-		currentStack.pop(Datatype.TYPE_INT, line);
+		
+		if(currentStack.getLastStackEntry() == Datatype.TYPE_INT)
+		{
+			currentStack.pop(Datatype.TYPE_INT, line);
+		}
+		else
+		{
+			currentStack.pop(Datatype.TYPE_BOOL, line);
+		}
+		
 		currentStack.push(Datatype.TYPE_STRING);
 	}
 
