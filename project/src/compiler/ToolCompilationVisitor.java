@@ -14,6 +14,8 @@ import compiler.Scope.UnknownNameException;
 import generated.*;
 import generated.ToolParser.CodeContext;
 import generated.ToolParser.DefContext;
+import generated.ToolParser.Elif_structureContext;
+import generated.ToolParser.ElseIfContext;
 import generated.ToolParser.FunctionCallContext;
 import generated.ToolParser.ParameterContext;
 import reservedFunctions.*;
@@ -216,18 +218,55 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 		return visit(ctx.factor);
 	}
 
+	@SuppressWarnings("unused")
 	@Override
 	public String visitIf(@NotNull ToolParser.IfContext ctx) {
 		String cond = visit(ctx.if_condition);
-
+		
+		String cond_true = LabelCounter.createSafeName("cond_true");
+		String cond_false = LabelCounter.createSafeName("cond_false");
+		String cond_end =  LabelCounter.createSafeName("cond_end");
+		
 		String instructions = "";
+		String conditions = "";
+		String returnString = "";
+		
+		//Branch if condition is true
+		conditions = cond + "ifne " + cond_true  + System.lineSeparator();
+				
+		
+		instructions += cond_true + ":"  + System.lineSeparator();
+		
 		if (ctx.if_instructions != null) {
 			for (CodeContext cc : ctx.if_instructions) {
 				instructions += visit(cc);
 			}
+			instructions += "goto " + cond_end + System.lineSeparator();
+		}
+		
+		if(ctx.elifs != null)
+		{
+			String[] result = null;
+			String label;
+			for(Elif_structureContext eif : ctx.elifs)
+			{
+				label = LabelCounter.createSafeName("cond_elseif");
+				result = visit(eif).split(ToolCompilationVisitor.separator);
+				conditions += result[0] + label + System.lineSeparator();
+				instructions += label+ ":" + result[1] + "goto "+cond_end + System.lineSeparator();
+			}
+		}
+		
+		instructions += cond_false + ":" + System.lineSeparator(); 
+		if (ctx.else_instructions != null) {
+			for (CodeContext cc : ctx.else_instructions) {
+				instructions += visit(cc);
+			}
 		}
 
-		return cond + instructions + System.lineSeparator();
+		returnString = conditions + "goto "+ cond_false + System.lineSeparator() + instructions + cond_end + ":";
+		
+		return returnString;
 	}
 
 	@Override
@@ -239,7 +278,7 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 				instructions += visit(cc);
 			}
 		}
-		return cond + instructions + System.lineSeparator();
+		return cond + "ifne "+ ToolCompilationVisitor.separator + instructions + System.lineSeparator();
 	}
 
 	@Override
