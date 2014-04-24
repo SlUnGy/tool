@@ -26,7 +26,7 @@ public class ToolBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements T
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitExprBoolean(@NotNull ToolParser.ExprBooleanContext ctx) { return visitChildren(ctx); }
+	@Override public T visitStringFactorFunctionCall(@NotNull ToolParser.StringFactorFunctionCallContext ctx) { return visitChildren(ctx); }
 
 	/**
 	 * {@inheritDoc}
@@ -34,7 +34,7 @@ public class ToolBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements T
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitStringFactorFunctionCall(@NotNull ToolParser.StringFactorFunctionCallContext ctx) { return visitChildren(ctx); }
+	@Override public T visitExprBoolean(@NotNull ToolParser.ExprBooleanContext ctx) { return visitChildren(ctx); }
 
 	/**
 	 * {@inheritDoc}
@@ -99,6 +99,14 @@ public class ToolBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements T
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
 	@Override public T visitDefVariableDef(@NotNull ToolParser.DefVariableDefContext ctx) { return visitChildren(ctx); }
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.</p>
+	 */
+	@Override public T visitElse(@NotNull ToolParser.ElseContext ctx) { return visitChildren(ctx); }
 
 	/**
 	 * {@inheritDoc}

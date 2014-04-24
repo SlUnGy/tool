@@ -14,12 +14,14 @@ code: instruction=var_def SEMICOLON #codeVariableDefinition
 	| instruction=contr_structure #codeControllStructure
 	;
 
-contr_structure: IF L_PAREN if_condition=bool_expr R_PAREN L_C_BRACE (if_instructions += code)* R_C_BRACE ( elifs += elif_structure )* ( ELSE L_C_BRACE (else_instructions += code)* R_C_BRACE )? #if
+contr_structure: IF L_PAREN if_condition=bool_expr R_PAREN L_C_BRACE (if_instructions += code)* R_C_BRACE ( elifs += elif_structure )* elseStructure=else_structure? #if
 		| DO_WHILE L_C_BRACE (instructions += code)* R_C_BRACE L_PAREN condition=bool_expr R_PAREN SEMICOLON #doWhile
 		| WHILE L_PAREN condition=bool_expr R_PAREN L_C_BRACE (instructions += code)* R_C_BRACE #while
 		;
 
 elif_structure: ELSEIF L_PAREN elif_condition=bool_expr R_PAREN L_C_BRACE (elif_instructions += code)* R_C_BRACE #elseIf;
+
+else_structure: ELSE L_C_BRACE (else_instructions += code)* R_C_BRACE #else;
 
 assignment: variableName=NAME ASSIGN_TO value=expr #assignTo;
 

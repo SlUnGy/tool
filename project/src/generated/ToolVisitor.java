@@ -19,18 +19,18 @@ public interface ToolVisitor<T> extends ParseTreeVisitor<T> {
 	T visitAssignTo(@NotNull ToolParser.AssignToContext ctx);
 
 	/**
-	 * Visit a parse tree produced by {@link ToolParser#exprBoolean}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitExprBoolean(@NotNull ToolParser.ExprBooleanContext ctx);
-
-	/**
 	 * Visit a parse tree produced by {@link ToolParser#stringFactorFunctionCall}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitStringFactorFunctionCall(@NotNull ToolParser.StringFactorFunctionCallContext ctx);
+
+	/**
+	 * Visit a parse tree produced by {@link ToolParser#exprBoolean}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitExprBoolean(@NotNull ToolParser.ExprBooleanContext ctx);
 
 	/**
 	 * Visit a parse tree produced by {@link ToolParser#stringFactorVariableName}.
@@ -87,6 +87,13 @@ public interface ToolVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitDefVariableDef(@NotNull ToolParser.DefVariableDefContext ctx);
+
+	/**
+	 * Visit a parse tree produced by {@link ToolParser#else}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitElse(@NotNull ToolParser.ElseContext ctx);
 
 	/**
 	 * Visit a parse tree produced by {@link ToolParser#booleanUnequal}.

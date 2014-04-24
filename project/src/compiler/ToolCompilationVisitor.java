@@ -253,18 +253,17 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 				label = LabelCounter.createSafeName("cond_elseif");
 				result = visit(eif).split(ToolCompilationVisitor.separator);
 				conditions += result[0] + label + System.lineSeparator();
-				instructions += label+ ":" + result[1] + "goto "+cond_end + System.lineSeparator();
+				instructions += label + ":" + result[1] + "goto "+ cond_end + System.lineSeparator();
 			}
 		}
 		
-		instructions += cond_false + ":" + System.lineSeparator(); 
-		if (ctx.else_instructions != null) {
-			for (CodeContext cc : ctx.else_instructions) {
-				instructions += visit(cc);
-			}
+		instructions += cond_false + ":" + System.lineSeparator();
+		
+		if (ctx.else_structure() != null) {
+			returnString += visit(ctx.elseStructure);
 		}
-
-		returnString = conditions + "goto "+ cond_false + System.lineSeparator() + instructions + cond_end + ":";
+		
+		returnString += conditions + "goto "+ cond_false + System.lineSeparator() + instructions + cond_end + ":";
 		
 		return returnString;
 	}
@@ -704,6 +703,17 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 	
 	@Override
 	public String visitDefFunctionDef(@NotNull ToolParser.DefFunctionDefContext ctx) {
-		return visitChildren(ctx);
+		return visit(ctx.functionDef);
+	}
+	
+	@Override 
+	public String visitElse(@NotNull ToolParser.ElseContext ctx) {
+		String instructions = "";
+		if (ctx.else_instructions != null) {
+			for (CodeContext cc : ctx.else_instructions) {
+				instructions += visit(cc);
+			}
+		}
+		return ".line " + getLine(ctx) + System.lineSeparator() + instructions;
 	}
 }
