@@ -219,22 +219,38 @@ public class ToolParser extends Parser {
 	}
 
 	public static class DefContext extends ParserRuleContext {
-		public Var_defContext variableDef;
-		public Func_defContext functionDef;
-		public TerminalNode SEMICOLON() { return getToken(ToolParser.SEMICOLON, 0); }
-		public Var_defContext var_def() {
-			return getRuleContext(Var_defContext.class,0);
-		}
-		public Func_defContext func_def() {
-			return getRuleContext(Func_defContext.class,0);
-		}
 		public DefContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_def; }
+	 
+		public DefContext() { }
+		public void copyFrom(DefContext ctx) {
+			super.copyFrom(ctx);
+		}
+	}
+	public static class DefFunctionDefContext extends DefContext {
+		public Func_defContext functionDef;
+		public Func_defContext func_def() {
+			return getRuleContext(Func_defContext.class,0);
+		}
+		public DefFunctionDefContext(DefContext ctx) { copyFrom(ctx); }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof ToolVisitor ) return ((ToolVisitor<? extends T>)visitor).visitDef(this);
+			if ( visitor instanceof ToolVisitor ) return ((ToolVisitor<? extends T>)visitor).visitDefFunctionDef(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class DefVariableDefContext extends DefContext {
+		public Var_defContext variableDef;
+		public TerminalNode SEMICOLON() { return getToken(ToolParser.SEMICOLON, 0); }
+		public Var_defContext var_def() {
+			return getRuleContext(Var_defContext.class,0);
+		}
+		public DefVariableDefContext(DefContext ctx) { copyFrom(ctx); }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof ToolVisitor ) return ((ToolVisitor<? extends T>)visitor).visitDefVariableDef(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -248,16 +264,18 @@ public class ToolParser extends Parser {
 			case TYPE_INT:
 			case TYPE_BOOL:
 			case TYPE_STRING:
+				_localctx = new DefVariableDefContext(_localctx);
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(73); ((DefContext)_localctx).variableDef = var_def();
+				setState(73); ((DefVariableDefContext)_localctx).variableDef = var_def();
 				setState(74); match(SEMICOLON);
 				}
 				break;
 			case DEFINE:
+				_localctx = new DefFunctionDefContext(_localctx);
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(76); ((DefContext)_localctx).functionDef = func_def();
+				setState(76); ((DefFunctionDefContext)_localctx).functionDef = func_def();
 				}
 				break;
 			default:

@@ -33,18 +33,18 @@ public interface ToolVisitor<T> extends ParseTreeVisitor<T> {
 	T visitStringFactorFunctionCall(@NotNull ToolParser.StringFactorFunctionCallContext ctx);
 
 	/**
-	 * Visit a parse tree produced by {@link ToolParser#variableName}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitVariableName(@NotNull ToolParser.VariableNameContext ctx);
-
-	/**
 	 * Visit a parse tree produced by {@link ToolParser#stringFactorVariableName}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitStringFactorVariableName(@NotNull ToolParser.StringFactorVariableNameContext ctx);
+
+	/**
+	 * Visit a parse tree produced by {@link ToolParser#variableName}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitVariableName(@NotNull ToolParser.VariableNameContext ctx);
 
 	/**
 	 * Visit a parse tree produced by {@link ToolParser#integerMultiplication}.
@@ -80,6 +80,13 @@ public interface ToolVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitStringFactorParenthesis(@NotNull ToolParser.StringFactorParenthesisContext ctx);
+
+	/**
+	 * Visit a parse tree produced by {@link ToolParser#defVariableDef}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitDefVariableDef(@NotNull ToolParser.DefVariableDefContext ctx);
 
 	/**
 	 * Visit a parse tree produced by {@link ToolParser#booleanUnequal}.
@@ -157,6 +164,13 @@ public interface ToolVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitMainFunction(@NotNull ToolParser.MainFunctionContext ctx);
+
+	/**
+	 * Visit a parse tree produced by {@link ToolParser#defFunctionDef}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitDefFunctionDef(@NotNull ToolParser.DefFunctionDefContext ctx);
 
 	/**
 	 * Visit a parse tree produced by {@link ToolParser#functionDefinition}.
@@ -248,13 +262,6 @@ public interface ToolVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitCodeControllStructure(@NotNull ToolParser.CodeControllStructureContext ctx);
-
-	/**
-	 * Visit a parse tree produced by {@link ToolParser#def}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitDef(@NotNull ToolParser.DefContext ctx);
 
 	/**
 	 * Visit a parse tree produced by {@link ToolParser#if}.

@@ -4,8 +4,8 @@ start: (before += def)* m=main (after += def)* #program;
 
 main: MAIN L_PAREN R_PAREN L_C_BRACE (instructions += code)* R_C_BRACE#mainFunction;
 
-def: variableDef=var_def SEMICOLON
-	| functionDef=func_def
+def: variableDef=var_def SEMICOLON #defVariableDef
+	| functionDef=func_def #defFunctionDef
 	;
 
 code: instruction=var_def SEMICOLON #codeVariableDefinition

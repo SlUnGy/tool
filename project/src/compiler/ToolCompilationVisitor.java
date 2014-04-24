@@ -60,7 +60,7 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 	}
 	
 	private String functionCall(String fName, String fParams, int line) throws UnknownNameException {
-		
+				
 		if (reservedFunctions.containsKey(fName)) {
 			
 			ReservedFunctions functionCall = reservedFunctions.get(fName);
@@ -134,7 +134,7 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 	@Override
 	public String visitCodeFunctionCall(@NotNull ToolParser.CodeFunctionCallContext ctx) {
 		try {
-			String fCall = functionCall(ctx.fn_name.getText(), (ctx.parameters != null) ? visit(ctx.parameters) : null, getLine(ctx));
+			String fCall = ".line " + getLine(ctx) + System.lineSeparator() + functionCall(ctx.fn_name.getText(), (ctx.parameters != null) ? visit(ctx.parameters) : null, getLine(ctx));
 			
 			if (reservedFunctions.containsKey(ctx.fn_name.getText())) {
 				
@@ -164,12 +164,12 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 
 	@Override
 	public String visitCodeAssignment(@NotNull ToolParser.CodeAssignmentContext ctx) {
-		return visit(ctx.instruction);
+		return ".line " + getLine(ctx) + System.lineSeparator() + visit(ctx.instruction) + "\n<><><><><><>\n";
 	}
 
 	@Override
 	public String visitCodeVariableDefinition(@NotNull ToolParser.CodeVariableDefinitionContext ctx) {
-		return visit(ctx.instruction);
+		return ".line " + getLine(ctx) + System.lineSeparator() + visit(ctx.instruction) + "\n<><><><><><>\n";
 	}
 
 	@Override
@@ -695,5 +695,15 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 		result += visit(ctx.m) + System.lineSeparator();
 
 		return result;
+	}
+	
+	@Override
+	public String visitDefVariableDef(@NotNull ToolParser.DefVariableDefContext ctx) {
+		return ".line " + getLine(ctx) + System.lineSeparator() + visitChildren(ctx)  + "\n<><><><><><>\n";
+	}
+	
+	@Override
+	public String visitDefFunctionDef(@NotNull ToolParser.DefFunctionDefContext ctx) {
+		return visitChildren(ctx);
 	}
 }
