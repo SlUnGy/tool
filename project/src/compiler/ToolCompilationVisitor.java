@@ -316,7 +316,7 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 	public String visitBooleanFactorInverted(@NotNull ToolParser.BooleanFactorInvertedContext ctx) {
 		return visit(ctx.factor);
 	}
-	
+
 	@Override
 	public String visitBooleanFactorBoolean(@NotNull ToolParser.BooleanFactorBooleanContext ctx) {
 		String returnString = null;
@@ -337,9 +337,50 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 	public String visitBooleanFactorInt(@NotNull ToolParser.BooleanFactorIntContext ctx) {
 		return visitChildren(ctx);
 	}
+
 	@Override
 	public String visitBooleanFactorVariableName(@NotNull ToolParser.BooleanFactorVariableNameContext ctx) {
 		return visit(ctx.factor);
+	}
+
+	@Override
+	public String visitBooleanLower(@NotNull ToolParser.BooleanLowerContext ctx) {
+		return applicationName;
+	}
+
+	@Override
+	public String visitBooleanGreater(@NotNull ToolParser.BooleanGreaterContext ctx) {
+		return applicationName;
+	}
+
+	@Override
+	public String visitBooleanLE(@NotNull ToolParser.BooleanLEContext ctx) {
+		return applicationName;
+	}
+
+	@Override
+	public String visitBooleanGE(@NotNull ToolParser.BooleanGEContext ctx) {
+		return applicationName;
+	}
+
+	@Override
+	public String visitBooleanEqual(@NotNull ToolParser.BooleanEqualContext ctx) {
+		return applicationName;
+	}
+
+	@Override
+	public String visitBooleanUnequal(@NotNull ToolParser.BooleanUnequalContext ctx) {
+		return applicationName;
+	}
+
+	@Override
+	public String visitBooleanOr(@NotNull ToolParser.BooleanOrContext ctx) {
+		return applicationName;
+	}
+
+	@Override
+	public String visitBooleanAnd(@NotNull ToolParser.BooleanAndContext ctx) {
+		return applicationName;
 	}
 
 	@Override
@@ -545,7 +586,7 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 		this.currentStack = this.currentStack.getParent();
 		return mainStuff;
 	}
-	
+
 	@Override
 	public String visitDataType(@NotNull ToolParser.DataTypeContext ctx) {
 		return visitChildren(ctx);

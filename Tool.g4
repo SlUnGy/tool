@@ -48,10 +48,10 @@ int_factor: L_PAREN factor=int_expr R_PAREN #integerFactorParenthesis
 	| factor=NUMBER #integerFactor
 	;
 	
-bool_expr: left=bool_factor '<' right=bool_expr #booleanLower
-	| left=bool_factor '>' right=bool_expr #booleanGreater
-	| left=bool_factor '<=' right=bool_expr #booleanLE
-	| left=bool_factor '>=' right=bool_expr #booleanGE
+bool_expr: left=int_expr '<' right=int_expr #booleanLower
+	| left=int_expr '>' right=int_expr #booleanGreater
+	| left=int_expr '<=' right=int_expr #booleanLE
+	| left=int_expr '>=' right=int_expr #booleanGE
 	| left=bool_factor '==' right=bool_expr #booleanEqual
 	| left=bool_factor '!=' right=bool_expr #booleanUnequal
 	| left=bool_factor '||' right=bool_expr #booleanOr
