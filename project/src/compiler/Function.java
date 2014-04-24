@@ -69,6 +69,7 @@ public class Function {
 		returnString += ".limit stack " + stackSize+System.lineSeparator();
 		returnString += ".limit locals "+numberLocalVars + System.lineSeparator();
 		returnString += code;
+		if(!code.contains("return")) returnString += "return" + System.lineSeparator();
 		returnString += ".end method"+System.lineSeparator() ;
 		return returnString;
 	}
