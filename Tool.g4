@@ -85,11 +85,11 @@ func_data_type:	var_data_type #functionDataType
 		| type=TYPE_VOID #functionDataType
 		;
 
-func_def: DEFINE type=func_data_type fn_name=NAME L_PAREN parameter_list=func_def_params? R_PAREN L_C_BRACE (instructions += code)* R_C_BRACE #functionDefinition;
+func_def: DEFINE type=func_data_type fn_name=NAME L_PAREN parameter_list=func_def_params? R_PAREN L_C_BRACE (instructions += code)* RETURN L_PAREN func_call_params? R_PAREN SEMICOLON R_C_BRACE #functionDefinition;
 
 func_def_params: param=parameter ( COMMA remainder+=parameter )*#functionDefinitionParameters;
 
-func_call: fn_name=NAME L_PAREN parameters=func_call_params?  R_PAREN #functionCall;
+func_call: fn_name=NAME L_PAREN parameters=func_call_params? R_PAREN #functionCall;
 
 func_call_params: param=expr ( COMMA remainder+=expr )* #functionCallParameters;
 
@@ -103,6 +103,7 @@ SEMICOLON: ';';
 COMMA: ',';
 ASSIGN_TO: '=';
 CAT: '+';
+RETURN : 'return';
 
 INVERT: '!';
 
