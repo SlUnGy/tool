@@ -12,12 +12,6 @@ import org.antlr.v4.runtime.misc.NotNull;
 import compiler.Scope.RedefinitionException;
 import compiler.Scope.UnknownNameException;
 import generated.*;
-import generated.ToolParser.CodeContext;
-import generated.ToolParser.DefContext;
-import generated.ToolParser.Elif_structureContext;
-import generated.ToolParser.ElseIfContext;
-import generated.ToolParser.FunctionCallContext;
-import generated.ToolParser.ParameterContext;
 import reservedFunctions.*;
 
 public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
@@ -208,7 +202,7 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 		instructions += cond_true + ":" + System.lineSeparator();
 
 		if (ctx.if_instructions != null) {
-			for (CodeContext cc : ctx.if_instructions) {
+			for (ToolParser.CodeContext cc : ctx.if_instructions) {
 				instructions += visit(cc);
 			}
 			instructions += "goto " + cond_end + System.lineSeparator();
@@ -217,7 +211,7 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 		if (ctx.elifs != null) {
 			String[] result = null;
 			String label;
-			for (Elif_structureContext eif : ctx.elifs) {
+			for (ToolParser.Elif_structureContext eif : ctx.elifs) {
 				label = LabelCounter.createSafeName("cond_elseif");
 				result = visit(eif).split(ToolCompilationVisitor.separator);
 				conditions += result[0] + label + System.lineSeparator();
@@ -227,7 +221,7 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 
 		instructions += cond_false + ":" + System.lineSeparator();
 		if (ctx.else_instructions != null) {
-			for (CodeContext cc : ctx.else_instructions) {
+			for (ToolParser.CodeContext cc : ctx.else_instructions) {
 				instructions += visit(cc);
 			}
 		}
@@ -256,7 +250,7 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 		String param = visit(ctx.param);
 
 		if (ctx.remainder != null) {
-			for (ParameterContext ec : ctx.remainder) {
+			for (ToolParser.ParameterContext ec : ctx.remainder) {
 				param += "," + visit(ec);
 			}
 		}
@@ -676,7 +670,7 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 	 * parses context information to return {static variable def, method def,
 	 * static variable initialization}
 	 */
-	private String[] processContextInformation(List<DefContext> pList) {
+	private String[] processContextInformation(List<ToolParser.DefContext> pList) {
 		String def[] = new String[] { "", "", "" };
 		for (ToolParser.DefContext cb : pList) {
 			String complete[] = visit(cb).split(ToolCompilationVisitor.separator);
