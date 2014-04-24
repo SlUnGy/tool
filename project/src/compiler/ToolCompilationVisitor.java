@@ -329,7 +329,7 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 
 	@Override
 	public String visitBooleanFactorInt(@NotNull ToolParser.BooleanFactorIntContext ctx) {
-		return visitChildren(ctx);
+		return visit(ctx.factor);
 	}
 
 	@Override
@@ -339,82 +339,92 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 
 	@Override
 	public String visitBooleanLower(@NotNull ToolParser.BooleanLowerContext ctx) {
+		String tmp = visit(ctx.left)+System.lineSeparator()+visit(ctx.right)+Operator.OP_LT.compileOperator()+System.lineSeparator();
 		currentStack.pop(Datatype.TYPE_INT, getLine(ctx));
 		currentStack.pop(Datatype.TYPE_INT, getLine(ctx));
 		currentStack.push(Datatype.TYPE_BOOL);
-		return visit(ctx.left)+System.lineSeparator()+visit(ctx.right)+Operator.OP_LT.compileOperator()+System.lineSeparator();
+		return tmp;
 	}
 
 	@Override
 	public String visitBooleanGreater(@NotNull ToolParser.BooleanGreaterContext ctx) {
+		String tmp = visit(ctx.left)+System.lineSeparator()+visit(ctx.right)+Operator.OP_GT.compileOperator()+System.lineSeparator();
 		currentStack.pop(Datatype.TYPE_INT, getLine(ctx));
 		currentStack.pop(Datatype.TYPE_INT, getLine(ctx));
 		currentStack.push(Datatype.TYPE_BOOL);
-		return visit(ctx.left)+System.lineSeparator()+visit(ctx.right)+Operator.OP_GT.compileOperator()+System.lineSeparator();
+		return tmp;
 	}
 
 	@Override
 	public String visitBooleanLE(@NotNull ToolParser.BooleanLEContext ctx) {
+		String tmp = visit(ctx.left)+System.lineSeparator()+visit(ctx.right)+Operator.OP_LE.compileOperator()+System.lineSeparator();
 		currentStack.pop(Datatype.TYPE_INT, getLine(ctx));
 		currentStack.pop(Datatype.TYPE_INT, getLine(ctx));
 		currentStack.push(Datatype.TYPE_BOOL);
-		return visit(ctx.left)+System.lineSeparator()+visit(ctx.right)+Operator.OP_LE.compileOperator()+System.lineSeparator();
+		return tmp;
 	}
 
 	@Override
 	public String visitBooleanGE(@NotNull ToolParser.BooleanGEContext ctx) {
+		String tmp = visit(ctx.left)+System.lineSeparator()+visit(ctx.right)+Operator.OP_GE.compileOperator()+System.lineSeparator();
 		currentStack.pop(Datatype.TYPE_INT, getLine(ctx));
 		currentStack.pop(Datatype.TYPE_INT, getLine(ctx));
 		currentStack.push(Datatype.TYPE_BOOL);
-		return visit(ctx.left)+System.lineSeparator()+visit(ctx.right)+Operator.OP_GE.compileOperator()+System.lineSeparator();
+		return tmp;
 	}
 
 	@Override
 	public String visitBooleanEqual(@NotNull ToolParser.BooleanEqualContext ctx) {
+		String tmp = visit(ctx.left)+System.lineSeparator()+visit(ctx.right)+Operator.OP_EQ.compileOperator()+System.lineSeparator();
 		currentStack.popUnchecked();
 		currentStack.popUnchecked();
 		currentStack.push(Datatype.TYPE_BOOL);
-		return visit(ctx.left)+System.lineSeparator()+visit(ctx.right)+Operator.OP_EQ.compileOperator()+System.lineSeparator();
+		return tmp;
 	}
 
 	@Override
 	public String visitBooleanUnequal(@NotNull ToolParser.BooleanUnequalContext ctx) {
+		String tmp = visit(ctx.left)+System.lineSeparator()+visit(ctx.right)+Operator.OP_NEQ.compileOperator()+System.lineSeparator();
 		currentStack.popUnchecked();
 		currentStack.popUnchecked();
 		currentStack.push(Datatype.TYPE_BOOL);
-		return visit(ctx.left)+System.lineSeparator()+visit(ctx.right)+Operator.OP_NEQ.compileOperator()+System.lineSeparator();
+		return tmp; 
 	}
 
 	@Override
 	public String visitBooleanOr(@NotNull ToolParser.BooleanOrContext ctx) {
+		String tmp = visit(ctx.left)+System.lineSeparator()+visit(ctx.right)+Operator.OP_OR.compileOperator()+System.lineSeparator();
 		currentStack.pop(Datatype.TYPE_BOOL, getLine(ctx));
 		currentStack.pop(Datatype.TYPE_BOOL, getLine(ctx));
 		currentStack.push(Datatype.TYPE_BOOL);
-		return visit(ctx.left)+System.lineSeparator()+visit(ctx.right)+Operator.OP_OR.compileOperator()+System.lineSeparator();
+		return tmp;
 	}
 
 	@Override
 	public String visitBooleanAnd(@NotNull ToolParser.BooleanAndContext ctx) {
+		String tmp = visit(ctx.left)+System.lineSeparator()+visit(ctx.right)+Operator.OP_AND.compileOperator()+System.lineSeparator();
 		currentStack.pop(Datatype.TYPE_BOOL, getLine(ctx));
 		currentStack.pop(Datatype.TYPE_BOOL, getLine(ctx));
 		currentStack.push(Datatype.TYPE_BOOL);
-		return visit(ctx.left)+System.lineSeparator()+visit(ctx.right)+Operator.OP_AND.compileOperator()+System.lineSeparator();
+		return tmp;
 	}
 
 	@Override
 	public String visitIntegerAddition(@NotNull ToolParser.IntegerAdditionContext ctx) {
+		String tmp = visit(ctx.left) + System.lineSeparator() + visit(ctx.right) + System.lineSeparator() + Operator.OP_ADD.compileOperator();
 		currentStack.pop(Datatype.TYPE_INT, getLine(ctx));
 		currentStack.pop(Datatype.TYPE_INT, getLine(ctx));
 		currentStack.push(Datatype.TYPE_INT);
-		return visit(ctx.left) + System.lineSeparator() + visit(ctx.right) + System.lineSeparator() + Operator.OP_ADD.compileOperator();
+		return tmp;
 	}
 
 	@Override
 	public String visitIntegerSubtraction(@NotNull ToolParser.IntegerSubtractionContext ctx) {
+		String tmp = visit(ctx.left) + System.lineSeparator() + visit(ctx.right) + System.lineSeparator() + Operator.OP_SUB.compileOperator();
 		currentStack.pop(Datatype.TYPE_INT, getLine(ctx));
 		currentStack.pop(Datatype.TYPE_INT, getLine(ctx));
 		currentStack.push(Datatype.TYPE_INT);
-		return visit(ctx.left) + System.lineSeparator() + visit(ctx.right) + System.lineSeparator() + Operator.OP_SUB.compileOperator();
+		return tmp;
 	}
 
 	@Override
@@ -424,18 +434,20 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 
 	@Override
 	public String visitIntegerMultiplication(@NotNull ToolParser.IntegerMultiplicationContext ctx) {
+		String tmp = visit(ctx.left) + System.lineSeparator() + visit(ctx.right) + System.lineSeparator() + Operator.OP_MUL.compileOperator();
 		currentStack.pop(Datatype.TYPE_INT, getLine(ctx));
 		currentStack.pop(Datatype.TYPE_INT, getLine(ctx));
 		currentStack.push(Datatype.TYPE_INT);
-		return visit(ctx.left) + System.lineSeparator() + visit(ctx.right) + System.lineSeparator() + Operator.OP_MUL.compileOperator();
+		return tmp;
 	}
 
 	@Override
 	public String visitIntegerDivision(@NotNull ToolParser.IntegerDivisionContext ctx) {
+		String tmp = visit(ctx.left) + System.lineSeparator() + visit(ctx.right) + System.lineSeparator() + Operator.OP_DIV.compileOperator();
 		currentStack.pop(Datatype.TYPE_INT, getLine(ctx));
 		currentStack.pop(Datatype.TYPE_INT, getLine(ctx));
 		currentStack.push(Datatype.TYPE_INT);
-		return visit(ctx.left) + System.lineSeparator() + visit(ctx.right) + System.lineSeparator() + Operator.OP_DIV.compileOperator();
+		return tmp; 
 	}
 
 	@Override
