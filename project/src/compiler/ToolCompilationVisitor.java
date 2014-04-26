@@ -159,9 +159,8 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 		String complete = "";
 		complete += safeBegin + ":" + System.lineSeparator();
 		complete += cond + System.lineSeparator();
-		complete += Operator.OP_EQ.compileOperator() + System.lineSeparator();
 
-		complete += "ifeq " + safeEnd + System.lineSeparator();
+		complete += "ifne " + safeEnd + System.lineSeparator();
 		complete += code;
 		complete += "goto " + safeBegin + System.lineSeparator();
 		complete += safeEnd + ":" + System.lineSeparator();
@@ -590,7 +589,7 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 		returnString = safeBegin + ":" + System.lineSeparator();
 		returnString += code;
 		returnString += cond;
-		returnString += "ifeq " + safeBegin + System.lineSeparator();
+		returnString += "ifne " + safeBegin + System.lineSeparator();
 
 		return returnString;
 	}
