@@ -263,7 +263,7 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 			returnString += visit(ctx.elseStructure);
 		}
 		
-		returnString += conditions + "goto "+ cond_false + System.lineSeparator() + instructions + cond_end + ":";
+		returnString += ".line " + getLine(ctx) + System.lineSeparator() + conditions + "goto "+ cond_false + System.lineSeparator() + instructions + cond_end + ":";
 		
 		return returnString;
 	}
@@ -277,7 +277,7 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 				instructions += visit(cc);
 			}
 		}
-		return cond + "ifne "+ ToolCompilationVisitor.separator + instructions + System.lineSeparator();
+		return ".line " + getLine(ctx) + System.lineSeparator() + cond + "ifne "+ ToolCompilationVisitor.separator + instructions + System.lineSeparator();
 	}
 
 	@Override
@@ -714,6 +714,6 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 				instructions += visit(cc);
 			}
 		}
-		return ".line " + getLine(ctx) + System.lineSeparator() + instructions;
+		return ".line " + getLine(ctx) + System.lineSeparator() + instructions + "\n<><><><else end><><><>\n";
 	}
 }
