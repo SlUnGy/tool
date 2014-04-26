@@ -125,14 +125,14 @@ public enum Operator {
 			return instructions;
 		}
 	},
-	OP_NEQ("notequal", "!=") {
+	OP_NE("notequal", "!=") {
 		@Override
 		protected String doOperation() {
 			final String safeSuccess = LabelCounter.createSafeName("op_success");
 			final String safeEnd = LabelCounter.createSafeName("op_end");
 
 			String instructions = "";
-			instructions += "if_icmpneq " + safeSuccess + System.lineSeparator();
+			instructions += "if_icmpne " + safeSuccess + System.lineSeparator();
 			instructions += "ldc 0" + System.lineSeparator();
 			instructions += "goto " + safeEnd + System.lineSeparator();
 			instructions += safeSuccess + ":" + System.lineSeparator();
