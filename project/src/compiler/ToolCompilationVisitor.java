@@ -215,7 +215,7 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 				label = LabelCounter.createSafeName("cond_elseif");
 				result = visit(eif).split(ToolCompilationVisitor.separator);
 				conditions += result[0] + label + System.lineSeparator();
-				instructions += label + ":" + result[1] + "goto " + cond_end + System.lineSeparator();
+				instructions += label + ":" + System.lineSeparator() + result[1] + "goto " + cond_end + System.lineSeparator();
 			}
 		}
 
