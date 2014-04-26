@@ -65,7 +65,7 @@ public class Function {
 	
 	public String createFunctionStatement(String code, int numberLocalVars, int stackSize)
 	{
-		String returnString = ".method "+ this.name + this.getDescriptor()+System.lineSeparator() ;
+		String returnString = ".method public static "+ this.name + this.getDescriptor()+System.lineSeparator() ;
 		returnString += ".limit stack " + stackSize+System.lineSeparator();
 		returnString += ".limit locals "+numberLocalVars + System.lineSeparator();
 		returnString += code;

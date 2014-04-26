@@ -33,17 +33,6 @@ public class Scope {
 		this.functions = new HashMap<>();
 		this.className = pName;
 		
-		//Yes Jasmin saves this in the first var
-		try {
-			defineVar("this", Datatype.TYPE_OBJECT);
-			this.variables.put("this", getVar("this"));
-			
-		} catch (RedefinitionException | UnknownNameException e) {
-			//If this does not work I see no sense in catching the error...
-			System.exit(-1);
-			e.printStackTrace();
-		}
-		
 	}
 	
 	public boolean isRoot(){

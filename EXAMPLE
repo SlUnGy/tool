@@ -55,8 +55,9 @@ _definiere leer Schleifen(){
 
 /* scopes test */
 _definiere leer Scopes(){
+	int i = 0;
 	_wenn( _true ){
-		int i = 1000; /* überschreibt nicht die global definierte Variable "i", sondern ist nur hier gültig */
+		i = 1000; /* überschreibt nicht die global definierte Variable "i", sondern ist nur hier gültig */
 	}
 	sprich(toStr(i));
 	/* druckt "1"*/
