@@ -253,7 +253,7 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 				label = LabelCounter.createSafeName("cond_elseif");
 				result = visit(eif).split(ToolCompilationVisitor.separator);
 				conditions += result[0] + label + System.lineSeparator();
-				instructions += label + ":" + result[1] + "goto "+ cond_end + System.lineSeparator();
+				instructions += label + ":" + System.lineSeparator() + result[1] + "goto "+ cond_end + System.lineSeparator();
 			}
 		}
 		
@@ -525,7 +525,8 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 		String returnString = null;
 		returnString = safeBegin+":"+System.lineSeparator();
 		returnString += code;
-		returnString += cond;
+        returnString += "<<<<<<<<<<.line " + getLine(ctx) + System.lineSeparator();
+        returnString += cond;
 		returnString += "ifeq " + safeBegin + System.lineSeparator();	
 		
 		return ".line " + getLine(ctx) + System.lineSeparator() + returnString;
