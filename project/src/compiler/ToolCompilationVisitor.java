@@ -194,7 +194,7 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 		complete += code;
 		complete += "goto " + safeBegin + System.lineSeparator();
 		complete += safeEnd + ":" + System.lineSeparator();
-		return complete;
+		return ".line " + getLine(ctx) + System.lineSeparator() + complete;
 	}
 
 	@Override
@@ -528,7 +528,7 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 		returnString += cond;
 		returnString += "ifeq " + safeBegin + System.lineSeparator();	
 		
-		return returnString;
+		return ".line " + getLine(ctx) + System.lineSeparator() + returnString;
 	}
 
 	@Override
@@ -611,7 +611,7 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 			printError(e.getMessage(), ctx);
 		}
 
-		return function.createFunctionStatement(code, localVarSize, localStackSize);
+		return ".line " + getLine(ctx) + System.lineSeparator() + function.createFunctionStatement(code, localVarSize, localStackSize);
 	}
 
 	@Override
