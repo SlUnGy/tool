@@ -317,10 +317,10 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 
 		switch (ctx.factor.getText()) {
 			case "_true":
-				returnString = "ldc 0";
+				returnString = "ldc 1";
 				break;
 			case "_false":
-				returnString = "ldc 1";
+				returnString = "ldc 0";
 				break;
 		}
 		currentStack.push(Datatype.TYPE_BOOL);
