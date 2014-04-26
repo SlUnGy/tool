@@ -145,7 +145,6 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 
 	@Override
 	public String visitWhile(@NotNull ToolParser.WhileContext ctx) {
-		final String cond = visit(ctx.condition);
 		final String safeBegin = LabelCounter.createSafeName("begin_code");
 		final String safeEnd = LabelCounter.createSafeName("end_code");
 
@@ -158,8 +157,8 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 
 		String complete = "";
 		complete += safeBegin + ":" + System.lineSeparator();
-		complete += cond + System.lineSeparator();
-
+		complete += visit(ctx.condition) + System.lineSeparator();
+		currentStack.pop(Datatype.TYPE_BOOL, getLine(ctx));
 		complete += "ifne " + safeEnd + System.lineSeparator();
 		complete += code;
 		complete += "goto " + safeBegin + System.lineSeparator();
@@ -196,6 +195,7 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 		String returnString = "";
 
 		// Branch if condition is true
+		currentStack.pop(Datatype.TYPE_BOOL, getLine(ctx));
 		conditions = cond + "ifne " + cond_true + System.lineSeparator();
 
 		instructions += cond_true + ":" + System.lineSeparator();
@@ -234,6 +234,8 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 	public String visitElseIf(@NotNull ToolParser.ElseIfContext ctx) {
 		String cond = visit(ctx.elif_condition);
 		String instructions = "";
+		
+		currentStack.pop(Datatype.TYPE_BOOL, getLine(ctx));
 		if (ctx.elif_instructions != null) {
 			for (ToolParser.CodeContext cc : ctx.elif_instructions) {
 				instructions += visit(cc);
@@ -575,7 +577,6 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 
 	@Override
 	public String visitDoWhile(@NotNull ToolParser.DoWhileContext ctx) {
-		final String cond = visit(ctx.condition);
 		final String safeBegin = LabelCounter.createSafeName("begin_code");
 
 		String code = "";
@@ -588,7 +589,8 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 		String returnString = null;
 		returnString = safeBegin + ":" + System.lineSeparator();
 		returnString += code;
-		returnString += cond;
+		returnString += visit(ctx.condition);
+		currentStack.pop(Datatype.TYPE_BOOL, getLine(ctx));
 		returnString += "ifne " + safeBegin + System.lineSeparator();
 
 		return returnString;
