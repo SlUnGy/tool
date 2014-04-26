@@ -384,7 +384,7 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 
 	@Override
 	public String visitBooleanUnequal(@NotNull ToolParser.BooleanUnequalContext ctx) {
-		String tmp = visit(ctx.left)+System.lineSeparator()+visit(ctx.right)+Operator.OP_NEQ.compileOperator()+System.lineSeparator();
+		String tmp = visit(ctx.left)+System.lineSeparator()+visit(ctx.right)+Operator.OP_NE.compileOperator()+System.lineSeparator();
 		currentStack.popUnchecked();
 		currentStack.popUnchecked();
 		currentStack.push(Datatype.TYPE_BOOL);
