@@ -118,6 +118,22 @@ public class Scope {
 			System.out.println(" "+currentEntry.getKey()+":"+f.getDescriptor());//TODO: print code belonging to function
 		}
 	}
+	
+	public String createVarDebugStatements(String pStart, String pEnd)
+	{
+		String returnString = "";
+		int i = 0;
+		for (Entry<String, Variable> entry : this.variables.entrySet()) {
+		    
+			String key = entry.getKey();
+		    Variable value = entry.getValue();
+		    
+		    returnString += ".var "+i+ " is "+ key + " " + value.getType().getJasminType() + " from " + pStart + " to " + pEnd + System.lineSeparator();
+		    i++;
+		}
+		
+		return returnString;
+	}
 
 	public Function getFun(String pName) throws UnknownNameException {
 		if(functions.containsKey(pName)){

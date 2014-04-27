@@ -22,25 +22,26 @@ public class ToolParser extends Parser {
 		TYPE_STRING=30, TYPE_VOID=31, NAME=32, STRING=33, BOOLEAN=34, NUMBER=35, 
 		COMMENT=36, WS=37;
 	public static final String[] tokenNames = {
-		"<INVALID>", "'||'", "'>'", "'-'", "'*'", "'/'", "'<'", "'=='", "'>='", 
-		"'!='", "'<='", "'&&'", "'('", "')'", "'}'", "'{'", "';'", "','", "'='", 
+		"<INVALID>", "'/'", "'<='", "'!='", "'*'", "'||'", "'>='", "'&&'", "'=='", 
+		"'<'", "'-'", "'>'", "'('", "')'", "'}'", "'{'", "';'", "','", "'='", 
 		"'+'", "'!'", "'_haupt'", "'_wenn'", "'_oder_dies'", "'_sonst'", "'_solange_bis'", 
 		"'_schleife'", "'_definiere'", "'int'", "'bool'", "'str'", "'leer'", "NAME", 
 		"STRING", "BOOLEAN", "NUMBER", "COMMENT", "WS"
 	};
 	public static final int
 		RULE_start = 0, RULE_main = 1, RULE_def = 2, RULE_code = 3, RULE_contr_structure = 4, 
-		RULE_elif_structure = 5, RULE_assignment = 6, RULE_expr = 7, RULE_var_name = 8, 
-		RULE_int_expr = 9, RULE_product = 10, RULE_int_factor = 11, RULE_bool_expr = 12, 
-		RULE_bool_factor = 13, RULE_str_expr = 14, RULE_str_factor = 15, RULE_var_def = 16, 
-		RULE_var_data_type = 17, RULE_func_data_type = 18, RULE_func_def = 19, 
-		RULE_func_def_params = 20, RULE_func_call = 21, RULE_func_call_params = 22, 
-		RULE_parameter = 23;
+		RULE_condition = 5, RULE_elif_structure = 6, RULE_else_structure = 7, 
+		RULE_assignment = 8, RULE_expr = 9, RULE_var_name = 10, RULE_int_expr = 11, 
+		RULE_product = 12, RULE_int_factor = 13, RULE_bool_expr = 14, RULE_bool_factor = 15, 
+		RULE_str_expr = 16, RULE_str_factor = 17, RULE_var_def = 18, RULE_var_data_type = 19, 
+		RULE_func_data_type = 20, RULE_func_def = 21, RULE_func_def_params = 22, 
+		RULE_func_call = 23, RULE_func_call_params = 24, RULE_parameter = 25;
 	public static final String[] ruleNames = {
-		"start", "main", "def", "code", "contr_structure", "elif_structure", "assignment", 
-		"expr", "var_name", "int_expr", "product", "int_factor", "bool_expr", 
-		"bool_factor", "str_expr", "str_factor", "var_def", "var_data_type", "func_data_type", 
-		"func_def", "func_def_params", "func_call", "func_call_params", "parameter"
+		"start", "main", "def", "code", "contr_structure", "condition", "elif_structure", 
+		"else_structure", "assignment", "expr", "var_name", "int_expr", "product", 
+		"int_factor", "bool_expr", "bool_factor", "str_expr", "str_factor", "var_def", 
+		"var_data_type", "func_data_type", "func_def", "func_def_params", "func_call", 
+		"func_call_params", "parameter"
 	};
 
 	@Override
@@ -81,11 +82,11 @@ public class ToolParser extends Parser {
 		public MainContext main() {
 			return getRuleContext(MainContext.class,0);
 		}
-		public List<DefContext> def() {
-			return getRuleContexts(DefContext.class);
-		}
 		public DefContext def(int i) {
 			return getRuleContext(DefContext.class,i);
+		}
+		public List<DefContext> def() {
+			return getRuleContexts(DefContext.class);
 		}
 		public ProgramContext(StartContext ctx) { copyFrom(ctx); }
 		@Override
@@ -103,32 +104,32 @@ public class ToolParser extends Parser {
 			_localctx = new ProgramContext(_localctx);
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(51);
+			setState(55);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << DEFINE) | (1L << TYPE_INT) | (1L << TYPE_BOOL) | (1L << TYPE_STRING))) != 0)) {
 				{
 				{
-				setState(48); ((ProgramContext)_localctx).def = def();
+				setState(52); ((ProgramContext)_localctx).def = def();
 				((ProgramContext)_localctx).before.add(((ProgramContext)_localctx).def);
 				}
 				}
-				setState(53);
+				setState(57);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
-			setState(54); ((ProgramContext)_localctx).m = main();
-			setState(58);
+			setState(58); ((ProgramContext)_localctx).m = main();
+			setState(62);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << DEFINE) | (1L << TYPE_INT) | (1L << TYPE_BOOL) | (1L << TYPE_STRING))) != 0)) {
 				{
 				{
-				setState(55); ((ProgramContext)_localctx).def = def();
+				setState(59); ((ProgramContext)_localctx).def = def();
 				((ProgramContext)_localctx).after.add(((ProgramContext)_localctx).def);
 				}
 				}
-				setState(60);
+				setState(64);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
@@ -159,16 +160,16 @@ public class ToolParser extends Parser {
 	public static class MainFunctionContext extends MainContext {
 		public CodeContext code;
 		public List<CodeContext> instructions = new ArrayList<CodeContext>();
-		public TerminalNode R_PAREN() { return getToken(ToolParser.R_PAREN, 0); }
-		public TerminalNode L_C_BRACE() { return getToken(ToolParser.L_C_BRACE, 0); }
-		public TerminalNode L_PAREN() { return getToken(ToolParser.L_PAREN, 0); }
 		public TerminalNode R_C_BRACE() { return getToken(ToolParser.R_C_BRACE, 0); }
-		public CodeContext code(int i) {
-			return getRuleContext(CodeContext.class,i);
-		}
+		public TerminalNode L_C_BRACE() { return getToken(ToolParser.L_C_BRACE, 0); }
+		public TerminalNode R_PAREN() { return getToken(ToolParser.R_PAREN, 0); }
 		public List<CodeContext> code() {
 			return getRuleContexts(CodeContext.class);
 		}
+		public CodeContext code(int i) {
+			return getRuleContext(CodeContext.class,i);
+		}
+		public TerminalNode L_PAREN() { return getToken(ToolParser.L_PAREN, 0); }
 		public TerminalNode MAIN() { return getToken(ToolParser.MAIN, 0); }
 		public MainFunctionContext(MainContext ctx) { copyFrom(ctx); }
 		@Override
@@ -186,25 +187,25 @@ public class ToolParser extends Parser {
 			_localctx = new MainFunctionContext(_localctx);
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(61); match(MAIN);
-			setState(62); match(L_PAREN);
-			setState(63); match(R_PAREN);
-			setState(64); match(L_C_BRACE);
-			setState(68);
+			setState(65); match(MAIN);
+			setState(66); match(L_PAREN);
+			setState(67); match(R_PAREN);
+			setState(68); match(L_C_BRACE);
+			setState(72);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << IF) | (1L << DO_WHILE) | (1L << WHILE) | (1L << TYPE_INT) | (1L << TYPE_BOOL) | (1L << TYPE_STRING) | (1L << NAME))) != 0)) {
 				{
 				{
-				setState(65); ((MainFunctionContext)_localctx).code = code();
+				setState(69); ((MainFunctionContext)_localctx).code = code();
 				((MainFunctionContext)_localctx).instructions.add(((MainFunctionContext)_localctx).code);
 				}
 				}
-				setState(70);
+				setState(74);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
-			setState(71); match(R_C_BRACE);
+			setState(75); match(R_C_BRACE);
 			}
 		}
 		catch (RecognitionException re) {
@@ -219,22 +220,38 @@ public class ToolParser extends Parser {
 	}
 
 	public static class DefContext extends ParserRuleContext {
-		public Var_defContext variableDef;
-		public Func_defContext functionDef;
-		public TerminalNode SEMICOLON() { return getToken(ToolParser.SEMICOLON, 0); }
-		public Var_defContext var_def() {
-			return getRuleContext(Var_defContext.class,0);
-		}
-		public Func_defContext func_def() {
-			return getRuleContext(Func_defContext.class,0);
-		}
 		public DefContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_def; }
+	 
+		public DefContext() { }
+		public void copyFrom(DefContext ctx) {
+			super.copyFrom(ctx);
+		}
+	}
+	public static class DefVariableDefContext extends DefContext {
+		public Var_defContext variableDef;
+		public TerminalNode SEMICOLON() { return getToken(ToolParser.SEMICOLON, 0); }
+		public Var_defContext var_def() {
+			return getRuleContext(Var_defContext.class,0);
+		}
+		public DefVariableDefContext(DefContext ctx) { copyFrom(ctx); }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof ToolVisitor ) return ((ToolVisitor<? extends T>)visitor).visitDef(this);
+			if ( visitor instanceof ToolVisitor ) return ((ToolVisitor<? extends T>)visitor).visitDefVariableDef(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class DefFunctionDefContext extends DefContext {
+		public Func_defContext functionDef;
+		public Func_defContext func_def() {
+			return getRuleContext(Func_defContext.class,0);
+		}
+		public DefFunctionDefContext(DefContext ctx) { copyFrom(ctx); }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof ToolVisitor ) return ((ToolVisitor<? extends T>)visitor).visitDefFunctionDef(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -243,21 +260,23 @@ public class ToolParser extends Parser {
 		DefContext _localctx = new DefContext(_ctx, getState());
 		enterRule(_localctx, 4, RULE_def);
 		try {
-			setState(77);
+			setState(81);
 			switch (_input.LA(1)) {
 			case TYPE_INT:
 			case TYPE_BOOL:
 			case TYPE_STRING:
+				_localctx = new DefVariableDefContext(_localctx);
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(73); ((DefContext)_localctx).variableDef = var_def();
-				setState(74); match(SEMICOLON);
+				setState(77); ((DefVariableDefContext)_localctx).variableDef = var_def();
+				setState(78); match(SEMICOLON);
 				}
 				break;
 			case DEFINE:
+				_localctx = new DefFunctionDefContext(_localctx);
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(76); ((DefContext)_localctx).functionDef = func_def();
+				setState(80); ((DefFunctionDefContext)_localctx).functionDef = func_def();
 				}
 				break;
 			default:
@@ -298,20 +317,16 @@ public class ToolParser extends Parser {
 			else return visitor.visitChildren(this);
 		}
 	}
-	public static class CodeFunctionCallContext extends CodeContext {
-		public Token fn_name;
-		public Func_call_paramsContext parameters;
+	public static class CodeVariableDefinitionContext extends CodeContext {
+		public Var_defContext instruction;
 		public TerminalNode SEMICOLON() { return getToken(ToolParser.SEMICOLON, 0); }
-		public TerminalNode R_PAREN() { return getToken(ToolParser.R_PAREN, 0); }
-		public TerminalNode L_PAREN() { return getToken(ToolParser.L_PAREN, 0); }
-		public Func_call_paramsContext func_call_params() {
-			return getRuleContext(Func_call_paramsContext.class,0);
+		public Var_defContext var_def() {
+			return getRuleContext(Var_defContext.class,0);
 		}
-		public TerminalNode NAME() { return getToken(ToolParser.NAME, 0); }
-		public CodeFunctionCallContext(CodeContext ctx) { copyFrom(ctx); }
+		public CodeVariableDefinitionContext(CodeContext ctx) { copyFrom(ctx); }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof ToolVisitor ) return ((ToolVisitor<? extends T>)visitor).visitCodeFunctionCall(this);
+			if ( visitor instanceof ToolVisitor ) return ((ToolVisitor<? extends T>)visitor).visitCodeVariableDefinition(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -328,16 +343,20 @@ public class ToolParser extends Parser {
 			else return visitor.visitChildren(this);
 		}
 	}
-	public static class CodeVariableDefinitionContext extends CodeContext {
-		public Var_defContext instruction;
+	public static class CodeFunctionCallContext extends CodeContext {
+		public Token fn_name;
+		public Func_call_paramsContext parameters;
 		public TerminalNode SEMICOLON() { return getToken(ToolParser.SEMICOLON, 0); }
-		public Var_defContext var_def() {
-			return getRuleContext(Var_defContext.class,0);
+		public TerminalNode R_PAREN() { return getToken(ToolParser.R_PAREN, 0); }
+		public TerminalNode NAME() { return getToken(ToolParser.NAME, 0); }
+		public Func_call_paramsContext func_call_params() {
+			return getRuleContext(Func_call_paramsContext.class,0);
 		}
-		public CodeVariableDefinitionContext(CodeContext ctx) { copyFrom(ctx); }
+		public TerminalNode L_PAREN() { return getToken(ToolParser.L_PAREN, 0); }
+		public CodeFunctionCallContext(CodeContext ctx) { copyFrom(ctx); }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof ToolVisitor ) return ((ToolVisitor<? extends T>)visitor).visitCodeVariableDefinition(this);
+			if ( visitor instanceof ToolVisitor ) return ((ToolVisitor<? extends T>)visitor).visitCodeFunctionCall(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -347,14 +366,14 @@ public class ToolParser extends Parser {
 		enterRule(_localctx, 6, RULE_code);
 		int _la;
 		try {
-			setState(93);
+			setState(97);
 			switch ( getInterpreter().adaptivePredict(_input,5,_ctx) ) {
 			case 1:
 				_localctx = new CodeVariableDefinitionContext(_localctx);
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(79); ((CodeVariableDefinitionContext)_localctx).instruction = var_def();
-				setState(80); match(SEMICOLON);
+				setState(83); ((CodeVariableDefinitionContext)_localctx).instruction = var_def();
+				setState(84); match(SEMICOLON);
 				}
 				break;
 
@@ -362,8 +381,8 @@ public class ToolParser extends Parser {
 				_localctx = new CodeAssignmentContext(_localctx);
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(82); ((CodeAssignmentContext)_localctx).instruction = assignment();
-				setState(83); match(SEMICOLON);
+				setState(86); ((CodeAssignmentContext)_localctx).instruction = assignment();
+				setState(87); match(SEMICOLON);
 				}
 				break;
 
@@ -371,18 +390,18 @@ public class ToolParser extends Parser {
 				_localctx = new CodeFunctionCallContext(_localctx);
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(85); ((CodeFunctionCallContext)_localctx).fn_name = match(NAME);
-				setState(86); match(L_PAREN);
-				setState(88);
+				setState(89); ((CodeFunctionCallContext)_localctx).fn_name = match(NAME);
+				setState(90); match(L_PAREN);
+				setState(92);
 				_la = _input.LA(1);
 				if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << L_PAREN) | (1L << INVERT) | (1L << NAME) | (1L << STRING) | (1L << BOOLEAN) | (1L << NUMBER))) != 0)) {
 					{
-					setState(87); ((CodeFunctionCallContext)_localctx).parameters = func_call_params();
+					setState(91); ((CodeFunctionCallContext)_localctx).parameters = func_call_params();
 					}
 				}
 
-				setState(90); match(R_PAREN);
-				setState(91); match(SEMICOLON);
+				setState(94); match(R_PAREN);
+				setState(95); match(SEMICOLON);
 				}
 				break;
 
@@ -390,7 +409,7 @@ public class ToolParser extends Parser {
 				_localctx = new CodeControllStructureContext(_localctx);
 				enterOuterAlt(_localctx, 4);
 				{
-				setState(92); ((CodeControllStructureContext)_localctx).instruction = contr_structure();
+				setState(96); ((CodeControllStructureContext)_localctx).instruction = contr_structure();
 				}
 				break;
 			}
@@ -417,65 +436,23 @@ public class ToolParser extends Parser {
 			super.copyFrom(ctx);
 		}
 	}
-	public static class IfContext extends Contr_structureContext {
-		public Bool_exprContext if_condition;
-		public CodeContext code;
-		public List<CodeContext> if_instructions = new ArrayList<CodeContext>();
-		public Elif_structureContext elif_structure;
-		public List<Elif_structureContext> elifs = new ArrayList<Elif_structureContext>();
-		public List<CodeContext> else_instructions = new ArrayList<CodeContext>();
-		public TerminalNode R_PAREN() { return getToken(ToolParser.R_PAREN, 0); }
-		public List<TerminalNode> L_C_BRACE() { return getTokens(ToolParser.L_C_BRACE); }
-		public TerminalNode L_PAREN() { return getToken(ToolParser.L_PAREN, 0); }
-		public Elif_structureContext elif_structure(int i) {
-			return getRuleContext(Elif_structureContext.class,i);
-		}
-		public TerminalNode R_C_BRACE(int i) {
-			return getToken(ToolParser.R_C_BRACE, i);
-		}
-		public TerminalNode IF() { return getToken(ToolParser.IF, 0); }
-		public TerminalNode L_C_BRACE(int i) {
-			return getToken(ToolParser.L_C_BRACE, i);
-		}
-		public Bool_exprContext bool_expr() {
-			return getRuleContext(Bool_exprContext.class,0);
-		}
-		public TerminalNode ELSE() { return getToken(ToolParser.ELSE, 0); }
-		public List<TerminalNode> R_C_BRACE() { return getTokens(ToolParser.R_C_BRACE); }
-		public List<Elif_structureContext> elif_structure() {
-			return getRuleContexts(Elif_structureContext.class);
-		}
-		public CodeContext code(int i) {
-			return getRuleContext(CodeContext.class,i);
-		}
-		public List<CodeContext> code() {
-			return getRuleContexts(CodeContext.class);
-		}
-		public IfContext(Contr_structureContext ctx) { copyFrom(ctx); }
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof ToolVisitor ) return ((ToolVisitor<? extends T>)visitor).visitIf(this);
-			else return visitor.visitChildren(this);
-		}
-	}
 	public static class DoWhileContext extends Contr_structureContext {
 		public CodeContext code;
 		public List<CodeContext> instructions = new ArrayList<CodeContext>();
-		public Bool_exprContext condition;
-		public TerminalNode SEMICOLON() { return getToken(ToolParser.SEMICOLON, 0); }
-		public Bool_exprContext bool_expr() {
-			return getRuleContext(Bool_exprContext.class,0);
-		}
-		public TerminalNode R_PAREN() { return getToken(ToolParser.R_PAREN, 0); }
-		public TerminalNode L_C_BRACE() { return getToken(ToolParser.L_C_BRACE, 0); }
-		public TerminalNode L_PAREN() { return getToken(ToolParser.L_PAREN, 0); }
 		public TerminalNode R_C_BRACE() { return getToken(ToolParser.R_C_BRACE, 0); }
+		public TerminalNode L_C_BRACE() { return getToken(ToolParser.L_C_BRACE, 0); }
+		public TerminalNode SEMICOLON() { return getToken(ToolParser.SEMICOLON, 0); }
+		public TerminalNode R_PAREN() { return getToken(ToolParser.R_PAREN, 0); }
+		public List<CodeContext> code() {
+			return getRuleContexts(CodeContext.class);
+		}
 		public CodeContext code(int i) {
 			return getRuleContext(CodeContext.class,i);
 		}
 		public TerminalNode DO_WHILE() { return getToken(ToolParser.DO_WHILE, 0); }
-		public List<CodeContext> code() {
-			return getRuleContexts(CodeContext.class);
+		public TerminalNode L_PAREN() { return getToken(ToolParser.L_PAREN, 0); }
+		public ConditionContext condition() {
+			return getRuleContext(ConditionContext.class,0);
 		}
 		public DoWhileContext(Contr_structureContext ctx) { copyFrom(ctx); }
 		@Override
@@ -485,27 +462,64 @@ public class ToolParser extends Parser {
 		}
 	}
 	public static class WhileContext extends Contr_structureContext {
-		public Bool_exprContext condition;
+		public Bool_exprContext while_condition;
 		public CodeContext code;
 		public List<CodeContext> instructions = new ArrayList<CodeContext>();
-		public TerminalNode WHILE() { return getToken(ToolParser.WHILE, 0); }
-		public Bool_exprContext bool_expr() {
-			return getRuleContext(Bool_exprContext.class,0);
-		}
-		public TerminalNode R_PAREN() { return getToken(ToolParser.R_PAREN, 0); }
-		public TerminalNode L_C_BRACE() { return getToken(ToolParser.L_C_BRACE, 0); }
-		public TerminalNode L_PAREN() { return getToken(ToolParser.L_PAREN, 0); }
 		public TerminalNode R_C_BRACE() { return getToken(ToolParser.R_C_BRACE, 0); }
+		public TerminalNode L_C_BRACE() { return getToken(ToolParser.L_C_BRACE, 0); }
+		public TerminalNode R_PAREN() { return getToken(ToolParser.R_PAREN, 0); }
+		public List<CodeContext> code() {
+			return getRuleContexts(CodeContext.class);
+		}
 		public CodeContext code(int i) {
 			return getRuleContext(CodeContext.class,i);
 		}
-		public List<CodeContext> code() {
-			return getRuleContexts(CodeContext.class);
+		public TerminalNode WHILE() { return getToken(ToolParser.WHILE, 0); }
+		public TerminalNode L_PAREN() { return getToken(ToolParser.L_PAREN, 0); }
+		public Bool_exprContext bool_expr() {
+			return getRuleContext(Bool_exprContext.class,0);
 		}
 		public WhileContext(Contr_structureContext ctx) { copyFrom(ctx); }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof ToolVisitor ) return ((ToolVisitor<? extends T>)visitor).visitWhile(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class IfContext extends Contr_structureContext {
+		public Bool_exprContext if_condition;
+		public CodeContext code;
+		public List<CodeContext> if_instructions = new ArrayList<CodeContext>();
+		public Elif_structureContext elif_structure;
+		public List<Elif_structureContext> elifs = new ArrayList<Elif_structureContext>();
+		public Else_structureContext elseStructure;
+		public TerminalNode R_C_BRACE() { return getToken(ToolParser.R_C_BRACE, 0); }
+		public TerminalNode L_C_BRACE() { return getToken(ToolParser.L_C_BRACE, 0); }
+		public TerminalNode IF() { return getToken(ToolParser.IF, 0); }
+		public TerminalNode R_PAREN() { return getToken(ToolParser.R_PAREN, 0); }
+		public List<CodeContext> code() {
+			return getRuleContexts(CodeContext.class);
+		}
+		public Elif_structureContext elif_structure(int i) {
+			return getRuleContext(Elif_structureContext.class,i);
+		}
+		public CodeContext code(int i) {
+			return getRuleContext(CodeContext.class,i);
+		}
+		public Else_structureContext else_structure() {
+			return getRuleContext(Else_structureContext.class,0);
+		}
+		public TerminalNode L_PAREN() { return getToken(ToolParser.L_PAREN, 0); }
+		public Bool_exprContext bool_expr() {
+			return getRuleContext(Bool_exprContext.class,0);
+		}
+		public List<Elif_structureContext> elif_structure() {
+			return getRuleContexts(Elif_structureContext.class);
+		}
+		public IfContext(Contr_structureContext ctx) { copyFrom(ctx); }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof ToolVisitor ) return ((ToolVisitor<? extends T>)visitor).visitIf(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -515,67 +529,51 @@ public class ToolParser extends Parser {
 		enterRule(_localctx, 8, RULE_contr_structure);
 		int _la;
 		try {
-			setState(151);
+			setState(147);
 			switch (_input.LA(1)) {
 			case IF:
 				_localctx = new IfContext(_localctx);
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(95); match(IF);
-				setState(96); match(L_PAREN);
-				setState(97); ((IfContext)_localctx).if_condition = bool_expr();
-				setState(98); match(R_PAREN);
-				setState(99); match(L_C_BRACE);
-				setState(103);
+				setState(99); match(IF);
+				setState(100); match(L_PAREN);
+				setState(101); ((IfContext)_localctx).if_condition = bool_expr();
+				setState(102); match(R_PAREN);
+				setState(103); match(L_C_BRACE);
+				setState(107);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 				while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << IF) | (1L << DO_WHILE) | (1L << WHILE) | (1L << TYPE_INT) | (1L << TYPE_BOOL) | (1L << TYPE_STRING) | (1L << NAME))) != 0)) {
 					{
 					{
-					setState(100); ((IfContext)_localctx).code = code();
+					setState(104); ((IfContext)_localctx).code = code();
 					((IfContext)_localctx).if_instructions.add(((IfContext)_localctx).code);
 					}
 					}
-					setState(105);
+					setState(109);
 					_errHandler.sync(this);
 					_la = _input.LA(1);
 				}
-				setState(106); match(R_C_BRACE);
-				setState(110);
+				setState(110); match(R_C_BRACE);
+				setState(114);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 				while (_la==ELSEIF) {
 					{
 					{
-					setState(107); ((IfContext)_localctx).elif_structure = elif_structure();
+					setState(111); ((IfContext)_localctx).elif_structure = elif_structure();
 					((IfContext)_localctx).elifs.add(((IfContext)_localctx).elif_structure);
 					}
 					}
-					setState(112);
+					setState(116);
 					_errHandler.sync(this);
 					_la = _input.LA(1);
 				}
-				setState(122);
+				setState(118);
 				_la = _input.LA(1);
 				if (_la==ELSE) {
 					{
-					setState(113); match(ELSE);
-					setState(114); match(L_C_BRACE);
-					setState(118);
-					_errHandler.sync(this);
-					_la = _input.LA(1);
-					while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << IF) | (1L << DO_WHILE) | (1L << WHILE) | (1L << TYPE_INT) | (1L << TYPE_BOOL) | (1L << TYPE_STRING) | (1L << NAME))) != 0)) {
-						{
-						{
-						setState(115); ((IfContext)_localctx).code = code();
-						((IfContext)_localctx).else_instructions.add(((IfContext)_localctx).code);
-						}
-						}
-						setState(120);
-						_errHandler.sync(this);
-						_la = _input.LA(1);
-					}
-					setState(121); match(R_C_BRACE);
+					setState(117); ((IfContext)_localctx).elseStructure = else_structure();
 					}
 				}
 
@@ -585,57 +583,101 @@ public class ToolParser extends Parser {
 				_localctx = new DoWhileContext(_localctx);
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(124); match(DO_WHILE);
-				setState(125); match(L_C_BRACE);
-				setState(129);
+				setState(120); match(DO_WHILE);
+				setState(121); match(L_C_BRACE);
+				setState(125);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 				while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << IF) | (1L << DO_WHILE) | (1L << WHILE) | (1L << TYPE_INT) | (1L << TYPE_BOOL) | (1L << TYPE_STRING) | (1L << NAME))) != 0)) {
 					{
 					{
-					setState(126); ((DoWhileContext)_localctx).code = code();
+					setState(122); ((DoWhileContext)_localctx).code = code();
 					((DoWhileContext)_localctx).instructions.add(((DoWhileContext)_localctx).code);
 					}
 					}
-					setState(131);
+					setState(127);
 					_errHandler.sync(this);
 					_la = _input.LA(1);
 				}
-				setState(132); match(R_C_BRACE);
-				setState(133); match(L_PAREN);
-				setState(134); ((DoWhileContext)_localctx).condition = bool_expr();
-				setState(135); match(R_PAREN);
-				setState(136); match(SEMICOLON);
+				setState(128); match(R_C_BRACE);
+				setState(129); match(L_PAREN);
+				setState(130); condition();
+				setState(131); match(R_PAREN);
+				setState(132); match(SEMICOLON);
 				}
 				break;
 			case WHILE:
 				_localctx = new WhileContext(_localctx);
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(138); match(WHILE);
-				setState(139); match(L_PAREN);
-				setState(140); ((WhileContext)_localctx).condition = bool_expr();
-				setState(141); match(R_PAREN);
-				setState(142); match(L_C_BRACE);
-				setState(146);
+				setState(134); match(WHILE);
+				setState(135); match(L_PAREN);
+				setState(136); ((WhileContext)_localctx).while_condition = bool_expr();
+				setState(137); match(R_PAREN);
+				setState(138); match(L_C_BRACE);
+				setState(142);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 				while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << IF) | (1L << DO_WHILE) | (1L << WHILE) | (1L << TYPE_INT) | (1L << TYPE_BOOL) | (1L << TYPE_STRING) | (1L << NAME))) != 0)) {
 					{
 					{
-					setState(143); ((WhileContext)_localctx).code = code();
+					setState(139); ((WhileContext)_localctx).code = code();
 					((WhileContext)_localctx).instructions.add(((WhileContext)_localctx).code);
 					}
 					}
-					setState(148);
+					setState(144);
 					_errHandler.sync(this);
 					_la = _input.LA(1);
 				}
-				setState(149); match(R_C_BRACE);
+				setState(145); match(R_C_BRACE);
 				}
 				break;
 			default:
 				throw new NoViableAltException(this);
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			_errHandler.reportError(this, re);
+			_errHandler.recover(this, re);
+		}
+		finally {
+			exitRule();
+		}
+		return _localctx;
+	}
+
+	public static class ConditionContext extends ParserRuleContext {
+		public ConditionContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_condition; }
+	 
+		public ConditionContext() { }
+		public void copyFrom(ConditionContext ctx) {
+			super.copyFrom(ctx);
+		}
+	}
+	public static class CondContext extends ConditionContext {
+		public Bool_exprContext bool_expr() {
+			return getRuleContext(Bool_exprContext.class,0);
+		}
+		public CondContext(ConditionContext ctx) { copyFrom(ctx); }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof ToolVisitor ) return ((ToolVisitor<? extends T>)visitor).visitCond(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+
+	public final ConditionContext condition() throws RecognitionException {
+		ConditionContext _localctx = new ConditionContext(_ctx, getState());
+		enterRule(_localctx, 10, RULE_condition);
+		try {
+			_localctx = new CondContext(_localctx);
+			enterOuterAlt(_localctx, 1);
+			{
+			setState(149); bool_expr();
 			}
 		}
 		catch (RecognitionException re) {
@@ -664,19 +706,19 @@ public class ToolParser extends Parser {
 		public Bool_exprContext elif_condition;
 		public CodeContext code;
 		public List<CodeContext> elif_instructions = new ArrayList<CodeContext>();
-		public Bool_exprContext bool_expr() {
-			return getRuleContext(Bool_exprContext.class,0);
-		}
-		public TerminalNode R_PAREN() { return getToken(ToolParser.R_PAREN, 0); }
+		public TerminalNode R_C_BRACE() { return getToken(ToolParser.R_C_BRACE, 0); }
 		public TerminalNode ELSEIF() { return getToken(ToolParser.ELSEIF, 0); }
 		public TerminalNode L_C_BRACE() { return getToken(ToolParser.L_C_BRACE, 0); }
-		public TerminalNode L_PAREN() { return getToken(ToolParser.L_PAREN, 0); }
-		public TerminalNode R_C_BRACE() { return getToken(ToolParser.R_C_BRACE, 0); }
+		public TerminalNode R_PAREN() { return getToken(ToolParser.R_PAREN, 0); }
+		public List<CodeContext> code() {
+			return getRuleContexts(CodeContext.class);
+		}
 		public CodeContext code(int i) {
 			return getRuleContext(CodeContext.class,i);
 		}
-		public List<CodeContext> code() {
-			return getRuleContexts(CodeContext.class);
+		public TerminalNode L_PAREN() { return getToken(ToolParser.L_PAREN, 0); }
+		public Bool_exprContext bool_expr() {
+			return getRuleContext(Bool_exprContext.class,0);
 		}
 		public ElseIfContext(Elif_structureContext ctx) { copyFrom(ctx); }
 		@Override
@@ -688,32 +730,101 @@ public class ToolParser extends Parser {
 
 	public final Elif_structureContext elif_structure() throws RecognitionException {
 		Elif_structureContext _localctx = new Elif_structureContext(_ctx, getState());
-		enterRule(_localctx, 10, RULE_elif_structure);
+		enterRule(_localctx, 12, RULE_elif_structure);
 		int _la;
 		try {
 			_localctx = new ElseIfContext(_localctx);
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(153); match(ELSEIF);
-			setState(154); match(L_PAREN);
-			setState(155); ((ElseIfContext)_localctx).elif_condition = bool_expr();
-			setState(156); match(R_PAREN);
-			setState(157); match(L_C_BRACE);
-			setState(161);
+			setState(151); match(ELSEIF);
+			setState(152); match(L_PAREN);
+			setState(153); ((ElseIfContext)_localctx).elif_condition = bool_expr();
+			setState(154); match(R_PAREN);
+			setState(155); match(L_C_BRACE);
+			setState(159);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << IF) | (1L << DO_WHILE) | (1L << WHILE) | (1L << TYPE_INT) | (1L << TYPE_BOOL) | (1L << TYPE_STRING) | (1L << NAME))) != 0)) {
 				{
 				{
-				setState(158); ((ElseIfContext)_localctx).code = code();
+				setState(156); ((ElseIfContext)_localctx).code = code();
 				((ElseIfContext)_localctx).elif_instructions.add(((ElseIfContext)_localctx).code);
 				}
 				}
-				setState(163);
+				setState(161);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
-			setState(164); match(R_C_BRACE);
+			setState(162); match(R_C_BRACE);
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			_errHandler.reportError(this, re);
+			_errHandler.recover(this, re);
+		}
+		finally {
+			exitRule();
+		}
+		return _localctx;
+	}
+
+	public static class Else_structureContext extends ParserRuleContext {
+		public Else_structureContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_else_structure; }
+	 
+		public Else_structureContext() { }
+		public void copyFrom(Else_structureContext ctx) {
+			super.copyFrom(ctx);
+		}
+	}
+	public static class ElseContext extends Else_structureContext {
+		public CodeContext code;
+		public List<CodeContext> else_instructions = new ArrayList<CodeContext>();
+		public TerminalNode R_C_BRACE() { return getToken(ToolParser.R_C_BRACE, 0); }
+		public TerminalNode ELSE() { return getToken(ToolParser.ELSE, 0); }
+		public TerminalNode L_C_BRACE() { return getToken(ToolParser.L_C_BRACE, 0); }
+		public List<CodeContext> code() {
+			return getRuleContexts(CodeContext.class);
+		}
+		public CodeContext code(int i) {
+			return getRuleContext(CodeContext.class,i);
+		}
+		public ElseContext(Else_structureContext ctx) { copyFrom(ctx); }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof ToolVisitor ) return ((ToolVisitor<? extends T>)visitor).visitElse(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+
+	public final Else_structureContext else_structure() throws RecognitionException {
+		Else_structureContext _localctx = new Else_structureContext(_ctx, getState());
+		enterRule(_localctx, 14, RULE_else_structure);
+		int _la;
+		try {
+			_localctx = new ElseContext(_localctx);
+			enterOuterAlt(_localctx, 1);
+			{
+			setState(164); match(ELSE);
+			setState(165); match(L_C_BRACE);
+			setState(169);
+			_errHandler.sync(this);
+			_la = _input.LA(1);
+			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << IF) | (1L << DO_WHILE) | (1L << WHILE) | (1L << TYPE_INT) | (1L << TYPE_BOOL) | (1L << TYPE_STRING) | (1L << NAME))) != 0)) {
+				{
+				{
+				setState(166); ((ElseContext)_localctx).code = code();
+				((ElseContext)_localctx).else_instructions.add(((ElseContext)_localctx).code);
+				}
+				}
+				setState(171);
+				_errHandler.sync(this);
+				_la = _input.LA(1);
+			}
+			setState(172); match(R_C_BRACE);
 			}
 		}
 		catch (RecognitionException re) {
@@ -756,14 +867,14 @@ public class ToolParser extends Parser {
 
 	public final AssignmentContext assignment() throws RecognitionException {
 		AssignmentContext _localctx = new AssignmentContext(_ctx, getState());
-		enterRule(_localctx, 12, RULE_assignment);
+		enterRule(_localctx, 16, RULE_assignment);
 		try {
 			_localctx = new AssignToContext(_localctx);
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(166); ((AssignToContext)_localctx).variableName = match(NAME);
-			setState(167); match(ASSIGN_TO);
-			setState(168); ((AssignToContext)_localctx).value = expr();
+			setState(174); ((AssignToContext)_localctx).variableName = match(NAME);
+			setState(175); match(ASSIGN_TO);
+			setState(176); ((AssignToContext)_localctx).value = expr();
 			}
 		}
 		catch (RecognitionException re) {
@@ -786,6 +897,18 @@ public class ToolParser extends Parser {
 		public ExprContext() { }
 		public void copyFrom(ExprContext ctx) {
 			super.copyFrom(ctx);
+		}
+	}
+	public static class ExprFunctionNameContext extends ExprContext {
+		public Func_callContext e;
+		public Func_callContext func_call() {
+			return getRuleContext(Func_callContext.class,0);
+		}
+		public ExprFunctionNameContext(ExprContext ctx) { copyFrom(ctx); }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof ToolVisitor ) return ((ToolVisitor<? extends T>)visitor).visitExprFunctionName(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 	public static class ExprBooleanContext extends ExprContext {
@@ -812,30 +935,6 @@ public class ToolParser extends Parser {
 			else return visitor.visitChildren(this);
 		}
 	}
-	public static class ExprVariableNameContext extends ExprContext {
-		public Var_nameContext e;
-		public Var_nameContext var_name() {
-			return getRuleContext(Var_nameContext.class,0);
-		}
-		public ExprVariableNameContext(ExprContext ctx) { copyFrom(ctx); }
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof ToolVisitor ) return ((ToolVisitor<? extends T>)visitor).visitExprVariableName(this);
-			else return visitor.visitChildren(this);
-		}
-	}
-	public static class ExprFunctionNameContext extends ExprContext {
-		public Func_callContext e;
-		public Func_callContext func_call() {
-			return getRuleContext(Func_callContext.class,0);
-		}
-		public ExprFunctionNameContext(ExprContext ctx) { copyFrom(ctx); }
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof ToolVisitor ) return ((ToolVisitor<? extends T>)visitor).visitExprFunctionName(this);
-			else return visitor.visitChildren(this);
-		}
-	}
 	public static class ExprStringContext extends ExprContext {
 		public Str_exprContext e;
 		public Str_exprContext str_expr() {
@@ -848,18 +947,30 @@ public class ToolParser extends Parser {
 			else return visitor.visitChildren(this);
 		}
 	}
+	public static class ExprVariableNameContext extends ExprContext {
+		public Var_nameContext e;
+		public Var_nameContext var_name() {
+			return getRuleContext(Var_nameContext.class,0);
+		}
+		public ExprVariableNameContext(ExprContext ctx) { copyFrom(ctx); }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof ToolVisitor ) return ((ToolVisitor<? extends T>)visitor).visitExprVariableName(this);
+			else return visitor.visitChildren(this);
+		}
+	}
 
 	public final ExprContext expr() throws RecognitionException {
 		ExprContext _localctx = new ExprContext(_ctx, getState());
-		enterRule(_localctx, 14, RULE_expr);
+		enterRule(_localctx, 18, RULE_expr);
 		try {
-			setState(175);
+			setState(183);
 			switch ( getInterpreter().adaptivePredict(_input,14,_ctx) ) {
 			case 1:
 				_localctx = new ExprVariableNameContext(_localctx);
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(170); ((ExprVariableNameContext)_localctx).e = var_name();
+				setState(178); ((ExprVariableNameContext)_localctx).e = var_name();
 				}
 				break;
 
@@ -867,7 +978,7 @@ public class ToolParser extends Parser {
 				_localctx = new ExprFunctionNameContext(_localctx);
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(171); ((ExprFunctionNameContext)_localctx).e = func_call();
+				setState(179); ((ExprFunctionNameContext)_localctx).e = func_call();
 				}
 				break;
 
@@ -875,7 +986,7 @@ public class ToolParser extends Parser {
 				_localctx = new ExprIntegerContext(_localctx);
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(172); ((ExprIntegerContext)_localctx).e = int_expr(0);
+				setState(180); ((ExprIntegerContext)_localctx).e = int_expr(0);
 				}
 				break;
 
@@ -883,7 +994,7 @@ public class ToolParser extends Parser {
 				_localctx = new ExprStringContext(_localctx);
 				enterOuterAlt(_localctx, 4);
 				{
-				setState(173); ((ExprStringContext)_localctx).e = str_expr();
+				setState(181); ((ExprStringContext)_localctx).e = str_expr();
 				}
 				break;
 
@@ -891,7 +1002,7 @@ public class ToolParser extends Parser {
 				_localctx = new ExprBooleanContext(_localctx);
 				enterOuterAlt(_localctx, 5);
 				{
-				setState(174); ((ExprBooleanContext)_localctx).e = bool_expr();
+				setState(182); ((ExprBooleanContext)_localctx).e = bool_expr();
 				}
 				break;
 			}
@@ -931,12 +1042,12 @@ public class ToolParser extends Parser {
 
 	public final Var_nameContext var_name() throws RecognitionException {
 		Var_nameContext _localctx = new Var_nameContext(_ctx, getState());
-		enterRule(_localctx, 16, RULE_var_name);
+		enterRule(_localctx, 20, RULE_var_name);
 		try {
 			_localctx = new VariableNameContext(_localctx);
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(177); ((VariableNameContext)_localctx).name = match(NAME);
+			setState(185); ((VariableNameContext)_localctx).name = match(NAME);
 			}
 		}
 		catch (RecognitionException re) {
@@ -961,6 +1072,18 @@ public class ToolParser extends Parser {
 			super.copyFrom(ctx);
 		}
 	}
+	public static class IntegerProductContext extends Int_exprContext {
+		public ProductContext left;
+		public ProductContext product() {
+			return getRuleContext(ProductContext.class,0);
+		}
+		public IntegerProductContext(Int_exprContext ctx) { copyFrom(ctx); }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof ToolVisitor ) return ((ToolVisitor<? extends T>)visitor).visitIntegerProduct(this);
+			else return visitor.visitChildren(this);
+		}
+	}
 	public static class IntegerSubtractionContext extends Int_exprContext {
 		public Int_exprContext left;
 		public ProductContext right;
@@ -974,18 +1097,6 @@ public class ToolParser extends Parser {
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof ToolVisitor ) return ((ToolVisitor<? extends T>)visitor).visitIntegerSubtraction(this);
-			else return visitor.visitChildren(this);
-		}
-	}
-	public static class IntegerProductContext extends Int_exprContext {
-		public ProductContext left;
-		public ProductContext product() {
-			return getRuleContext(ProductContext.class,0);
-		}
-		public IntegerProductContext(Int_exprContext ctx) { copyFrom(ctx); }
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof ToolVisitor ) return ((ToolVisitor<? extends T>)visitor).visitIntegerProduct(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -1015,8 +1126,8 @@ public class ToolParser extends Parser {
 		int _parentState = getState();
 		Int_exprContext _localctx = new Int_exprContext(_ctx, _parentState);
 		Int_exprContext _prevctx = _localctx;
-		int _startState = 18;
-		enterRecursionRule(_localctx, 18, RULE_int_expr, _p);
+		int _startState = 22;
+		enterRecursionRule(_localctx, 22, RULE_int_expr, _p);
 		try {
 			int _alt;
 			enterOuterAlt(_localctx, 1);
@@ -1026,10 +1137,10 @@ public class ToolParser extends Parser {
 			_ctx = _localctx;
 			_prevctx = _localctx;
 
-			setState(180); ((IntegerProductContext)_localctx).left = product(0);
+			setState(188); ((IntegerProductContext)_localctx).left = product(0);
 			}
 			_ctx.stop = _input.LT(-1);
-			setState(190);
+			setState(198);
 			_errHandler.sync(this);
 			_alt = getInterpreter().adaptivePredict(_input,16,_ctx);
 			while ( _alt!=2 && _alt!=-1 ) {
@@ -1037,17 +1148,17 @@ public class ToolParser extends Parser {
 					if ( _parseListeners!=null ) triggerExitRuleEvent();
 					_prevctx = _localctx;
 					{
-					setState(188);
+					setState(196);
 					switch ( getInterpreter().adaptivePredict(_input,15,_ctx) ) {
 					case 1:
 						{
 						_localctx = new IntegerAdditionContext(new Int_exprContext(_parentctx, _parentState));
 						((IntegerAdditionContext)_localctx).left = _prevctx;
 						pushNewRecursionContext(_localctx, _startState, RULE_int_expr);
-						setState(182);
+						setState(190);
 						if (!(precpred(_ctx, 3))) throw new FailedPredicateException(this, "precpred(_ctx, 3)");
-						setState(183); match(CAT);
-						setState(184); ((IntegerAdditionContext)_localctx).right = product(0);
+						setState(191); match(CAT);
+						setState(192); ((IntegerAdditionContext)_localctx).right = product(0);
 						}
 						break;
 
@@ -1056,16 +1167,16 @@ public class ToolParser extends Parser {
 						_localctx = new IntegerSubtractionContext(new Int_exprContext(_parentctx, _parentState));
 						((IntegerSubtractionContext)_localctx).left = _prevctx;
 						pushNewRecursionContext(_localctx, _startState, RULE_int_expr);
-						setState(185);
+						setState(193);
 						if (!(precpred(_ctx, 2))) throw new FailedPredicateException(this, "precpred(_ctx, 2)");
-						setState(186); match(3);
-						setState(187); ((IntegerSubtractionContext)_localctx).right = product(0);
+						setState(194); match(10);
+						setState(195); ((IntegerSubtractionContext)_localctx).right = product(0);
 						}
 						break;
 					}
 					} 
 				}
-				setState(192);
+				setState(200);
 				_errHandler.sync(this);
 				_alt = getInterpreter().adaptivePredict(_input,16,_ctx);
 			}
@@ -1093,19 +1204,19 @@ public class ToolParser extends Parser {
 			super.copyFrom(ctx);
 		}
 	}
-	public static class IntegerMultiplicationContext extends ProductContext {
+	public static class IntegerDivisionContext extends ProductContext {
 		public ProductContext left;
 		public Int_factorContext right;
-		public ProductContext product() {
-			return getRuleContext(ProductContext.class,0);
-		}
 		public Int_factorContext int_factor() {
 			return getRuleContext(Int_factorContext.class,0);
 		}
-		public IntegerMultiplicationContext(ProductContext ctx) { copyFrom(ctx); }
+		public ProductContext product() {
+			return getRuleContext(ProductContext.class,0);
+		}
+		public IntegerDivisionContext(ProductContext ctx) { copyFrom(ctx); }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof ToolVisitor ) return ((ToolVisitor<? extends T>)visitor).visitIntegerMultiplication(this);
+			if ( visitor instanceof ToolVisitor ) return ((ToolVisitor<? extends T>)visitor).visitIntegerDivision(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -1121,19 +1232,19 @@ public class ToolParser extends Parser {
 			else return visitor.visitChildren(this);
 		}
 	}
-	public static class IntegerDivisionContext extends ProductContext {
+	public static class IntegerMultiplicationContext extends ProductContext {
 		public ProductContext left;
 		public Int_factorContext right;
-		public ProductContext product() {
-			return getRuleContext(ProductContext.class,0);
-		}
 		public Int_factorContext int_factor() {
 			return getRuleContext(Int_factorContext.class,0);
 		}
-		public IntegerDivisionContext(ProductContext ctx) { copyFrom(ctx); }
+		public ProductContext product() {
+			return getRuleContext(ProductContext.class,0);
+		}
+		public IntegerMultiplicationContext(ProductContext ctx) { copyFrom(ctx); }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof ToolVisitor ) return ((ToolVisitor<? extends T>)visitor).visitIntegerDivision(this);
+			if ( visitor instanceof ToolVisitor ) return ((ToolVisitor<? extends T>)visitor).visitIntegerMultiplication(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -1147,8 +1258,8 @@ public class ToolParser extends Parser {
 		int _parentState = getState();
 		ProductContext _localctx = new ProductContext(_ctx, _parentState);
 		ProductContext _prevctx = _localctx;
-		int _startState = 20;
-		enterRecursionRule(_localctx, 20, RULE_product, _p);
+		int _startState = 24;
+		enterRecursionRule(_localctx, 24, RULE_product, _p);
 		try {
 			int _alt;
 			enterOuterAlt(_localctx, 1);
@@ -1158,10 +1269,10 @@ public class ToolParser extends Parser {
 			_ctx = _localctx;
 			_prevctx = _localctx;
 
-			setState(194); ((IntegerProductFactorContext)_localctx).left = int_factor();
+			setState(202); ((IntegerProductFactorContext)_localctx).left = int_factor();
 			}
 			_ctx.stop = _input.LT(-1);
-			setState(204);
+			setState(212);
 			_errHandler.sync(this);
 			_alt = getInterpreter().adaptivePredict(_input,18,_ctx);
 			while ( _alt!=2 && _alt!=-1 ) {
@@ -1169,17 +1280,17 @@ public class ToolParser extends Parser {
 					if ( _parseListeners!=null ) triggerExitRuleEvent();
 					_prevctx = _localctx;
 					{
-					setState(202);
+					setState(210);
 					switch ( getInterpreter().adaptivePredict(_input,17,_ctx) ) {
 					case 1:
 						{
 						_localctx = new IntegerMultiplicationContext(new ProductContext(_parentctx, _parentState));
 						((IntegerMultiplicationContext)_localctx).left = _prevctx;
 						pushNewRecursionContext(_localctx, _startState, RULE_product);
-						setState(196);
+						setState(204);
 						if (!(precpred(_ctx, 3))) throw new FailedPredicateException(this, "precpred(_ctx, 3)");
-						setState(197); match(4);
-						setState(198); ((IntegerMultiplicationContext)_localctx).right = int_factor();
+						setState(205); match(4);
+						setState(206); ((IntegerMultiplicationContext)_localctx).right = int_factor();
 						}
 						break;
 
@@ -1188,16 +1299,16 @@ public class ToolParser extends Parser {
 						_localctx = new IntegerDivisionContext(new ProductContext(_parentctx, _parentState));
 						((IntegerDivisionContext)_localctx).left = _prevctx;
 						pushNewRecursionContext(_localctx, _startState, RULE_product);
-						setState(199);
+						setState(207);
 						if (!(precpred(_ctx, 2))) throw new FailedPredicateException(this, "precpred(_ctx, 2)");
-						setState(200); match(5);
-						setState(201); ((IntegerDivisionContext)_localctx).right = int_factor();
+						setState(208); match(1);
+						setState(209); ((IntegerDivisionContext)_localctx).right = int_factor();
 						}
 						break;
 					}
 					} 
 				}
-				setState(206);
+				setState(214);
 				_errHandler.sync(this);
 				_alt = getInterpreter().adaptivePredict(_input,18,_ctx);
 			}
@@ -1235,17 +1346,15 @@ public class ToolParser extends Parser {
 			else return visitor.visitChildren(this);
 		}
 	}
-	public static class IntegerFactorParenthesisContext extends Int_factorContext {
-		public Int_exprContext factor;
-		public Int_exprContext int_expr() {
-			return getRuleContext(Int_exprContext.class,0);
+	public static class IntegerFactorFunctionCallContext extends Int_factorContext {
+		public Func_callContext factor;
+		public Func_callContext func_call() {
+			return getRuleContext(Func_callContext.class,0);
 		}
-		public TerminalNode R_PAREN() { return getToken(ToolParser.R_PAREN, 0); }
-		public TerminalNode L_PAREN() { return getToken(ToolParser.L_PAREN, 0); }
-		public IntegerFactorParenthesisContext(Int_factorContext ctx) { copyFrom(ctx); }
+		public IntegerFactorFunctionCallContext(Int_factorContext ctx) { copyFrom(ctx); }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof ToolVisitor ) return ((ToolVisitor<? extends T>)visitor).visitIntegerFactorParenthesis(this);
+			if ( visitor instanceof ToolVisitor ) return ((ToolVisitor<? extends T>)visitor).visitIntegerFactorFunctionCall(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -1261,32 +1370,34 @@ public class ToolParser extends Parser {
 			else return visitor.visitChildren(this);
 		}
 	}
-	public static class IntegerFactorFunctionCallContext extends Int_factorContext {
-		public Func_callContext factor;
-		public Func_callContext func_call() {
-			return getRuleContext(Func_callContext.class,0);
+	public static class IntegerFactorParenthesisContext extends Int_factorContext {
+		public Int_exprContext factor;
+		public TerminalNode R_PAREN() { return getToken(ToolParser.R_PAREN, 0); }
+		public Int_exprContext int_expr() {
+			return getRuleContext(Int_exprContext.class,0);
 		}
-		public IntegerFactorFunctionCallContext(Int_factorContext ctx) { copyFrom(ctx); }
+		public TerminalNode L_PAREN() { return getToken(ToolParser.L_PAREN, 0); }
+		public IntegerFactorParenthesisContext(Int_factorContext ctx) { copyFrom(ctx); }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof ToolVisitor ) return ((ToolVisitor<? extends T>)visitor).visitIntegerFactorFunctionCall(this);
+			if ( visitor instanceof ToolVisitor ) return ((ToolVisitor<? extends T>)visitor).visitIntegerFactorParenthesis(this);
 			else return visitor.visitChildren(this);
 		}
 	}
 
 	public final Int_factorContext int_factor() throws RecognitionException {
 		Int_factorContext _localctx = new Int_factorContext(_ctx, getState());
-		enterRule(_localctx, 22, RULE_int_factor);
+		enterRule(_localctx, 26, RULE_int_factor);
 		try {
-			setState(214);
+			setState(222);
 			switch ( getInterpreter().adaptivePredict(_input,19,_ctx) ) {
 			case 1:
 				_localctx = new IntegerFactorParenthesisContext(_localctx);
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(207); match(L_PAREN);
-				setState(208); ((IntegerFactorParenthesisContext)_localctx).factor = int_expr(0);
-				setState(209); match(R_PAREN);
+				setState(215); match(L_PAREN);
+				setState(216); ((IntegerFactorParenthesisContext)_localctx).factor = int_expr(0);
+				setState(217); match(R_PAREN);
 				}
 				break;
 
@@ -1294,7 +1405,7 @@ public class ToolParser extends Parser {
 				_localctx = new IntegerFactorFunctionCallContext(_localctx);
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(211); ((IntegerFactorFunctionCallContext)_localctx).factor = func_call();
+				setState(219); ((IntegerFactorFunctionCallContext)_localctx).factor = func_call();
 				}
 				break;
 
@@ -1302,7 +1413,7 @@ public class ToolParser extends Parser {
 				_localctx = new IntegerFactorVariableNameContext(_localctx);
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(212); ((IntegerFactorVariableNameContext)_localctx).factor = var_name();
+				setState(220); ((IntegerFactorVariableNameContext)_localctx).factor = var_name();
 				}
 				break;
 
@@ -1310,7 +1421,7 @@ public class ToolParser extends Parser {
 				_localctx = new IntegerFactorContext(_localctx);
 				enterOuterAlt(_localctx, 4);
 				{
-				setState(213); ((IntegerFactorContext)_localctx).factor = match(NUMBER);
+				setState(221); ((IntegerFactorContext)_localctx).factor = match(NUMBER);
 				}
 				break;
 			}
@@ -1335,38 +1446,6 @@ public class ToolParser extends Parser {
 		public Bool_exprContext() { }
 		public void copyFrom(Bool_exprContext ctx) {
 			super.copyFrom(ctx);
-		}
-	}
-	public static class BooleanUnequalContext extends Bool_exprContext {
-		public Bool_factorContext left;
-		public Bool_exprContext right;
-		public Bool_exprContext bool_expr() {
-			return getRuleContext(Bool_exprContext.class,0);
-		}
-		public Bool_factorContext bool_factor() {
-			return getRuleContext(Bool_factorContext.class,0);
-		}
-		public BooleanUnequalContext(Bool_exprContext ctx) { copyFrom(ctx); }
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof ToolVisitor ) return ((ToolVisitor<? extends T>)visitor).visitBooleanUnequal(this);
-			else return visitor.visitChildren(this);
-		}
-	}
-	public static class BooleanAndContext extends Bool_exprContext {
-		public Bool_factorContext left;
-		public Bool_exprContext right;
-		public Bool_exprContext bool_expr() {
-			return getRuleContext(Bool_exprContext.class,0);
-		}
-		public Bool_factorContext bool_factor() {
-			return getRuleContext(Bool_factorContext.class,0);
-		}
-		public BooleanAndContext(Bool_exprContext ctx) { copyFrom(ctx); }
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof ToolVisitor ) return ((ToolVisitor<? extends T>)visitor).visitBooleanAnd(this);
-			else return visitor.visitChildren(this);
 		}
 	}
 	public static class BooleanGreaterContext extends Bool_exprContext {
@@ -1401,19 +1480,19 @@ public class ToolParser extends Parser {
 			else return visitor.visitChildren(this);
 		}
 	}
-	public static class BooleanOrContext extends Bool_exprContext {
-		public Bool_factorContext left;
-		public Bool_exprContext right;
-		public Bool_exprContext bool_expr() {
-			return getRuleContext(Bool_exprContext.class,0);
+	public static class BooleanLowerContext extends Bool_exprContext {
+		public Int_exprContext left;
+		public Int_exprContext right;
+		public List<Int_exprContext> int_expr() {
+			return getRuleContexts(Int_exprContext.class);
 		}
-		public Bool_factorContext bool_factor() {
-			return getRuleContext(Bool_factorContext.class,0);
+		public Int_exprContext int_expr(int i) {
+			return getRuleContext(Int_exprContext.class,i);
 		}
-		public BooleanOrContext(Bool_exprContext ctx) { copyFrom(ctx); }
+		public BooleanLowerContext(Bool_exprContext ctx) { copyFrom(ctx); }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof ToolVisitor ) return ((ToolVisitor<? extends T>)visitor).visitBooleanOr(this);
+			if ( visitor instanceof ToolVisitor ) return ((ToolVisitor<? extends T>)visitor).visitBooleanLower(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -1433,34 +1512,6 @@ public class ToolParser extends Parser {
 			else return visitor.visitChildren(this);
 		}
 	}
-	public static class BooleanLowerContext extends Bool_exprContext {
-		public Int_exprContext left;
-		public Int_exprContext right;
-		public List<Int_exprContext> int_expr() {
-			return getRuleContexts(Int_exprContext.class);
-		}
-		public Int_exprContext int_expr(int i) {
-			return getRuleContext(Int_exprContext.class,i);
-		}
-		public BooleanLowerContext(Bool_exprContext ctx) { copyFrom(ctx); }
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof ToolVisitor ) return ((ToolVisitor<? extends T>)visitor).visitBooleanLower(this);
-			else return visitor.visitChildren(this);
-		}
-	}
-	public static class BooleanFactorContext extends Bool_exprContext {
-		public Bool_factorContext left;
-		public Bool_factorContext bool_factor() {
-			return getRuleContext(Bool_factorContext.class,0);
-		}
-		public BooleanFactorContext(Bool_exprContext ctx) { copyFrom(ctx); }
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof ToolVisitor ) return ((ToolVisitor<? extends T>)visitor).visitBooleanFactor(this);
-			else return visitor.visitChildren(this);
-		}
-	}
 	public static class BooleanEqualContext extends Bool_exprContext {
 		public Bool_factorContext left;
 		public Bool_exprContext right;
@@ -1477,20 +1528,80 @@ public class ToolParser extends Parser {
 			else return visitor.visitChildren(this);
 		}
 	}
+	public static class BooleanOrContext extends Bool_exprContext {
+		public Bool_factorContext left;
+		public Bool_exprContext right;
+		public Bool_exprContext bool_expr() {
+			return getRuleContext(Bool_exprContext.class,0);
+		}
+		public Bool_factorContext bool_factor() {
+			return getRuleContext(Bool_factorContext.class,0);
+		}
+		public BooleanOrContext(Bool_exprContext ctx) { copyFrom(ctx); }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof ToolVisitor ) return ((ToolVisitor<? extends T>)visitor).visitBooleanOr(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class BooleanFactorContext extends Bool_exprContext {
+		public Bool_factorContext left;
+		public Bool_factorContext bool_factor() {
+			return getRuleContext(Bool_factorContext.class,0);
+		}
+		public BooleanFactorContext(Bool_exprContext ctx) { copyFrom(ctx); }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof ToolVisitor ) return ((ToolVisitor<? extends T>)visitor).visitBooleanFactor(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class BooleanUnequalContext extends Bool_exprContext {
+		public Bool_factorContext left;
+		public Bool_exprContext right;
+		public Bool_exprContext bool_expr() {
+			return getRuleContext(Bool_exprContext.class,0);
+		}
+		public Bool_factorContext bool_factor() {
+			return getRuleContext(Bool_factorContext.class,0);
+		}
+		public BooleanUnequalContext(Bool_exprContext ctx) { copyFrom(ctx); }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof ToolVisitor ) return ((ToolVisitor<? extends T>)visitor).visitBooleanUnequal(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class BooleanAndContext extends Bool_exprContext {
+		public Bool_factorContext left;
+		public Bool_exprContext right;
+		public Bool_exprContext bool_expr() {
+			return getRuleContext(Bool_exprContext.class,0);
+		}
+		public Bool_factorContext bool_factor() {
+			return getRuleContext(Bool_factorContext.class,0);
+		}
+		public BooleanAndContext(Bool_exprContext ctx) { copyFrom(ctx); }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof ToolVisitor ) return ((ToolVisitor<? extends T>)visitor).visitBooleanAnd(this);
+			else return visitor.visitChildren(this);
+		}
+	}
 
 	public final Bool_exprContext bool_expr() throws RecognitionException {
 		Bool_exprContext _localctx = new Bool_exprContext(_ctx, getState());
-		enterRule(_localctx, 24, RULE_bool_expr);
+		enterRule(_localctx, 28, RULE_bool_expr);
 		try {
-			setState(249);
+			setState(257);
 			switch ( getInterpreter().adaptivePredict(_input,20,_ctx) ) {
 			case 1:
 				_localctx = new BooleanLowerContext(_localctx);
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(216); ((BooleanLowerContext)_localctx).left = int_expr(0);
-				setState(217); match(6);
-				setState(218); ((BooleanLowerContext)_localctx).right = int_expr(0);
+				setState(224); ((BooleanLowerContext)_localctx).left = int_expr(0);
+				setState(225); match(9);
+				setState(226); ((BooleanLowerContext)_localctx).right = int_expr(0);
 				}
 				break;
 
@@ -1498,9 +1609,9 @@ public class ToolParser extends Parser {
 				_localctx = new BooleanGreaterContext(_localctx);
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(220); ((BooleanGreaterContext)_localctx).left = int_expr(0);
-				setState(221); match(2);
-				setState(222); ((BooleanGreaterContext)_localctx).right = int_expr(0);
+				setState(228); ((BooleanGreaterContext)_localctx).left = int_expr(0);
+				setState(229); match(11);
+				setState(230); ((BooleanGreaterContext)_localctx).right = int_expr(0);
 				}
 				break;
 
@@ -1508,9 +1619,9 @@ public class ToolParser extends Parser {
 				_localctx = new BooleanLEContext(_localctx);
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(224); ((BooleanLEContext)_localctx).left = int_expr(0);
-				setState(225); match(10);
-				setState(226); ((BooleanLEContext)_localctx).right = int_expr(0);
+				setState(232); ((BooleanLEContext)_localctx).left = int_expr(0);
+				setState(233); match(2);
+				setState(234); ((BooleanLEContext)_localctx).right = int_expr(0);
 				}
 				break;
 
@@ -1518,9 +1629,9 @@ public class ToolParser extends Parser {
 				_localctx = new BooleanGEContext(_localctx);
 				enterOuterAlt(_localctx, 4);
 				{
-				setState(228); ((BooleanGEContext)_localctx).left = int_expr(0);
-				setState(229); match(8);
-				setState(230); ((BooleanGEContext)_localctx).right = int_expr(0);
+				setState(236); ((BooleanGEContext)_localctx).left = int_expr(0);
+				setState(237); match(6);
+				setState(238); ((BooleanGEContext)_localctx).right = int_expr(0);
 				}
 				break;
 
@@ -1528,9 +1639,9 @@ public class ToolParser extends Parser {
 				_localctx = new BooleanEqualContext(_localctx);
 				enterOuterAlt(_localctx, 5);
 				{
-				setState(232); ((BooleanEqualContext)_localctx).left = bool_factor();
-				setState(233); match(7);
-				setState(234); ((BooleanEqualContext)_localctx).right = bool_expr();
+				setState(240); ((BooleanEqualContext)_localctx).left = bool_factor();
+				setState(241); match(8);
+				setState(242); ((BooleanEqualContext)_localctx).right = bool_expr();
 				}
 				break;
 
@@ -1538,9 +1649,9 @@ public class ToolParser extends Parser {
 				_localctx = new BooleanUnequalContext(_localctx);
 				enterOuterAlt(_localctx, 6);
 				{
-				setState(236); ((BooleanUnequalContext)_localctx).left = bool_factor();
-				setState(237); match(9);
-				setState(238); ((BooleanUnequalContext)_localctx).right = bool_expr();
+				setState(244); ((BooleanUnequalContext)_localctx).left = bool_factor();
+				setState(245); match(3);
+				setState(246); ((BooleanUnequalContext)_localctx).right = bool_expr();
 				}
 				break;
 
@@ -1548,9 +1659,9 @@ public class ToolParser extends Parser {
 				_localctx = new BooleanOrContext(_localctx);
 				enterOuterAlt(_localctx, 7);
 				{
-				setState(240); ((BooleanOrContext)_localctx).left = bool_factor();
-				setState(241); match(1);
-				setState(242); ((BooleanOrContext)_localctx).right = bool_expr();
+				setState(248); ((BooleanOrContext)_localctx).left = bool_factor();
+				setState(249); match(5);
+				setState(250); ((BooleanOrContext)_localctx).right = bool_expr();
 				}
 				break;
 
@@ -1558,9 +1669,9 @@ public class ToolParser extends Parser {
 				_localctx = new BooleanAndContext(_localctx);
 				enterOuterAlt(_localctx, 8);
 				{
-				setState(244); ((BooleanAndContext)_localctx).left = bool_factor();
-				setState(245); match(11);
-				setState(246); ((BooleanAndContext)_localctx).right = bool_expr();
+				setState(252); ((BooleanAndContext)_localctx).left = bool_factor();
+				setState(253); match(7);
+				setState(254); ((BooleanAndContext)_localctx).right = bool_expr();
 				}
 				break;
 
@@ -1568,7 +1679,7 @@ public class ToolParser extends Parser {
 				_localctx = new BooleanFactorContext(_localctx);
 				enterOuterAlt(_localctx, 9);
 				{
-				setState(248); ((BooleanFactorContext)_localctx).left = bool_factor();
+				setState(256); ((BooleanFactorContext)_localctx).left = bool_factor();
 				}
 				break;
 			}
@@ -1595,6 +1706,30 @@ public class ToolParser extends Parser {
 			super.copyFrom(ctx);
 		}
 	}
+	public static class BooleanFactorFunctionCallContext extends Bool_factorContext {
+		public Func_callContext factor;
+		public Func_callContext func_call() {
+			return getRuleContext(Func_callContext.class,0);
+		}
+		public BooleanFactorFunctionCallContext(Bool_factorContext ctx) { copyFrom(ctx); }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof ToolVisitor ) return ((ToolVisitor<? extends T>)visitor).visitBooleanFactorFunctionCall(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class BooleanFactorStringContext extends Bool_factorContext {
+		public Str_exprContext factor;
+		public Str_exprContext str_expr() {
+			return getRuleContext(Str_exprContext.class,0);
+		}
+		public BooleanFactorStringContext(Bool_factorContext ctx) { copyFrom(ctx); }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof ToolVisitor ) return ((ToolVisitor<? extends T>)visitor).visitBooleanFactorString(this);
+			else return visitor.visitChildren(this);
+		}
+	}
 	public static class BooleanFactorIntContext extends Bool_factorContext {
 		public Int_exprContext factor;
 		public Int_exprContext int_expr() {
@@ -1604,18 +1739,6 @@ public class ToolParser extends Parser {
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof ToolVisitor ) return ((ToolVisitor<? extends T>)visitor).visitBooleanFactorInt(this);
-			else return visitor.visitChildren(this);
-		}
-	}
-	public static class BooleanFactorVariableNameContext extends Bool_factorContext {
-		public Var_nameContext factor;
-		public Var_nameContext var_name() {
-			return getRuleContext(Var_nameContext.class,0);
-		}
-		public BooleanFactorVariableNameContext(Bool_factorContext ctx) { copyFrom(ctx); }
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof ToolVisitor ) return ((ToolVisitor<? extends T>)visitor).visitBooleanFactorVariableName(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -1632,27 +1755,17 @@ public class ToolParser extends Parser {
 			else return visitor.visitChildren(this);
 		}
 	}
-	public static class BooleanFactorStringContext extends Bool_factorContext {
-		public Str_exprContext factor;
-		public Str_exprContext str_expr() {
-			return getRuleContext(Str_exprContext.class,0);
+	public static class BooleanFactorParenthesisContext extends Bool_factorContext {
+		public Bool_exprContext factor;
+		public TerminalNode R_PAREN() { return getToken(ToolParser.R_PAREN, 0); }
+		public TerminalNode L_PAREN() { return getToken(ToolParser.L_PAREN, 0); }
+		public Bool_exprContext bool_expr() {
+			return getRuleContext(Bool_exprContext.class,0);
 		}
-		public BooleanFactorStringContext(Bool_factorContext ctx) { copyFrom(ctx); }
+		public BooleanFactorParenthesisContext(Bool_factorContext ctx) { copyFrom(ctx); }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof ToolVisitor ) return ((ToolVisitor<? extends T>)visitor).visitBooleanFactorString(this);
-			else return visitor.visitChildren(this);
-		}
-	}
-	public static class BooleanFactorFunctionCallContext extends Bool_factorContext {
-		public Func_callContext factor;
-		public Func_callContext func_call() {
-			return getRuleContext(Func_callContext.class,0);
-		}
-		public BooleanFactorFunctionCallContext(Bool_factorContext ctx) { copyFrom(ctx); }
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof ToolVisitor ) return ((ToolVisitor<? extends T>)visitor).visitBooleanFactorFunctionCall(this);
+			if ( visitor instanceof ToolVisitor ) return ((ToolVisitor<? extends T>)visitor).visitBooleanFactorParenthesis(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -1666,34 +1779,32 @@ public class ToolParser extends Parser {
 			else return visitor.visitChildren(this);
 		}
 	}
-	public static class BooleanFactorParenthesisContext extends Bool_factorContext {
-		public Bool_exprContext factor;
-		public Bool_exprContext bool_expr() {
-			return getRuleContext(Bool_exprContext.class,0);
+	public static class BooleanFactorVariableNameContext extends Bool_factorContext {
+		public Var_nameContext factor;
+		public Var_nameContext var_name() {
+			return getRuleContext(Var_nameContext.class,0);
 		}
-		public TerminalNode R_PAREN() { return getToken(ToolParser.R_PAREN, 0); }
-		public TerminalNode L_PAREN() { return getToken(ToolParser.L_PAREN, 0); }
-		public BooleanFactorParenthesisContext(Bool_factorContext ctx) { copyFrom(ctx); }
+		public BooleanFactorVariableNameContext(Bool_factorContext ctx) { copyFrom(ctx); }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof ToolVisitor ) return ((ToolVisitor<? extends T>)visitor).visitBooleanFactorParenthesis(this);
+			if ( visitor instanceof ToolVisitor ) return ((ToolVisitor<? extends T>)visitor).visitBooleanFactorVariableName(this);
 			else return visitor.visitChildren(this);
 		}
 	}
 
 	public final Bool_factorContext bool_factor() throws RecognitionException {
 		Bool_factorContext _localctx = new Bool_factorContext(_ctx, getState());
-		enterRule(_localctx, 26, RULE_bool_factor);
+		enterRule(_localctx, 30, RULE_bool_factor);
 		try {
-			setState(262);
+			setState(270);
 			switch ( getInterpreter().adaptivePredict(_input,21,_ctx) ) {
 			case 1:
 				_localctx = new BooleanFactorParenthesisContext(_localctx);
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(251); match(L_PAREN);
-				setState(252); ((BooleanFactorParenthesisContext)_localctx).factor = bool_expr();
-				setState(253); match(R_PAREN);
+				setState(259); match(L_PAREN);
+				setState(260); ((BooleanFactorParenthesisContext)_localctx).factor = bool_expr();
+				setState(261); match(R_PAREN);
 				}
 				break;
 
@@ -1701,8 +1812,8 @@ public class ToolParser extends Parser {
 				_localctx = new BooleanFactorInvertedContext(_localctx);
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(255); match(INVERT);
-				setState(256); ((BooleanFactorInvertedContext)_localctx).factor = bool_expr();
+				setState(263); match(INVERT);
+				setState(264); ((BooleanFactorInvertedContext)_localctx).factor = bool_expr();
 				}
 				break;
 
@@ -1710,7 +1821,7 @@ public class ToolParser extends Parser {
 				_localctx = new BooleanFactorFunctionCallContext(_localctx);
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(257); ((BooleanFactorFunctionCallContext)_localctx).factor = func_call();
+				setState(265); ((BooleanFactorFunctionCallContext)_localctx).factor = func_call();
 				}
 				break;
 
@@ -1718,7 +1829,7 @@ public class ToolParser extends Parser {
 				_localctx = new BooleanFactorIntContext(_localctx);
 				enterOuterAlt(_localctx, 4);
 				{
-				setState(258); ((BooleanFactorIntContext)_localctx).factor = int_expr(0);
+				setState(266); ((BooleanFactorIntContext)_localctx).factor = int_expr(0);
 				}
 				break;
 
@@ -1726,7 +1837,7 @@ public class ToolParser extends Parser {
 				_localctx = new BooleanFactorStringContext(_localctx);
 				enterOuterAlt(_localctx, 5);
 				{
-				setState(259); ((BooleanFactorStringContext)_localctx).factor = str_expr();
+				setState(267); ((BooleanFactorStringContext)_localctx).factor = str_expr();
 				}
 				break;
 
@@ -1734,7 +1845,7 @@ public class ToolParser extends Parser {
 				_localctx = new BooleanFactorVariableNameContext(_localctx);
 				enterOuterAlt(_localctx, 6);
 				{
-				setState(260); ((BooleanFactorVariableNameContext)_localctx).factor = var_name();
+				setState(268); ((BooleanFactorVariableNameContext)_localctx).factor = var_name();
 				}
 				break;
 
@@ -1742,7 +1853,7 @@ public class ToolParser extends Parser {
 				_localctx = new BooleanFactorBooleanContext(_localctx);
 				enterOuterAlt(_localctx, 7);
 				{
-				setState(261); ((BooleanFactorBooleanContext)_localctx).factor = match(BOOLEAN);
+				setState(269); ((BooleanFactorBooleanContext)_localctx).factor = match(BOOLEAN);
 				}
 				break;
 			}
@@ -1773,14 +1884,14 @@ public class ToolParser extends Parser {
 		public Str_factorContext left;
 		public Str_factorContext str_factor;
 		public List<Str_factorContext> right = new ArrayList<Str_factorContext>();
+		public TerminalNode CAT(int i) {
+			return getToken(ToolParser.CAT, i);
+		}
 		public Str_factorContext str_factor(int i) {
 			return getRuleContext(Str_factorContext.class,i);
 		}
 		public List<Str_factorContext> str_factor() {
 			return getRuleContexts(Str_factorContext.class);
-		}
-		public TerminalNode CAT(int i) {
-			return getToken(ToolParser.CAT, i);
 		}
 		public List<TerminalNode> CAT() { return getTokens(ToolParser.CAT); }
 		public StringExpressionContext(Str_exprContext ctx) { copyFrom(ctx); }
@@ -1793,25 +1904,25 @@ public class ToolParser extends Parser {
 
 	public final Str_exprContext str_expr() throws RecognitionException {
 		Str_exprContext _localctx = new Str_exprContext(_ctx, getState());
-		enterRule(_localctx, 28, RULE_str_expr);
+		enterRule(_localctx, 32, RULE_str_expr);
 		int _la;
 		try {
 			_localctx = new StringExpressionContext(_localctx);
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(264); ((StringExpressionContext)_localctx).left = str_factor();
-			setState(269);
+			setState(272); ((StringExpressionContext)_localctx).left = str_factor();
+			setState(277);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			while (_la==CAT) {
 				{
 				{
-				setState(265); match(CAT);
-				setState(266); ((StringExpressionContext)_localctx).str_factor = str_factor();
+				setState(273); match(CAT);
+				setState(274); ((StringExpressionContext)_localctx).str_factor = str_factor();
 				((StringExpressionContext)_localctx).right.add(((StringExpressionContext)_localctx).str_factor);
 				}
 				}
-				setState(271);
+				setState(279);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
@@ -1839,6 +1950,32 @@ public class ToolParser extends Parser {
 			super.copyFrom(ctx);
 		}
 	}
+	public static class StringFactorParenthesisContext extends Str_factorContext {
+		public Str_exprContext factor;
+		public Str_exprContext str_expr() {
+			return getRuleContext(Str_exprContext.class,0);
+		}
+		public TerminalNode R_PAREN() { return getToken(ToolParser.R_PAREN, 0); }
+		public TerminalNode L_PAREN() { return getToken(ToolParser.L_PAREN, 0); }
+		public StringFactorParenthesisContext(Str_factorContext ctx) { copyFrom(ctx); }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof ToolVisitor ) return ((ToolVisitor<? extends T>)visitor).visitStringFactorParenthesis(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class StringFactorVariableNameContext extends Str_factorContext {
+		public Var_nameContext factor;
+		public Var_nameContext var_name() {
+			return getRuleContext(Var_nameContext.class,0);
+		}
+		public StringFactorVariableNameContext(Str_factorContext ctx) { copyFrom(ctx); }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof ToolVisitor ) return ((ToolVisitor<? extends T>)visitor).visitStringFactorVariableName(this);
+			else return visitor.visitChildren(this);
+		}
+	}
 	public static class StringFactorFunctionCallContext extends Str_factorContext {
 		public Func_callContext factor;
 		public Func_callContext func_call() {
@@ -1861,46 +1998,20 @@ public class ToolParser extends Parser {
 			else return visitor.visitChildren(this);
 		}
 	}
-	public static class StringFactorParenthesisContext extends Str_factorContext {
-		public Str_exprContext factor;
-		public TerminalNode R_PAREN() { return getToken(ToolParser.R_PAREN, 0); }
-		public TerminalNode L_PAREN() { return getToken(ToolParser.L_PAREN, 0); }
-		public Str_exprContext str_expr() {
-			return getRuleContext(Str_exprContext.class,0);
-		}
-		public StringFactorParenthesisContext(Str_factorContext ctx) { copyFrom(ctx); }
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof ToolVisitor ) return ((ToolVisitor<? extends T>)visitor).visitStringFactorParenthesis(this);
-			else return visitor.visitChildren(this);
-		}
-	}
-	public static class StringFactorVariableNameContext extends Str_factorContext {
-		public Var_nameContext factor;
-		public Var_nameContext var_name() {
-			return getRuleContext(Var_nameContext.class,0);
-		}
-		public StringFactorVariableNameContext(Str_factorContext ctx) { copyFrom(ctx); }
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof ToolVisitor ) return ((ToolVisitor<? extends T>)visitor).visitStringFactorVariableName(this);
-			else return visitor.visitChildren(this);
-		}
-	}
 
 	public final Str_factorContext str_factor() throws RecognitionException {
 		Str_factorContext _localctx = new Str_factorContext(_ctx, getState());
-		enterRule(_localctx, 30, RULE_str_factor);
+		enterRule(_localctx, 34, RULE_str_factor);
 		try {
-			setState(279);
+			setState(287);
 			switch ( getInterpreter().adaptivePredict(_input,23,_ctx) ) {
 			case 1:
 				_localctx = new StringFactorParenthesisContext(_localctx);
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(272); match(L_PAREN);
-				setState(273); ((StringFactorParenthesisContext)_localctx).factor = str_expr();
-				setState(274); match(R_PAREN);
+				setState(280); match(L_PAREN);
+				setState(281); ((StringFactorParenthesisContext)_localctx).factor = str_expr();
+				setState(282); match(R_PAREN);
 				}
 				break;
 
@@ -1908,7 +2019,7 @@ public class ToolParser extends Parser {
 				_localctx = new StringFactorFunctionCallContext(_localctx);
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(276); ((StringFactorFunctionCallContext)_localctx).factor = func_call();
+				setState(284); ((StringFactorFunctionCallContext)_localctx).factor = func_call();
 				}
 				break;
 
@@ -1916,7 +2027,7 @@ public class ToolParser extends Parser {
 				_localctx = new StringFactorVariableNameContext(_localctx);
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(277); ((StringFactorVariableNameContext)_localctx).factor = var_name();
+				setState(285); ((StringFactorVariableNameContext)_localctx).factor = var_name();
 				}
 				break;
 
@@ -1924,7 +2035,7 @@ public class ToolParser extends Parser {
 				_localctx = new StringFactorStringContext(_localctx);
 				enterOuterAlt(_localctx, 4);
 				{
-				setState(278); ((StringFactorStringContext)_localctx).factor = match(STRING);
+				setState(286); ((StringFactorStringContext)_localctx).factor = match(STRING);
 				}
 				break;
 			}
@@ -1973,20 +2084,20 @@ public class ToolParser extends Parser {
 
 	public final Var_defContext var_def() throws RecognitionException {
 		Var_defContext _localctx = new Var_defContext(_ctx, getState());
-		enterRule(_localctx, 32, RULE_var_def);
+		enterRule(_localctx, 36, RULE_var_def);
 		int _la;
 		try {
 			_localctx = new VariableDefinitionContext(_localctx);
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(281); ((VariableDefinitionContext)_localctx).type = var_data_type();
-			setState(282); ((VariableDefinitionContext)_localctx).variableName = match(NAME);
-			setState(285);
+			setState(289); ((VariableDefinitionContext)_localctx).type = var_data_type();
+			setState(290); ((VariableDefinitionContext)_localctx).variableName = match(NAME);
+			setState(293);
 			_la = _input.LA(1);
 			if (_la==ASSIGN_TO) {
 				{
-				setState(283); match(ASSIGN_TO);
-				setState(284); ((VariableDefinitionContext)_localctx).value = expr();
+				setState(291); match(ASSIGN_TO);
+				setState(292); ((VariableDefinitionContext)_localctx).value = expr();
 				}
 			}
 
@@ -2027,29 +2138,29 @@ public class ToolParser extends Parser {
 
 	public final Var_data_typeContext var_data_type() throws RecognitionException {
 		Var_data_typeContext _localctx = new Var_data_typeContext(_ctx, getState());
-		enterRule(_localctx, 34, RULE_var_data_type);
+		enterRule(_localctx, 38, RULE_var_data_type);
 		try {
-			setState(290);
+			setState(298);
 			switch (_input.LA(1)) {
 			case TYPE_INT:
 				_localctx = new DataTypeContext(_localctx);
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(287); ((DataTypeContext)_localctx).type = match(TYPE_INT);
+				setState(295); ((DataTypeContext)_localctx).type = match(TYPE_INT);
 				}
 				break;
 			case TYPE_BOOL:
 				_localctx = new DataTypeContext(_localctx);
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(288); ((DataTypeContext)_localctx).type = match(TYPE_BOOL);
+				setState(296); ((DataTypeContext)_localctx).type = match(TYPE_BOOL);
 				}
 				break;
 			case TYPE_STRING:
 				_localctx = new DataTypeContext(_localctx);
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(289); ((DataTypeContext)_localctx).type = match(TYPE_STRING);
+				setState(297); ((DataTypeContext)_localctx).type = match(TYPE_STRING);
 				}
 				break;
 			default:
@@ -2091,9 +2202,9 @@ public class ToolParser extends Parser {
 
 	public final Func_data_typeContext func_data_type() throws RecognitionException {
 		Func_data_typeContext _localctx = new Func_data_typeContext(_ctx, getState());
-		enterRule(_localctx, 36, RULE_func_data_type);
+		enterRule(_localctx, 40, RULE_func_data_type);
 		try {
-			setState(294);
+			setState(302);
 			switch (_input.LA(1)) {
 			case TYPE_INT:
 			case TYPE_BOOL:
@@ -2101,14 +2212,14 @@ public class ToolParser extends Parser {
 				_localctx = new FunctionDataTypeContext(_localctx);
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(292); var_data_type();
+				setState(300); var_data_type();
 				}
 				break;
 			case TYPE_VOID:
 				_localctx = new FunctionDataTypeContext(_localctx);
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(293); ((FunctionDataTypeContext)_localctx).type = match(TYPE_VOID);
+				setState(301); ((FunctionDataTypeContext)_localctx).type = match(TYPE_VOID);
 				}
 				break;
 			default:
@@ -2143,23 +2254,23 @@ public class ToolParser extends Parser {
 		public Func_def_paramsContext parameter_list;
 		public CodeContext code;
 		public List<CodeContext> instructions = new ArrayList<CodeContext>();
+		public TerminalNode R_C_BRACE() { return getToken(ToolParser.R_C_BRACE, 0); }
+		public TerminalNode L_C_BRACE() { return getToken(ToolParser.L_C_BRACE, 0); }
+		public TerminalNode R_PAREN() { return getToken(ToolParser.R_PAREN, 0); }
+		public TerminalNode DEFINE() { return getToken(ToolParser.DEFINE, 0); }
+		public TerminalNode NAME() { return getToken(ToolParser.NAME, 0); }
+		public List<CodeContext> code() {
+			return getRuleContexts(CodeContext.class);
+		}
 		public Func_def_paramsContext func_def_params() {
 			return getRuleContext(Func_def_paramsContext.class,0);
 		}
-		public TerminalNode DEFINE() { return getToken(ToolParser.DEFINE, 0); }
-		public TerminalNode R_PAREN() { return getToken(ToolParser.R_PAREN, 0); }
-		public TerminalNode L_C_BRACE() { return getToken(ToolParser.L_C_BRACE, 0); }
-		public Func_data_typeContext func_data_type() {
-			return getRuleContext(Func_data_typeContext.class,0);
-		}
-		public TerminalNode L_PAREN() { return getToken(ToolParser.L_PAREN, 0); }
-		public TerminalNode NAME() { return getToken(ToolParser.NAME, 0); }
-		public TerminalNode R_C_BRACE() { return getToken(ToolParser.R_C_BRACE, 0); }
 		public CodeContext code(int i) {
 			return getRuleContext(CodeContext.class,i);
 		}
-		public List<CodeContext> code() {
-			return getRuleContexts(CodeContext.class);
+		public TerminalNode L_PAREN() { return getToken(ToolParser.L_PAREN, 0); }
+		public Func_data_typeContext func_data_type() {
+			return getRuleContext(Func_data_typeContext.class,0);
 		}
 		public FunctionDefinitionContext(Func_defContext ctx) { copyFrom(ctx); }
 		@Override
@@ -2171,41 +2282,41 @@ public class ToolParser extends Parser {
 
 	public final Func_defContext func_def() throws RecognitionException {
 		Func_defContext _localctx = new Func_defContext(_ctx, getState());
-		enterRule(_localctx, 38, RULE_func_def);
+		enterRule(_localctx, 42, RULE_func_def);
 		int _la;
 		try {
 			_localctx = new FunctionDefinitionContext(_localctx);
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(296); match(DEFINE);
-			setState(297); ((FunctionDefinitionContext)_localctx).type = func_data_type();
-			setState(298); ((FunctionDefinitionContext)_localctx).fn_name = match(NAME);
-			setState(299); match(L_PAREN);
-			setState(301);
+			setState(304); match(DEFINE);
+			setState(305); ((FunctionDefinitionContext)_localctx).type = func_data_type();
+			setState(306); ((FunctionDefinitionContext)_localctx).fn_name = match(NAME);
+			setState(307); match(L_PAREN);
+			setState(309);
 			_la = _input.LA(1);
 			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << TYPE_INT) | (1L << TYPE_BOOL) | (1L << TYPE_STRING))) != 0)) {
 				{
-				setState(300); ((FunctionDefinitionContext)_localctx).parameter_list = func_def_params();
+				setState(308); ((FunctionDefinitionContext)_localctx).parameter_list = func_def_params();
 				}
 			}
 
-			setState(303); match(R_PAREN);
-			setState(304); match(L_C_BRACE);
-			setState(308);
+			setState(311); match(R_PAREN);
+			setState(312); match(L_C_BRACE);
+			setState(316);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << IF) | (1L << DO_WHILE) | (1L << WHILE) | (1L << TYPE_INT) | (1L << TYPE_BOOL) | (1L << TYPE_STRING) | (1L << NAME))) != 0)) {
 				{
 				{
-				setState(305); ((FunctionDefinitionContext)_localctx).code = code();
+				setState(313); ((FunctionDefinitionContext)_localctx).code = code();
 				((FunctionDefinitionContext)_localctx).instructions.add(((FunctionDefinitionContext)_localctx).code);
 				}
 				}
-				setState(310);
+				setState(318);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
-			setState(311); match(R_C_BRACE);
+			setState(319); match(R_C_BRACE);
 			}
 		}
 		catch (RecognitionException re) {
@@ -2234,13 +2345,13 @@ public class ToolParser extends Parser {
 		public ParameterContext param;
 		public ParameterContext parameter;
 		public List<ParameterContext> remainder = new ArrayList<ParameterContext>();
-		public List<TerminalNode> COMMA() { return getTokens(ToolParser.COMMA); }
 		public List<ParameterContext> parameter() {
 			return getRuleContexts(ParameterContext.class);
 		}
 		public ParameterContext parameter(int i) {
 			return getRuleContext(ParameterContext.class,i);
 		}
+		public List<TerminalNode> COMMA() { return getTokens(ToolParser.COMMA); }
 		public TerminalNode COMMA(int i) {
 			return getToken(ToolParser.COMMA, i);
 		}
@@ -2254,25 +2365,25 @@ public class ToolParser extends Parser {
 
 	public final Func_def_paramsContext func_def_params() throws RecognitionException {
 		Func_def_paramsContext _localctx = new Func_def_paramsContext(_ctx, getState());
-		enterRule(_localctx, 40, RULE_func_def_params);
+		enterRule(_localctx, 44, RULE_func_def_params);
 		int _la;
 		try {
 			_localctx = new FunctionDefinitionParametersContext(_localctx);
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(313); ((FunctionDefinitionParametersContext)_localctx).param = parameter();
-			setState(318);
+			setState(321); ((FunctionDefinitionParametersContext)_localctx).param = parameter();
+			setState(326);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			while (_la==COMMA) {
 				{
 				{
-				setState(314); match(COMMA);
-				setState(315); ((FunctionDefinitionParametersContext)_localctx).parameter = parameter();
+				setState(322); match(COMMA);
+				setState(323); ((FunctionDefinitionParametersContext)_localctx).parameter = parameter();
 				((FunctionDefinitionParametersContext)_localctx).remainder.add(((FunctionDefinitionParametersContext)_localctx).parameter);
 				}
 				}
-				setState(320);
+				setState(328);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
@@ -2304,11 +2415,11 @@ public class ToolParser extends Parser {
 		public Token fn_name;
 		public Func_call_paramsContext parameters;
 		public TerminalNode R_PAREN() { return getToken(ToolParser.R_PAREN, 0); }
-		public TerminalNode L_PAREN() { return getToken(ToolParser.L_PAREN, 0); }
+		public TerminalNode NAME() { return getToken(ToolParser.NAME, 0); }
 		public Func_call_paramsContext func_call_params() {
 			return getRuleContext(Func_call_paramsContext.class,0);
 		}
-		public TerminalNode NAME() { return getToken(ToolParser.NAME, 0); }
+		public TerminalNode L_PAREN() { return getToken(ToolParser.L_PAREN, 0); }
 		public FunctionCallContext(Func_callContext ctx) { copyFrom(ctx); }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
@@ -2319,23 +2430,23 @@ public class ToolParser extends Parser {
 
 	public final Func_callContext func_call() throws RecognitionException {
 		Func_callContext _localctx = new Func_callContext(_ctx, getState());
-		enterRule(_localctx, 42, RULE_func_call);
+		enterRule(_localctx, 46, RULE_func_call);
 		int _la;
 		try {
 			_localctx = new FunctionCallContext(_localctx);
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(321); ((FunctionCallContext)_localctx).fn_name = match(NAME);
-			setState(322); match(L_PAREN);
-			setState(324);
+			setState(329); ((FunctionCallContext)_localctx).fn_name = match(NAME);
+			setState(330); match(L_PAREN);
+			setState(332);
 			_la = _input.LA(1);
 			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << L_PAREN) | (1L << INVERT) | (1L << NAME) | (1L << STRING) | (1L << BOOLEAN) | (1L << NUMBER))) != 0)) {
 				{
-				setState(323); ((FunctionCallContext)_localctx).parameters = func_call_params();
+				setState(331); ((FunctionCallContext)_localctx).parameters = func_call_params();
 				}
 			}
 
-			setState(326); match(R_PAREN);
+			setState(334); match(R_PAREN);
 			}
 		}
 		catch (RecognitionException re) {
@@ -2367,10 +2478,10 @@ public class ToolParser extends Parser {
 		public List<ExprContext> expr() {
 			return getRuleContexts(ExprContext.class);
 		}
-		public List<TerminalNode> COMMA() { return getTokens(ToolParser.COMMA); }
 		public ExprContext expr(int i) {
 			return getRuleContext(ExprContext.class,i);
 		}
+		public List<TerminalNode> COMMA() { return getTokens(ToolParser.COMMA); }
 		public TerminalNode COMMA(int i) {
 			return getToken(ToolParser.COMMA, i);
 		}
@@ -2384,25 +2495,25 @@ public class ToolParser extends Parser {
 
 	public final Func_call_paramsContext func_call_params() throws RecognitionException {
 		Func_call_paramsContext _localctx = new Func_call_paramsContext(_ctx, getState());
-		enterRule(_localctx, 44, RULE_func_call_params);
+		enterRule(_localctx, 48, RULE_func_call_params);
 		int _la;
 		try {
 			_localctx = new FunctionCallParametersContext(_localctx);
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(328); ((FunctionCallParametersContext)_localctx).param = expr();
-			setState(333);
+			setState(336); ((FunctionCallParametersContext)_localctx).param = expr();
+			setState(341);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			while (_la==COMMA) {
 				{
 				{
-				setState(329); match(COMMA);
-				setState(330); ((FunctionCallParametersContext)_localctx).expr = expr();
+				setState(337); match(COMMA);
+				setState(338); ((FunctionCallParametersContext)_localctx).expr = expr();
 				((FunctionCallParametersContext)_localctx).remainder.add(((FunctionCallParametersContext)_localctx).expr);
 				}
 				}
-				setState(335);
+				setState(343);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
@@ -2447,13 +2558,13 @@ public class ToolParser extends Parser {
 
 	public final ParameterContext parameter() throws RecognitionException {
 		ParameterContext _localctx = new ParameterContext(_ctx, getState());
-		enterRule(_localctx, 46, RULE_parameter);
+		enterRule(_localctx, 50, RULE_parameter);
 		try {
 			_localctx = new ParameterDefinitionContext(_localctx);
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(336); ((ParameterDefinitionContext)_localctx).type = var_data_type();
-			setState(337); ((ParameterDefinitionContext)_localctx).name = match(NAME);
+			setState(344); ((ParameterDefinitionContext)_localctx).type = var_data_type();
+			setState(345); ((ParameterDefinitionContext)_localctx).name = match(NAME);
 			}
 		}
 		catch (RecognitionException re) {
@@ -2469,17 +2580,9 @@ public class ToolParser extends Parser {
 
 	public boolean sempred(RuleContext _localctx, int ruleIndex, int predIndex) {
 		switch (ruleIndex) {
-		case 9: return int_expr_sempred((Int_exprContext)_localctx, predIndex);
+		case 11: return int_expr_sempred((Int_exprContext)_localctx, predIndex);
 
-		case 10: return product_sempred((ProductContext)_localctx, predIndex);
-		}
-		return true;
-	}
-	private boolean product_sempred(ProductContext _localctx, int predIndex) {
-		switch (predIndex) {
-		case 2: return precpred(_ctx, 3);
-
-		case 3: return precpred(_ctx, 2);
+		case 12: return product_sempred((ProductContext)_localctx, predIndex);
 		}
 		return true;
 	}
@@ -2491,129 +2594,140 @@ public class ToolParser extends Parser {
 		}
 		return true;
 	}
+	private boolean product_sempred(ProductContext _localctx, int predIndex) {
+		switch (predIndex) {
+		case 2: return precpred(_ctx, 3);
+
+		case 3: return precpred(_ctx, 2);
+		}
+		return true;
+	}
 
 	public static final String _serializedATN =
-		"\3\u0430\ud6d1\u8206\uad2d\u4417\uaef1\u8d80\uaadd\3\'\u0156\4\2\t\2\4"+
+		"\3\u0430\ud6d1\u8206\uad2d\u4417\uaef1\u8d80\uaadd\3\'\u015e\4\2\t\2\4"+
 		"\3\t\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\4\b\t\b\4\t\t\t\4\n\t\n\4\13\t"+
 		"\13\4\f\t\f\4\r\t\r\4\16\t\16\4\17\t\17\4\20\t\20\4\21\t\21\4\22\t\22"+
 		"\4\23\t\23\4\24\t\24\4\25\t\25\4\26\t\26\4\27\t\27\4\30\t\30\4\31\t\31"+
-		"\3\2\7\2\64\n\2\f\2\16\2\67\13\2\3\2\3\2\7\2;\n\2\f\2\16\2>\13\2\3\3\3"+
-		"\3\3\3\3\3\3\3\7\3E\n\3\f\3\16\3H\13\3\3\3\3\3\3\4\3\4\3\4\3\4\5\4P\n"+
-		"\4\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\5\5[\n\5\3\5\3\5\3\5\5\5`\n\5\3"+
-		"\6\3\6\3\6\3\6\3\6\3\6\7\6h\n\6\f\6\16\6k\13\6\3\6\3\6\7\6o\n\6\f\6\16"+
-		"\6r\13\6\3\6\3\6\3\6\7\6w\n\6\f\6\16\6z\13\6\3\6\5\6}\n\6\3\6\3\6\3\6"+
-		"\7\6\u0082\n\6\f\6\16\6\u0085\13\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6"+
-		"\3\6\3\6\3\6\7\6\u0093\n\6\f\6\16\6\u0096\13\6\3\6\3\6\5\6\u009a\n\6\3"+
-		"\7\3\7\3\7\3\7\3\7\3\7\7\7\u00a2\n\7\f\7\16\7\u00a5\13\7\3\7\3\7\3\b\3"+
-		"\b\3\b\3\b\3\t\3\t\3\t\3\t\3\t\5\t\u00b2\n\t\3\n\3\n\3\13\3\13\3\13\3"+
-		"\13\3\13\3\13\3\13\3\13\3\13\7\13\u00bf\n\13\f\13\16\13\u00c2\13\13\3"+
-		"\f\3\f\3\f\3\f\3\f\3\f\3\f\3\f\3\f\7\f\u00cd\n\f\f\f\16\f\u00d0\13\f\3"+
-		"\r\3\r\3\r\3\r\3\r\3\r\3\r\5\r\u00d9\n\r\3\16\3\16\3\16\3\16\3\16\3\16"+
-		"\3\16\3\16\3\16\3\16\3\16\3\16\3\16\3\16\3\16\3\16\3\16\3\16\3\16\3\16"+
-		"\3\16\3\16\3\16\3\16\3\16\3\16\3\16\3\16\3\16\3\16\3\16\3\16\3\16\5\16"+
-		"\u00fc\n\16\3\17\3\17\3\17\3\17\3\17\3\17\3\17\3\17\3\17\3\17\3\17\5\17"+
-		"\u0109\n\17\3\20\3\20\3\20\7\20\u010e\n\20\f\20\16\20\u0111\13\20\3\21"+
-		"\3\21\3\21\3\21\3\21\3\21\3\21\5\21\u011a\n\21\3\22\3\22\3\22\3\22\5\22"+
-		"\u0120\n\22\3\23\3\23\3\23\5\23\u0125\n\23\3\24\3\24\5\24\u0129\n\24\3"+
-		"\25\3\25\3\25\3\25\3\25\5\25\u0130\n\25\3\25\3\25\3\25\7\25\u0135\n\25"+
-		"\f\25\16\25\u0138\13\25\3\25\3\25\3\26\3\26\3\26\7\26\u013f\n\26\f\26"+
-		"\16\26\u0142\13\26\3\27\3\27\3\27\5\27\u0147\n\27\3\27\3\27\3\30\3\30"+
-		"\3\30\7\30\u014e\n\30\f\30\16\30\u0151\13\30\3\31\3\31\3\31\3\31\2\4\24"+
-		"\26\32\2\4\6\b\n\f\16\20\22\24\26\30\32\34\36 \"$&(*,.\60\2\2\u0174\2"+
-		"\65\3\2\2\2\4?\3\2\2\2\6O\3\2\2\2\b_\3\2\2\2\n\u0099\3\2\2\2\f\u009b\3"+
-		"\2\2\2\16\u00a8\3\2\2\2\20\u00b1\3\2\2\2\22\u00b3\3\2\2\2\24\u00b5\3\2"+
-		"\2\2\26\u00c3\3\2\2\2\30\u00d8\3\2\2\2\32\u00fb\3\2\2\2\34\u0108\3\2\2"+
-		"\2\36\u010a\3\2\2\2 \u0119\3\2\2\2\"\u011b\3\2\2\2$\u0124\3\2\2\2&\u0128"+
-		"\3\2\2\2(\u012a\3\2\2\2*\u013b\3\2\2\2,\u0143\3\2\2\2.\u014a\3\2\2\2\60"+
-		"\u0152\3\2\2\2\62\64\5\6\4\2\63\62\3\2\2\2\64\67\3\2\2\2\65\63\3\2\2\2"+
-		"\65\66\3\2\2\2\668\3\2\2\2\67\65\3\2\2\28<\5\4\3\29;\5\6\4\2:9\3\2\2\2"+
-		";>\3\2\2\2<:\3\2\2\2<=\3\2\2\2=\3\3\2\2\2><\3\2\2\2?@\7\27\2\2@A\7\16"+
-		"\2\2AB\7\17\2\2BF\7\21\2\2CE\5\b\5\2DC\3\2\2\2EH\3\2\2\2FD\3\2\2\2FG\3"+
-		"\2\2\2GI\3\2\2\2HF\3\2\2\2IJ\7\20\2\2J\5\3\2\2\2KL\5\"\22\2LM\7\22\2\2"+
-		"MP\3\2\2\2NP\5(\25\2OK\3\2\2\2ON\3\2\2\2P\7\3\2\2\2QR\5\"\22\2RS\7\22"+
-		"\2\2S`\3\2\2\2TU\5\16\b\2UV\7\22\2\2V`\3\2\2\2WX\7\"\2\2XZ\7\16\2\2Y["+
-		"\5.\30\2ZY\3\2\2\2Z[\3\2\2\2[\\\3\2\2\2\\]\7\17\2\2]`\7\22\2\2^`\5\n\6"+
-		"\2_Q\3\2\2\2_T\3\2\2\2_W\3\2\2\2_^\3\2\2\2`\t\3\2\2\2ab\7\30\2\2bc\7\16"+
-		"\2\2cd\5\32\16\2de\7\17\2\2ei\7\21\2\2fh\5\b\5\2gf\3\2\2\2hk\3\2\2\2i"+
-		"g\3\2\2\2ij\3\2\2\2jl\3\2\2\2ki\3\2\2\2lp\7\20\2\2mo\5\f\7\2nm\3\2\2\2"+
-		"or\3\2\2\2pn\3\2\2\2pq\3\2\2\2q|\3\2\2\2rp\3\2\2\2st\7\32\2\2tx\7\21\2"+
-		"\2uw\5\b\5\2vu\3\2\2\2wz\3\2\2\2xv\3\2\2\2xy\3\2\2\2y{\3\2\2\2zx\3\2\2"+
-		"\2{}\7\20\2\2|s\3\2\2\2|}\3\2\2\2}\u009a\3\2\2\2~\177\7\33\2\2\177\u0083"+
-		"\7\21\2\2\u0080\u0082\5\b\5\2\u0081\u0080\3\2\2\2\u0082\u0085\3\2\2\2"+
-		"\u0083\u0081\3\2\2\2\u0083\u0084\3\2\2\2\u0084\u0086\3\2\2\2\u0085\u0083"+
-		"\3\2\2\2\u0086\u0087\7\20\2\2\u0087\u0088\7\16\2\2\u0088\u0089\5\32\16"+
-		"\2\u0089\u008a\7\17\2\2\u008a\u008b\7\22\2\2\u008b\u009a\3\2\2\2\u008c"+
-		"\u008d\7\34\2\2\u008d\u008e\7\16\2\2\u008e\u008f\5\32\16\2\u008f\u0090"+
-		"\7\17\2\2\u0090\u0094\7\21\2\2\u0091\u0093\5\b\5\2\u0092\u0091\3\2\2\2"+
-		"\u0093\u0096\3\2\2\2\u0094\u0092\3\2\2\2\u0094\u0095\3\2\2\2\u0095\u0097"+
-		"\3\2\2\2\u0096\u0094\3\2\2\2\u0097\u0098\7\20\2\2\u0098\u009a\3\2\2\2"+
-		"\u0099a\3\2\2\2\u0099~\3\2\2\2\u0099\u008c\3\2\2\2\u009a\13\3\2\2\2\u009b"+
-		"\u009c\7\31\2\2\u009c\u009d\7\16\2\2\u009d\u009e\5\32\16\2\u009e\u009f"+
-		"\7\17\2\2\u009f\u00a3\7\21\2\2\u00a0\u00a2\5\b\5\2\u00a1\u00a0\3\2\2\2"+
-		"\u00a2\u00a5\3\2\2\2\u00a3\u00a1\3\2\2\2\u00a3\u00a4\3\2\2\2\u00a4\u00a6"+
-		"\3\2\2\2\u00a5\u00a3\3\2\2\2\u00a6\u00a7\7\20\2\2\u00a7\r\3\2\2\2\u00a8"+
-		"\u00a9\7\"\2\2\u00a9\u00aa\7\24\2\2\u00aa\u00ab\5\20\t\2\u00ab\17\3\2"+
-		"\2\2\u00ac\u00b2\5\22\n\2\u00ad\u00b2\5,\27\2\u00ae\u00b2\5\24\13\2\u00af"+
-		"\u00b2\5\36\20\2\u00b0\u00b2\5\32\16\2\u00b1\u00ac\3\2\2\2\u00b1\u00ad"+
-		"\3\2\2\2\u00b1\u00ae\3\2\2\2\u00b1\u00af\3\2\2\2\u00b1\u00b0\3\2\2\2\u00b2"+
-		"\21\3\2\2\2\u00b3\u00b4\7\"\2\2\u00b4\23\3\2\2\2\u00b5\u00b6\b\13\1\2"+
-		"\u00b6\u00b7\5\26\f\2\u00b7\u00c0\3\2\2\2\u00b8\u00b9\f\5\2\2\u00b9\u00ba"+
-		"\7\25\2\2\u00ba\u00bf\5\26\f\2\u00bb\u00bc\f\4\2\2\u00bc\u00bd\7\5\2\2"+
-		"\u00bd\u00bf\5\26\f\2\u00be\u00b8\3\2\2\2\u00be\u00bb\3\2\2\2\u00bf\u00c2"+
-		"\3\2\2\2\u00c0\u00be\3\2\2\2\u00c0\u00c1\3\2\2\2\u00c1\25\3\2\2\2\u00c2"+
-		"\u00c0\3\2\2\2\u00c3\u00c4\b\f\1\2\u00c4\u00c5\5\30\r\2\u00c5\u00ce\3"+
-		"\2\2\2\u00c6\u00c7\f\5\2\2\u00c7\u00c8\7\6\2\2\u00c8\u00cd\5\30\r\2\u00c9"+
-		"\u00ca\f\4\2\2\u00ca\u00cb\7\7\2\2\u00cb\u00cd\5\30\r\2\u00cc\u00c6\3"+
-		"\2\2\2\u00cc\u00c9\3\2\2\2\u00cd\u00d0\3\2\2\2\u00ce\u00cc\3\2\2\2\u00ce"+
-		"\u00cf\3\2\2\2\u00cf\27\3\2\2\2\u00d0\u00ce\3\2\2\2\u00d1\u00d2\7\16\2"+
-		"\2\u00d2\u00d3\5\24\13\2\u00d3\u00d4\7\17\2\2\u00d4\u00d9\3\2\2\2\u00d5"+
-		"\u00d9\5,\27\2\u00d6\u00d9\5\22\n\2\u00d7\u00d9\7%\2\2\u00d8\u00d1\3\2"+
-		"\2\2\u00d8\u00d5\3\2\2\2\u00d8\u00d6\3\2\2\2\u00d8\u00d7\3\2\2\2\u00d9"+
-		"\31\3\2\2\2\u00da\u00db\5\24\13\2\u00db\u00dc\7\b\2\2\u00dc\u00dd\5\24"+
-		"\13\2\u00dd\u00fc\3\2\2\2\u00de\u00df\5\24\13\2\u00df\u00e0\7\4\2\2\u00e0"+
-		"\u00e1\5\24\13\2\u00e1\u00fc\3\2\2\2\u00e2\u00e3\5\24\13\2\u00e3\u00e4"+
-		"\7\f\2\2\u00e4\u00e5\5\24\13\2\u00e5\u00fc\3\2\2\2\u00e6\u00e7\5\24\13"+
-		"\2\u00e7\u00e8\7\n\2\2\u00e8\u00e9\5\24\13\2\u00e9\u00fc\3\2\2\2\u00ea"+
-		"\u00eb\5\34\17\2\u00eb\u00ec\7\t\2\2\u00ec\u00ed\5\32\16\2\u00ed\u00fc"+
-		"\3\2\2\2\u00ee\u00ef\5\34\17\2\u00ef\u00f0\7\13\2\2\u00f0\u00f1\5\32\16"+
-		"\2\u00f1\u00fc\3\2\2\2\u00f2\u00f3\5\34\17\2\u00f3\u00f4\7\3\2\2\u00f4"+
-		"\u00f5\5\32\16\2\u00f5\u00fc\3\2\2\2\u00f6\u00f7\5\34\17\2\u00f7\u00f8"+
-		"\7\r\2\2\u00f8\u00f9\5\32\16\2\u00f9\u00fc\3\2\2\2\u00fa\u00fc\5\34\17"+
-		"\2\u00fb\u00da\3\2\2\2\u00fb\u00de\3\2\2\2\u00fb\u00e2\3\2\2\2\u00fb\u00e6"+
-		"\3\2\2\2\u00fb\u00ea\3\2\2\2\u00fb\u00ee\3\2\2\2\u00fb\u00f2\3\2\2\2\u00fb"+
-		"\u00f6\3\2\2\2\u00fb\u00fa\3\2\2\2\u00fc\33\3\2\2\2\u00fd\u00fe\7\16\2"+
-		"\2\u00fe\u00ff\5\32\16\2\u00ff\u0100\7\17\2\2\u0100\u0109\3\2\2\2\u0101"+
-		"\u0102\7\26\2\2\u0102\u0109\5\32\16\2\u0103\u0109\5,\27\2\u0104\u0109"+
-		"\5\24\13\2\u0105\u0109\5\36\20\2\u0106\u0109\5\22\n\2\u0107\u0109\7$\2"+
-		"\2\u0108\u00fd\3\2\2\2\u0108\u0101\3\2\2\2\u0108\u0103\3\2\2\2\u0108\u0104"+
-		"\3\2\2\2\u0108\u0105\3\2\2\2\u0108\u0106\3\2\2\2\u0108\u0107\3\2\2\2\u0109"+
-		"\35\3\2\2\2\u010a\u010f\5 \21\2\u010b\u010c\7\25\2\2\u010c\u010e\5 \21"+
-		"\2\u010d\u010b\3\2\2\2\u010e\u0111\3\2\2\2\u010f\u010d\3\2\2\2\u010f\u0110"+
-		"\3\2\2\2\u0110\37\3\2\2\2\u0111\u010f\3\2\2\2\u0112\u0113\7\16\2\2\u0113"+
-		"\u0114\5\36\20\2\u0114\u0115\7\17\2\2\u0115\u011a\3\2\2\2\u0116\u011a"+
-		"\5,\27\2\u0117\u011a\5\22\n\2\u0118\u011a\7#\2\2\u0119\u0112\3\2\2\2\u0119"+
-		"\u0116\3\2\2\2\u0119\u0117\3\2\2\2\u0119\u0118\3\2\2\2\u011a!\3\2\2\2"+
-		"\u011b\u011c\5$\23\2\u011c\u011f\7\"\2\2\u011d\u011e\7\24\2\2\u011e\u0120"+
-		"\5\20\t\2\u011f\u011d\3\2\2\2\u011f\u0120\3\2\2\2\u0120#\3\2\2\2\u0121"+
-		"\u0125\7\36\2\2\u0122\u0125\7\37\2\2\u0123\u0125\7 \2\2\u0124\u0121\3"+
-		"\2\2\2\u0124\u0122\3\2\2\2\u0124\u0123\3\2\2\2\u0125%\3\2\2\2\u0126\u0129"+
-		"\5$\23\2\u0127\u0129\7!\2\2\u0128\u0126\3\2\2\2\u0128\u0127\3\2\2\2\u0129"+
-		"\'\3\2\2\2\u012a\u012b\7\35\2\2\u012b\u012c\5&\24\2\u012c\u012d\7\"\2"+
-		"\2\u012d\u012f\7\16\2\2\u012e\u0130\5*\26\2\u012f\u012e\3\2\2\2\u012f"+
-		"\u0130\3\2\2\2\u0130\u0131\3\2\2\2\u0131\u0132\7\17\2\2\u0132\u0136\7"+
-		"\21\2\2\u0133\u0135\5\b\5\2\u0134\u0133\3\2\2\2\u0135\u0138\3\2\2\2\u0136"+
-		"\u0134\3\2\2\2\u0136\u0137\3\2\2\2\u0137\u0139\3\2\2\2\u0138\u0136\3\2"+
-		"\2\2\u0139\u013a\7\20\2\2\u013a)\3\2\2\2\u013b\u0140\5\60\31\2\u013c\u013d"+
-		"\7\23\2\2\u013d\u013f\5\60\31\2\u013e\u013c\3\2\2\2\u013f\u0142\3\2\2"+
-		"\2\u0140\u013e\3\2\2\2\u0140\u0141\3\2\2\2\u0141+\3\2\2\2\u0142\u0140"+
-		"\3\2\2\2\u0143\u0144\7\"\2\2\u0144\u0146\7\16\2\2\u0145\u0147\5.\30\2"+
-		"\u0146\u0145\3\2\2\2\u0146\u0147\3\2\2\2\u0147\u0148\3\2\2\2\u0148\u0149"+
-		"\7\17\2\2\u0149-\3\2\2\2\u014a\u014f\5\20\t\2\u014b\u014c\7\23\2\2\u014c"+
-		"\u014e\5\20\t\2\u014d\u014b\3\2\2\2\u014e\u0151\3\2\2\2\u014f\u014d\3"+
-		"\2\2\2\u014f\u0150\3\2\2\2\u0150/\3\2\2\2\u0151\u014f\3\2\2\2\u0152\u0153"+
-		"\5$\23\2\u0153\u0154\7\"\2\2\u0154\61\3\2\2\2\"\65<FOZ_ipx|\u0083\u0094"+
-		"\u0099\u00a3\u00b1\u00be\u00c0\u00cc\u00ce\u00d8\u00fb\u0108\u010f\u0119"+
-		"\u011f\u0124\u0128\u012f\u0136\u0140\u0146\u014f";
+		"\4\32\t\32\4\33\t\33\3\2\7\28\n\2\f\2\16\2;\13\2\3\2\3\2\7\2?\n\2\f\2"+
+		"\16\2B\13\2\3\3\3\3\3\3\3\3\3\3\7\3I\n\3\f\3\16\3L\13\3\3\3\3\3\3\4\3"+
+		"\4\3\4\3\4\5\4T\n\4\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\5\5_\n\5\3\5\3"+
+		"\5\3\5\5\5d\n\5\3\6\3\6\3\6\3\6\3\6\3\6\7\6l\n\6\f\6\16\6o\13\6\3\6\3"+
+		"\6\7\6s\n\6\f\6\16\6v\13\6\3\6\5\6y\n\6\3\6\3\6\3\6\7\6~\n\6\f\6\16\6"+
+		"\u0081\13\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6\7\6\u008f"+
+		"\n\6\f\6\16\6\u0092\13\6\3\6\3\6\5\6\u0096\n\6\3\7\3\7\3\b\3\b\3\b\3\b"+
+		"\3\b\3\b\7\b\u00a0\n\b\f\b\16\b\u00a3\13\b\3\b\3\b\3\t\3\t\3\t\7\t\u00aa"+
+		"\n\t\f\t\16\t\u00ad\13\t\3\t\3\t\3\n\3\n\3\n\3\n\3\13\3\13\3\13\3\13\3"+
+		"\13\5\13\u00ba\n\13\3\f\3\f\3\r\3\r\3\r\3\r\3\r\3\r\3\r\3\r\3\r\7\r\u00c7"+
+		"\n\r\f\r\16\r\u00ca\13\r\3\16\3\16\3\16\3\16\3\16\3\16\3\16\3\16\3\16"+
+		"\7\16\u00d5\n\16\f\16\16\16\u00d8\13\16\3\17\3\17\3\17\3\17\3\17\3\17"+
+		"\3\17\5\17\u00e1\n\17\3\20\3\20\3\20\3\20\3\20\3\20\3\20\3\20\3\20\3\20"+
+		"\3\20\3\20\3\20\3\20\3\20\3\20\3\20\3\20\3\20\3\20\3\20\3\20\3\20\3\20"+
+		"\3\20\3\20\3\20\3\20\3\20\3\20\3\20\3\20\3\20\5\20\u0104\n\20\3\21\3\21"+
+		"\3\21\3\21\3\21\3\21\3\21\3\21\3\21\3\21\3\21\5\21\u0111\n\21\3\22\3\22"+
+		"\3\22\7\22\u0116\n\22\f\22\16\22\u0119\13\22\3\23\3\23\3\23\3\23\3\23"+
+		"\3\23\3\23\5\23\u0122\n\23\3\24\3\24\3\24\3\24\5\24\u0128\n\24\3\25\3"+
+		"\25\3\25\5\25\u012d\n\25\3\26\3\26\5\26\u0131\n\26\3\27\3\27\3\27\3\27"+
+		"\3\27\5\27\u0138\n\27\3\27\3\27\3\27\7\27\u013d\n\27\f\27\16\27\u0140"+
+		"\13\27\3\27\3\27\3\30\3\30\3\30\7\30\u0147\n\30\f\30\16\30\u014a\13\30"+
+		"\3\31\3\31\3\31\5\31\u014f\n\31\3\31\3\31\3\32\3\32\3\32\7\32\u0156\n"+
+		"\32\f\32\16\32\u0159\13\32\3\33\3\33\3\33\3\33\2\4\30\32\34\2\4\6\b\n"+
+		"\f\16\20\22\24\26\30\32\34\36 \"$&(*,.\60\62\64\2\2\u017a\29\3\2\2\2\4"+
+		"C\3\2\2\2\6S\3\2\2\2\bc\3\2\2\2\n\u0095\3\2\2\2\f\u0097\3\2\2\2\16\u0099"+
+		"\3\2\2\2\20\u00a6\3\2\2\2\22\u00b0\3\2\2\2\24\u00b9\3\2\2\2\26\u00bb\3"+
+		"\2\2\2\30\u00bd\3\2\2\2\32\u00cb\3\2\2\2\34\u00e0\3\2\2\2\36\u0103\3\2"+
+		"\2\2 \u0110\3\2\2\2\"\u0112\3\2\2\2$\u0121\3\2\2\2&\u0123\3\2\2\2(\u012c"+
+		"\3\2\2\2*\u0130\3\2\2\2,\u0132\3\2\2\2.\u0143\3\2\2\2\60\u014b\3\2\2\2"+
+		"\62\u0152\3\2\2\2\64\u015a\3\2\2\2\668\5\6\4\2\67\66\3\2\2\28;\3\2\2\2"+
+		"9\67\3\2\2\29:\3\2\2\2:<\3\2\2\2;9\3\2\2\2<@\5\4\3\2=?\5\6\4\2>=\3\2\2"+
+		"\2?B\3\2\2\2@>\3\2\2\2@A\3\2\2\2A\3\3\2\2\2B@\3\2\2\2CD\7\27\2\2DE\7\16"+
+		"\2\2EF\7\17\2\2FJ\7\21\2\2GI\5\b\5\2HG\3\2\2\2IL\3\2\2\2JH\3\2\2\2JK\3"+
+		"\2\2\2KM\3\2\2\2LJ\3\2\2\2MN\7\20\2\2N\5\3\2\2\2OP\5&\24\2PQ\7\22\2\2"+
+		"QT\3\2\2\2RT\5,\27\2SO\3\2\2\2SR\3\2\2\2T\7\3\2\2\2UV\5&\24\2VW\7\22\2"+
+		"\2Wd\3\2\2\2XY\5\22\n\2YZ\7\22\2\2Zd\3\2\2\2[\\\7\"\2\2\\^\7\16\2\2]_"+
+		"\5\62\32\2^]\3\2\2\2^_\3\2\2\2_`\3\2\2\2`a\7\17\2\2ad\7\22\2\2bd\5\n\6"+
+		"\2cU\3\2\2\2cX\3\2\2\2c[\3\2\2\2cb\3\2\2\2d\t\3\2\2\2ef\7\30\2\2fg\7\16"+
+		"\2\2gh\5\36\20\2hi\7\17\2\2im\7\21\2\2jl\5\b\5\2kj\3\2\2\2lo\3\2\2\2m"+
+		"k\3\2\2\2mn\3\2\2\2np\3\2\2\2om\3\2\2\2pt\7\20\2\2qs\5\16\b\2rq\3\2\2"+
+		"\2sv\3\2\2\2tr\3\2\2\2tu\3\2\2\2ux\3\2\2\2vt\3\2\2\2wy\5\20\t\2xw\3\2"+
+		"\2\2xy\3\2\2\2y\u0096\3\2\2\2z{\7\33\2\2{\177\7\21\2\2|~\5\b\5\2}|\3\2"+
+		"\2\2~\u0081\3\2\2\2\177}\3\2\2\2\177\u0080\3\2\2\2\u0080\u0082\3\2\2\2"+
+		"\u0081\177\3\2\2\2\u0082\u0083\7\20\2\2\u0083\u0084\7\16\2\2\u0084\u0085"+
+		"\5\f\7\2\u0085\u0086\7\17\2\2\u0086\u0087\7\22\2\2\u0087\u0096\3\2\2\2"+
+		"\u0088\u0089\7\34\2\2\u0089\u008a\7\16\2\2\u008a\u008b\5\36\20\2\u008b"+
+		"\u008c\7\17\2\2\u008c\u0090\7\21\2\2\u008d\u008f\5\b\5\2\u008e\u008d\3"+
+		"\2\2\2\u008f\u0092\3\2\2\2\u0090\u008e\3\2\2\2\u0090\u0091\3\2\2\2\u0091"+
+		"\u0093\3\2\2\2\u0092\u0090\3\2\2\2\u0093\u0094\7\20\2\2\u0094\u0096\3"+
+		"\2\2\2\u0095e\3\2\2\2\u0095z\3\2\2\2\u0095\u0088\3\2\2\2\u0096\13\3\2"+
+		"\2\2\u0097\u0098\5\36\20\2\u0098\r\3\2\2\2\u0099\u009a\7\31\2\2\u009a"+
+		"\u009b\7\16\2\2\u009b\u009c\5\36\20\2\u009c\u009d\7\17\2\2\u009d\u00a1"+
+		"\7\21\2\2\u009e\u00a0\5\b\5\2\u009f\u009e\3\2\2\2\u00a0\u00a3\3\2\2\2"+
+		"\u00a1\u009f\3\2\2\2\u00a1\u00a2\3\2\2\2\u00a2\u00a4\3\2\2\2\u00a3\u00a1"+
+		"\3\2\2\2\u00a4\u00a5\7\20\2\2\u00a5\17\3\2\2\2\u00a6\u00a7\7\32\2\2\u00a7"+
+		"\u00ab\7\21\2\2\u00a8\u00aa\5\b\5\2\u00a9\u00a8\3\2\2\2\u00aa\u00ad\3"+
+		"\2\2\2\u00ab\u00a9\3\2\2\2\u00ab\u00ac\3\2\2\2\u00ac\u00ae\3\2\2\2\u00ad"+
+		"\u00ab\3\2\2\2\u00ae\u00af\7\20\2\2\u00af\21\3\2\2\2\u00b0\u00b1\7\"\2"+
+		"\2\u00b1\u00b2\7\24\2\2\u00b2\u00b3\5\24\13\2\u00b3\23\3\2\2\2\u00b4\u00ba"+
+		"\5\26\f\2\u00b5\u00ba\5\60\31\2\u00b6\u00ba\5\30\r\2\u00b7\u00ba\5\"\22"+
+		"\2\u00b8\u00ba\5\36\20\2\u00b9\u00b4\3\2\2\2\u00b9\u00b5\3\2\2\2\u00b9"+
+		"\u00b6\3\2\2\2\u00b9\u00b7\3\2\2\2\u00b9\u00b8\3\2\2\2\u00ba\25\3\2\2"+
+		"\2\u00bb\u00bc\7\"\2\2\u00bc\27\3\2\2\2\u00bd\u00be\b\r\1\2\u00be\u00bf"+
+		"\5\32\16\2\u00bf\u00c8\3\2\2\2\u00c0\u00c1\f\5\2\2\u00c1\u00c2\7\25\2"+
+		"\2\u00c2\u00c7\5\32\16\2\u00c3\u00c4\f\4\2\2\u00c4\u00c5\7\f\2\2\u00c5"+
+		"\u00c7\5\32\16\2\u00c6\u00c0\3\2\2\2\u00c6\u00c3\3\2\2\2\u00c7\u00ca\3"+
+		"\2\2\2\u00c8\u00c6\3\2\2\2\u00c8\u00c9\3\2\2\2\u00c9\31\3\2\2\2\u00ca"+
+		"\u00c8\3\2\2\2\u00cb\u00cc\b\16\1\2\u00cc\u00cd\5\34\17\2\u00cd\u00d6"+
+		"\3\2\2\2\u00ce\u00cf\f\5\2\2\u00cf\u00d0\7\6\2\2\u00d0\u00d5\5\34\17\2"+
+		"\u00d1\u00d2\f\4\2\2\u00d2\u00d3\7\3\2\2\u00d3\u00d5\5\34\17\2\u00d4\u00ce"+
+		"\3\2\2\2\u00d4\u00d1\3\2\2\2\u00d5\u00d8\3\2\2\2\u00d6\u00d4\3\2\2\2\u00d6"+
+		"\u00d7\3\2\2\2\u00d7\33\3\2\2\2\u00d8\u00d6\3\2\2\2\u00d9\u00da\7\16\2"+
+		"\2\u00da\u00db\5\30\r\2\u00db\u00dc\7\17\2\2\u00dc\u00e1\3\2\2\2\u00dd"+
+		"\u00e1\5\60\31\2\u00de\u00e1\5\26\f\2\u00df\u00e1\7%\2\2\u00e0\u00d9\3"+
+		"\2\2\2\u00e0\u00dd\3\2\2\2\u00e0\u00de\3\2\2\2\u00e0\u00df\3\2\2\2\u00e1"+
+		"\35\3\2\2\2\u00e2\u00e3\5\30\r\2\u00e3\u00e4\7\13\2\2\u00e4\u00e5\5\30"+
+		"\r\2\u00e5\u0104\3\2\2\2\u00e6\u00e7\5\30\r\2\u00e7\u00e8\7\r\2\2\u00e8"+
+		"\u00e9\5\30\r\2\u00e9\u0104\3\2\2\2\u00ea\u00eb\5\30\r\2\u00eb\u00ec\7"+
+		"\4\2\2\u00ec\u00ed\5\30\r\2\u00ed\u0104\3\2\2\2\u00ee\u00ef\5\30\r\2\u00ef"+
+		"\u00f0\7\b\2\2\u00f0\u00f1\5\30\r\2\u00f1\u0104\3\2\2\2\u00f2\u00f3\5"+
+		" \21\2\u00f3\u00f4\7\n\2\2\u00f4\u00f5\5\36\20\2\u00f5\u0104\3\2\2\2\u00f6"+
+		"\u00f7\5 \21\2\u00f7\u00f8\7\5\2\2\u00f8\u00f9\5\36\20\2\u00f9\u0104\3"+
+		"\2\2\2\u00fa\u00fb\5 \21\2\u00fb\u00fc\7\7\2\2\u00fc\u00fd\5\36\20\2\u00fd"+
+		"\u0104\3\2\2\2\u00fe\u00ff\5 \21\2\u00ff\u0100\7\t\2\2\u0100\u0101\5\36"+
+		"\20\2\u0101\u0104\3\2\2\2\u0102\u0104\5 \21\2\u0103\u00e2\3\2\2\2\u0103"+
+		"\u00e6\3\2\2\2\u0103\u00ea\3\2\2\2\u0103\u00ee\3\2\2\2\u0103\u00f2\3\2"+
+		"\2\2\u0103\u00f6\3\2\2\2\u0103\u00fa\3\2\2\2\u0103\u00fe\3\2\2\2\u0103"+
+		"\u0102\3\2\2\2\u0104\37\3\2\2\2\u0105\u0106\7\16\2\2\u0106\u0107\5\36"+
+		"\20\2\u0107\u0108\7\17\2\2\u0108\u0111\3\2\2\2\u0109\u010a\7\26\2\2\u010a"+
+		"\u0111\5\36\20\2\u010b\u0111\5\60\31\2\u010c\u0111\5\30\r\2\u010d\u0111"+
+		"\5\"\22\2\u010e\u0111\5\26\f\2\u010f\u0111\7$\2\2\u0110\u0105\3\2\2\2"+
+		"\u0110\u0109\3\2\2\2\u0110\u010b\3\2\2\2\u0110\u010c\3\2\2\2\u0110\u010d"+
+		"\3\2\2\2\u0110\u010e\3\2\2\2\u0110\u010f\3\2\2\2\u0111!\3\2\2\2\u0112"+
+		"\u0117\5$\23\2\u0113\u0114\7\25\2\2\u0114\u0116\5$\23\2\u0115\u0113\3"+
+		"\2\2\2\u0116\u0119\3\2\2\2\u0117\u0115\3\2\2\2\u0117\u0118\3\2\2\2\u0118"+
+		"#\3\2\2\2\u0119\u0117\3\2\2\2\u011a\u011b\7\16\2\2\u011b\u011c\5\"\22"+
+		"\2\u011c\u011d\7\17\2\2\u011d\u0122\3\2\2\2\u011e\u0122\5\60\31\2\u011f"+
+		"\u0122\5\26\f\2\u0120\u0122\7#\2\2\u0121\u011a\3\2\2\2\u0121\u011e\3\2"+
+		"\2\2\u0121\u011f\3\2\2\2\u0121\u0120\3\2\2\2\u0122%\3\2\2\2\u0123\u0124"+
+		"\5(\25\2\u0124\u0127\7\"\2\2\u0125\u0126\7\24\2\2\u0126\u0128\5\24\13"+
+		"\2\u0127\u0125\3\2\2\2\u0127\u0128\3\2\2\2\u0128\'\3\2\2\2\u0129\u012d"+
+		"\7\36\2\2\u012a\u012d\7\37\2\2\u012b\u012d\7 \2\2\u012c\u0129\3\2\2\2"+
+		"\u012c\u012a\3\2\2\2\u012c\u012b\3\2\2\2\u012d)\3\2\2\2\u012e\u0131\5"+
+		"(\25\2\u012f\u0131\7!\2\2\u0130\u012e\3\2\2\2\u0130\u012f\3\2\2\2\u0131"+
+		"+\3\2\2\2\u0132\u0133\7\35\2\2\u0133\u0134\5*\26\2\u0134\u0135\7\"\2\2"+
+		"\u0135\u0137\7\16\2\2\u0136\u0138\5.\30\2\u0137\u0136\3\2\2\2\u0137\u0138"+
+		"\3\2\2\2\u0138\u0139\3\2\2\2\u0139\u013a\7\17\2\2\u013a\u013e\7\21\2\2"+
+		"\u013b\u013d\5\b\5\2\u013c\u013b\3\2\2\2\u013d\u0140\3\2\2\2\u013e\u013c"+
+		"\3\2\2\2\u013e\u013f\3\2\2\2\u013f\u0141\3\2\2\2\u0140\u013e\3\2\2\2\u0141"+
+		"\u0142\7\20\2\2\u0142-\3\2\2\2\u0143\u0148\5\64\33\2\u0144\u0145\7\23"+
+		"\2\2\u0145\u0147\5\64\33\2\u0146\u0144\3\2\2\2\u0147\u014a\3\2\2\2\u0148"+
+		"\u0146\3\2\2\2\u0148\u0149\3\2\2\2\u0149/\3\2\2\2\u014a\u0148\3\2\2\2"+
+		"\u014b\u014c\7\"\2\2\u014c\u014e\7\16\2\2\u014d\u014f\5\62\32\2\u014e"+
+		"\u014d\3\2\2\2\u014e\u014f\3\2\2\2\u014f\u0150\3\2\2\2\u0150\u0151\7\17"+
+		"\2\2\u0151\61\3\2\2\2\u0152\u0157\5\24\13\2\u0153\u0154\7\23\2\2\u0154"+
+		"\u0156\5\24\13\2\u0155\u0153\3\2\2\2\u0156\u0159\3\2\2\2\u0157\u0155\3"+
+		"\2\2\2\u0157\u0158\3\2\2\2\u0158\63\3\2\2\2\u0159\u0157\3\2\2\2\u015a"+
+		"\u015b\5(\25\2\u015b\u015c\7\"\2\2\u015c\65\3\2\2\2\"9@JS^cmtx\177\u0090"+
+		"\u0095\u00a1\u00ab\u00b9\u00c6\u00c8\u00d4\u00d6\u00e0\u0103\u0110\u0117"+
+		"\u0121\u0127\u012c\u0130\u0137\u013e\u0148\u014e\u0157";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {

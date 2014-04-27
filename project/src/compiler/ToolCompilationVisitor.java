@@ -12,6 +12,7 @@ import org.antlr.v4.runtime.misc.NotNull;
 import compiler.Scope.RedefinitionException;
 import compiler.Scope.UnknownNameException;
 import generated.*;
+import generated.ToolParser.CodeContext;
 import reservedFunctions.*;
 
 public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
@@ -21,13 +22,15 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 	private Scope currentScope;
 	private Stack currentStack;
 	private Map<String, ReservedFunctions> reservedFunctions;
+	private String sourceCode;
 
 	private final static String separator = "#";
 
-	public ToolCompilationVisitor(TokenStream pTS) {
+	public ToolCompilationVisitor(TokenStream pTS, String pSource) {
 		super();
 		this.tokenStream = pTS;
-		this.applicationName = "default/Default";
+		this.applicationName = "Default";
+		this.sourceCode = pSource;
 		this.currentScope = new Scope(null, this.applicationName);
 		this.currentStack = new Stack(null);
 		this.reservedFunctions = new HashMap<String, ReservedFunctions>() {
@@ -109,7 +112,7 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 	@Override
 	public String visitCodeFunctionCall(@NotNull ToolParser.CodeFunctionCallContext ctx) {
 		try {
-			String fCall = functionCall(ctx.fn_name.getText(), (ctx.parameters != null) ? visit(ctx.parameters) : null, getLine(ctx));
+			String fCall = ".line " + getLine(ctx) + System.lineSeparator() + functionCall(ctx.fn_name.getText(), (ctx.parameters != null) ? visit(ctx.parameters) : null, getLine(ctx));
 
 			if (reservedFunctions.containsKey(ctx.fn_name.getText())) {
 
@@ -135,12 +138,12 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 
 	@Override
 	public String visitCodeAssignment(@NotNull ToolParser.CodeAssignmentContext ctx) {
-		return visit(ctx.instruction);
+		return ".line " + getLine(ctx) + System.lineSeparator() + visit(ctx.instruction);
 	}
 
 	@Override
 	public String visitCodeVariableDefinition(@NotNull ToolParser.CodeVariableDefinitionContext ctx) {
-		return visit(ctx.instruction);
+		return ".line " + getLine(ctx) + System.lineSeparator() + visit(ctx.instruction);
 	}
 
 	@Override
@@ -156,8 +159,9 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 		}
 
 		String complete = "";
+        complete += ".line " + getLine(ctx) + System.lineSeparator();
 		complete += safeBegin + ":" + System.lineSeparator();
-		complete += visit(ctx.condition) + System.lineSeparator();
+		complete += visit(ctx.while_condition) + System.lineSeparator();
 		currentStack.pop(Datatype.TYPE_BOOL, getLine(ctx));
 		complete += "ifeq " + safeEnd + System.lineSeparator();
 		complete += code;
@@ -191,41 +195,43 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 		String cond_end = LabelCounter.createSafeName("cond_end");
 
 		String instructions = "";
+		String if_instructions = "";
 		String conditions = "";
+		String if_conditions = "";
 		String returnString = "";
 
 		// Branch if condition is true
 		currentStack.pop(Datatype.TYPE_BOOL, getLine(ctx));
-		conditions = cond + "ifne " + cond_true + System.lineSeparator();
+		if_conditions = cond + "ifeq " + cond_false + System.lineSeparator();
 
-		instructions += cond_true + ":" + System.lineSeparator();
+        if_instructions += ".line " + getLine(ctx.if_condition) + System.lineSeparator();
+		
 
 		if (ctx.if_instructions != null) {
 			for (ToolParser.CodeContext cc : ctx.if_instructions) {
-				instructions += visit(cc);
+				if_instructions += visit(cc);
 			}
-			instructions += "goto " + cond_end + System.lineSeparator();
+			if_instructions += "goto " + cond_end + System.lineSeparator();
 		}
 
 		if (ctx.elifs != null) {
 			String[] result = null;
 			String label;
 			for (ToolParser.Elif_structureContext eif : ctx.elifs) {
-				label = LabelCounter.createSafeName("cond_elseif");
+				label = LabelCounter.createSafeName("cond_nextelseif");
 				result = visit(eif).split(ToolCompilationVisitor.separator);
 				conditions += result[0] + label + System.lineSeparator();
-				instructions += label + ":" + System.lineSeparator() + result[1] + "goto " + cond_end + System.lineSeparator();
+                instructions += ".line " + getLine(ctx.elif_structure) + System.lineSeparator();
+				instructions += System.lineSeparator() + result[1] + "goto " + cond_end + System.lineSeparator()+ label + ":" + System.lineSeparator();
 			}
 		}
 
 		instructions += cond_false + ":" + System.lineSeparator();
-		if (ctx.else_instructions != null) {
-			for (ToolParser.CodeContext cc : ctx.else_instructions) {
-				instructions += visit(cc);
-			}
-		}
+        if (ctx.else_structure() != null) {
+            visit(ctx.else_structure());
+        }
 
-		returnString = conditions + "goto " + cond_false + System.lineSeparator() + instructions + cond_end + ":";
+		returnString = if_conditions + if_instructions + conditions + instructions + cond_end + ":";
 
 		return returnString;
 	}
@@ -241,7 +247,7 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 				instructions += visit(cc);
 			}
 		}
-		return cond + "ifne " + ToolCompilationVisitor.separator + instructions + System.lineSeparator();
+		return ".line " + getLine(ctx) + System.lineSeparator() + cond + "ifeq "+ ToolCompilationVisitor.separator + instructions + System.lineSeparator();
 	}
 
 	@Override
@@ -389,7 +395,7 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 		currentStack.popUnchecked();
 		currentStack.popUnchecked();
 		currentStack.push(Datatype.TYPE_BOOL);
-		return tmp; 
+		return tmp;
 	}
 
 	@Override
@@ -448,7 +454,7 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 		currentStack.pop(Datatype.TYPE_INT, getLine(ctx));
 		currentStack.pop(Datatype.TYPE_INT, getLine(ctx));
 		currentStack.push(Datatype.TYPE_INT);
-		return tmp; 
+		return tmp;
 	}
 
 	@Override
@@ -536,8 +542,11 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 	@Override
 	public String visitVariableDefinition(@NotNull ToolParser.VariableDefinitionContext ctx) {
 		String value = "";
+        if (this.currentScope.isRoot()) {
+            value += ".line " + getLine(ctx) + System.lineSeparator();
+        }
 		if (ctx.value != null) {
-			value = visit(ctx.value);
+			value += visit(ctx.value);
 		}
 
 		final Datatype type = Datatype.resolveType(ctx.type.getText());
@@ -587,9 +596,10 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 		}
 
 		String returnString = null;
-		returnString = safeBegin + ":" + System.lineSeparator();
+        returnString = ".line " + getLine(ctx) + System.lineSeparator();
+		returnString += safeBegin + ":" + System.lineSeparator();
 		returnString += code;
-		returnString += visit(ctx.condition);
+		returnString += visit(ctx.condition());
 		currentStack.pop(Datatype.TYPE_BOOL, getLine(ctx));
 		returnString += "ifne " + safeBegin + System.lineSeparator();
 
@@ -610,9 +620,11 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 		String mainStuff = ".method public static main([Ljava/lang/String;)V" + System.lineSeparator();
 		mainStuff += ".limit stack " + this.currentStack.getMaxStackSize() + System.lineSeparator();
 		mainStuff += ".limit locals " + this.currentScope.getLocalSize() + System.lineSeparator();
+		mainStuff += this.currentScope.createVarDebugStatements("m_main_s","m_main_e");
+		mainStuff += "m_main_s:" + System.lineSeparator();
 		mainStuff += code;
 
-		mainStuff += System.lineSeparator() + "return" + System.lineSeparator() + ".end method";
+		mainStuff += System.lineSeparator() + "return" + System.lineSeparator() + "m_main_e:" + System.lineSeparator() + ".end method";
 		this.currentScope = this.currentScope.getParent();
 		this.currentStack = this.currentStack.getParent();
 		return mainStuff;
@@ -644,10 +656,9 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 		}
 
 		Function function = new Function(functionName, returnType, paramNames, paramTypes);
-		String code = "";
-		int localVarSize = 0;
-		int localStackSize = 0;
 		try {
+			String code = "";
+			
 			currentScope.defineFun(functionName, function);
 			currentScope = new Scope(currentScope, this.applicationName);
 
@@ -662,15 +673,17 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 					code += visit(cctx) + System.lineSeparator();
 				}
 			}
-			localVarSize = currentScope.getLocalSize();
-			localStackSize = currentStack.getMaxStackSize();
+			code = function.createFunctionStatement(code, currentScope, currentStack);
+			
 			currentScope = currentScope.getParent();
 			currentStack = currentStack.getParent();
+			
+			return code;
 		} catch (RedefinitionException e) {
 			printError(e.getMessage(), ctx);
+			System.exit(-1);
+			return "";
 		}
-
-		return function.createFunctionStatement(code, localVarSize, localStackSize);
 	}
 
 	@Override
@@ -740,7 +753,9 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 			def[2] += tmp[2];
 		}
 
-		String result = ".class " + applicationName + System.lineSeparator() + ".super java/lang/Object" + System.lineSeparator();
+		String result = ".source " + this.sourceCode + System.lineSeparator();
+		result += ".class " + applicationName + System.lineSeparator();
+		result += ".super java/lang/Object" + System.lineSeparator();
 		result += def[0] + System.lineSeparator() + def[1] + System.lineSeparator();
 		if (def[2].length() > 0) {
 			result += ".method static public <clinit>()V" + System.lineSeparator();
@@ -754,4 +769,30 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 
 		return result;
 	}
+	
+	@Override
+	public String visitDefVariableDef(@NotNull ToolParser.DefVariableDefContext ctx) {
+		return System.lineSeparator() + visitChildren(ctx);
+	}
+	
+	@Override
+	public String visitDefFunctionDef(@NotNull ToolParser.DefFunctionDefContext ctx) {
+		return visit(ctx.functionDef);
+	}
+	
+	@Override 
+	public String visitElse(@NotNull ToolParser.ElseContext ctx) {
+		String instructions = "";
+		if (ctx.else_instructions != null) {
+			for (CodeContext cc : ctx.else_instructions) {
+				instructions += visit(cc);
+			}
+		}
+		return ".line " + getLine(ctx) + System.lineSeparator() + instructions;
+	}
+
+    @Override
+    public String visitCond(@NotNull ToolParser.CondContext ctx) {
+        return ".line " + getLine(ctx) + System.lineSeparator() + visit(ctx.bool_expr());
+    }
 }

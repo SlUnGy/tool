@@ -35,7 +35,7 @@ public class Main {
 			ToolParser parser = new ToolParser(tokens);
 			ParseTree tree = parser.start();
 			
-			ToolCompilationVisitor tcv = new ToolCompilationVisitor(tokens);
+			ToolCompilationVisitor tcv = new ToolCompilationVisitor(tokens, file);
 			String compiled = tcv.visit(tree);
 			String nice = makeReadable(compiled);
 			System.out.print(nice);

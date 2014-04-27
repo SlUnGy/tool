@@ -75,8 +75,8 @@ _haupt () {
 	localb = _true;
 	local = local + local;
 	
-	str asd = nanana + " " + mussManWissen + ( toStr(unbenutzt) + ";" ) ; 
-	nanana = asd + "qwert"; 
+	str asd = nanana + " " + mussManWissen + ( toStr(unbenutzt) + ";" ) ;
+	nanana = asd + "qwert";
 }
 
 int unbenutzt = 3;
