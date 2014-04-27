@@ -33,7 +33,7 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 	public ToolCompilationVisitor(TokenStream pTS) {
 		super();
 		this.tokenStream = pTS;
-		this.applicationName = "Default/default";
+		this.applicationName = "default/Default";
 		this.currentScope = new Scope(null, this.applicationName);
 		this.currentStack = new Stack(null);
 		this.reservedFunctions = new HashMap<String, ReservedFunctions>() {
@@ -41,30 +41,29 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 			{
 				put("return", new reservedFunctions.Return());
 				put("sprich", new reservedFunctions.Sprich());
-				put("toStr",  new reservedFunctions.ToStr());
+				put("toStr", new reservedFunctions.ToStr());
 			}
 		};
 	}
 
-	private int getLine(ParserRuleContext ctx){
-		if(ctx != null){
+	private int getLine(ParserRuleContext ctx) {
+		if (ctx != null) {
 			return tokenStream.get(ctx.getSourceInterval().a).getLine();
-		}
-		else {
+		} else {
 			return 0;
 		}
 	}
-	
+
 	private void printError(String pError, ParserRuleContext ctx) {
 		System.err.printf("ERROR (line %d): %s" + System.lineSeparator(), getLine(ctx), pError);
 	}
-	
+
 	private String functionCall(String fName, String fParams, int line) throws UnknownNameException {
-		
+
 		if (reservedFunctions.containsKey(fName)) {
-			
+
 			ReservedFunctions functionCall = reservedFunctions.get(fName);
-			String parameters = "";		
+			String parameters = "";
 
 			if (fParams != null) {
 				parameters = fParams + System.lineSeparator();
@@ -76,30 +75,22 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 			String invocation = "invokestatic " + this.applicationName + "/" + fName;
 			Function called;
 
-				called = this.currentScope.getFun(fName);
-				
-				called.popParameters(currentStack, line);	
+			called = this.currentScope.getFun(fName);
 
-				invocation += called.getDescriptor() + System.lineSeparator();
+			called.popParameters(currentStack, line);
 
-				if (fParams != null) {
-					invocation = fParams + System.lineSeparator() + invocation;
-				}
-				
-				if(this.currentScope.getFun(fName).getReturnType() != Datatype.TYPE_VOID)
-				{
-					currentStack.push(this.currentScope.getFun(fName).getReturnType());
-				}
-				
-				
-				
-				return invocation;
+			invocation += called.getDescriptor() + System.lineSeparator();
+
+			if (fParams != null) {
+				invocation = fParams + System.lineSeparator() + invocation;
 			}
-	}
 
-	@Override
-	public String visitBooleanFactorString(@NotNull ToolParser.BooleanFactorStringContext ctx) {
-		return visit(ctx.factor);
+			if (this.currentScope.getFun(fName).getReturnType() != Datatype.TYPE_VOID) {
+				currentStack.push(this.currentScope.getFun(fName).getReturnType());
+			}
+
+			return invocation;
+		}
 	}
 
 	@Override
@@ -120,30 +111,26 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 	public String visitVariableName(@NotNull ToolParser.VariableNameContext ctx) {
 		return ctx.name.getText();
 	}
-	
+
 	@Override
 	public String visitCodeFunctionCall(@NotNull ToolParser.CodeFunctionCallContext ctx) {
 		try {
-			String fCall = ".line " + getLine(ctx) + System.lineSeparator() + functionCall(ctx.fn_name.getText(), (ctx.parameters != null) ? visit(ctx.parameters) : null, getLine(ctx));
-			
+			String fCall = functionCall(ctx.fn_name.getText(), (ctx.parameters != null) ? visit(ctx.parameters) : null, getLine(ctx));
+
 			if (reservedFunctions.containsKey(ctx.fn_name.getText())) {
-				
-				if(reservedFunctions.get(ctx.fn_name.getText()).getReturnType() != Datatype.TYPE_VOID)
-				{
+
+				if (reservedFunctions.get(ctx.fn_name.getText()).getReturnType() != Datatype.TYPE_VOID) {
 					currentStack.pop(reservedFunctions.get(ctx.fn_name.getText()).getReturnType(), getLine(ctx));
 					fCall = fCall + System.lineSeparator() + "pop" + System.lineSeparator();
 				}
-				
-			}
-			else
-			{
-				if(currentScope.getFun(ctx.fn_name.getText()).getReturnType() != Datatype.TYPE_VOID)
-				{
+
+			} else {
+				if (currentScope.getFun(ctx.fn_name.getText()).getReturnType() != Datatype.TYPE_VOID) {
 					currentStack.pop(currentScope.getFun(ctx.fn_name.getText()).getReturnType(), getLine(ctx));
 					fCall = fCall + System.lineSeparator() + "pop" + System.lineSeparator();
 				}
 			}
-				
+
 			return fCall;
 		} catch (UnknownNameException e) {
 			printError(e.getMessage(), ctx);
@@ -164,7 +151,6 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 
 	@Override
 	public String visitWhile(@NotNull ToolParser.WhileContext ctx) {
-		final String cond = visit(ctx.while_condition);
 		final String safeBegin = LabelCounter.createSafeName("begin_code");
 		final String safeEnd = LabelCounter.createSafeName("end_code");
 
@@ -177,9 +163,8 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 
 		String complete = "";
 		complete += safeBegin + ":" + System.lineSeparator();
-		complete += cond + System.lineSeparator();
-		complete += Operator.OP_EQ.compileOperator() + System.lineSeparator();
-
+		complete += visit(ctx.while_condition) + System.lineSeparator();
+		currentStack.pop(Datatype.TYPE_BOOL, getLine(ctx));
 		complete += "ifeq " + safeEnd + System.lineSeparator();
 		complete += code;
 		complete += "goto " + safeBegin + System.lineSeparator();
@@ -190,7 +175,7 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 	@Override
 	public String visitFunctionCall(@NotNull ToolParser.FunctionCallContext ctx) {
 		try {
-			return functionCall(ctx.fn_name.getText(),(ctx.parameters != null) ? visit(ctx.parameters) : null, getLine(ctx));
+			return functionCall(ctx.fn_name.getText(), (ctx.parameters != null) ? visit(ctx.parameters) : null, getLine(ctx));
 		} catch (UnknownNameException e) {
 			printError(e.getMessage(), ctx);
 			System.exit(-1);
@@ -206,49 +191,46 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 	@Override
 	public String visitIf(@NotNull ToolParser.IfContext ctx) {
 		String cond = visit(ctx.if_condition);
-		
+
 		String cond_true = LabelCounter.createSafeName("cond_true");
 		String cond_false = LabelCounter.createSafeName("cond_false");
-		String cond_end =  LabelCounter.createSafeName("cond_end");
-		
+		String cond_end = LabelCounter.createSafeName("cond_end");
+
 		String instructions = "";
 		String conditions = "";
 		String returnString = "";
-		
-		//Branch if condition is true
-		conditions = cond + "ifne " + cond_true  + System.lineSeparator();
-				
-		
-		instructions += cond_true + ":"  + System.lineSeparator();
-		
+
+		// Branch if condition is true
+		currentStack.pop(Datatype.TYPE_BOOL, getLine(ctx));
+		conditions = cond + "ifne " + cond_true + System.lineSeparator();
+
+		instructions += cond_true + ":" + System.lineSeparator();
+
 		if (ctx.if_instructions != null) {
-			for (CodeContext cc : ctx.if_instructions) {
+			for (ToolParser.CodeContext cc : ctx.if_instructions) {
 				instructions += visit(cc);
 			}
 			instructions += "goto " + cond_end + System.lineSeparator();
 		}
-		
-		if(ctx.elifs != null)
-		{
+
+		if (ctx.elifs != null) {
 			String[] result = null;
 			String label;
-			for(Elif_structureContext eif : ctx.elifs)
-			{
+			for (ToolParser.Elif_structureContext eif : ctx.elifs) {
 				label = LabelCounter.createSafeName("cond_elseif");
 				result = visit(eif).split(ToolCompilationVisitor.separator);
 				conditions += result[0] + label + System.lineSeparator();
-				instructions += label + ":" + System.lineSeparator() + result[1] + "goto "+ cond_end + System.lineSeparator();
+				instructions += label + ":" + System.lineSeparator() + result[1] + "goto " + cond_end + System.lineSeparator();
 			}
 		}
-		
+
 		instructions += cond_false + ":" + System.lineSeparator();
-		
-		if (ctx.else_structure() != null) {
-			returnString += visit(ctx.elseStructure);
-		}
-		
-		returnString += ".line " + getLine(ctx) + System.lineSeparator() + conditions + "goto "+ cond_false + System.lineSeparator() + instructions + cond_end + ":";
-		
+        if (ctx.else_structure() != null) {
+            visit(ctx.else_structure());
+        }
+
+		returnString = conditions + "goto " + cond_false + System.lineSeparator() + instructions + cond_end + ":";
+
 		return returnString;
 	}
 
@@ -273,7 +255,7 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 		String param = visit(ctx.param);
 
 		if (ctx.remainder != null) {
-			for (ParameterContext ec : ctx.remainder) {
+			for (ToolParser.ParameterContext ec : ctx.remainder) {
 				param += "," + visit(ec);
 			}
 		}
@@ -310,19 +292,144 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 	}
 
 	@Override
+	public String visitExprBoolean(@NotNull ToolParser.ExprBooleanContext ctx) {
+		return visit(ctx.e);
+	}
+
+	@Override
+	public String visitBooleanFactorString(@NotNull ToolParser.BooleanFactorStringContext ctx) {
+		return visit(ctx.factor);
+	}
+
+	@Override
+	public String visitBooleanFactorFunctionCall(@NotNull ToolParser.BooleanFactorFunctionCallContext ctx) {
+		return visit(ctx.factor);
+	}
+
+	@Override
+	public String visitBooleanFactorParenthesis(@NotNull ToolParser.BooleanFactorParenthesisContext ctx) {
+		return visit(ctx.factor);
+	}
+
+	@Override
+	public String visitBooleanFactorInverted(@NotNull ToolParser.BooleanFactorInvertedContext ctx) {
+		return visit(ctx.factor);
+	}
+
+	@Override
+	public String visitBooleanFactorBoolean(@NotNull ToolParser.BooleanFactorBooleanContext ctx) {
+		String returnString = null;
+
+		switch (ctx.factor.getText()) {
+			case "_true":
+				returnString = "ldc 1";
+				break;
+			case "_false":
+				returnString = "ldc 0";
+				break;
+		}
+		currentStack.push(Datatype.TYPE_BOOL);
+		return returnString;
+	}
+
+	@Override
+	public String visitBooleanFactorInt(@NotNull ToolParser.BooleanFactorIntContext ctx) {
+		return visit(ctx.factor);
+	}
+
+	@Override
+	public String visitBooleanFactorVariableName(@NotNull ToolParser.BooleanFactorVariableNameContext ctx) {
+		return visit(ctx.factor);
+	}
+
+	@Override
+	public String visitBooleanLower(@NotNull ToolParser.BooleanLowerContext ctx) {
+		String tmp = visit(ctx.left)+System.lineSeparator()+visit(ctx.right)+Operator.OP_LT.compileOperator()+System.lineSeparator();
+		currentStack.pop(Datatype.TYPE_INT, getLine(ctx));
+		currentStack.pop(Datatype.TYPE_INT, getLine(ctx));
+		currentStack.push(Datatype.TYPE_BOOL);
+		return tmp;
+	}
+
+	@Override
+	public String visitBooleanGreater(@NotNull ToolParser.BooleanGreaterContext ctx) {
+		String tmp = visit(ctx.left)+System.lineSeparator()+visit(ctx.right)+Operator.OP_GT.compileOperator()+System.lineSeparator();
+		currentStack.pop(Datatype.TYPE_INT, getLine(ctx));
+		currentStack.pop(Datatype.TYPE_INT, getLine(ctx));
+		currentStack.push(Datatype.TYPE_BOOL);
+		return tmp;
+	}
+
+	@Override
+	public String visitBooleanLE(@NotNull ToolParser.BooleanLEContext ctx) {
+		String tmp = visit(ctx.left)+System.lineSeparator()+visit(ctx.right)+Operator.OP_LE.compileOperator()+System.lineSeparator();
+		currentStack.pop(Datatype.TYPE_INT, getLine(ctx));
+		currentStack.pop(Datatype.TYPE_INT, getLine(ctx));
+		currentStack.push(Datatype.TYPE_BOOL);
+		return tmp;
+	}
+
+	@Override
+	public String visitBooleanGE(@NotNull ToolParser.BooleanGEContext ctx) {
+		String tmp = visit(ctx.left)+System.lineSeparator()+visit(ctx.right)+Operator.OP_GE.compileOperator()+System.lineSeparator();
+		currentStack.pop(Datatype.TYPE_INT, getLine(ctx));
+		currentStack.pop(Datatype.TYPE_INT, getLine(ctx));
+		currentStack.push(Datatype.TYPE_BOOL);
+		return tmp;
+	}
+
+	@Override
+	public String visitBooleanEqual(@NotNull ToolParser.BooleanEqualContext ctx) {
+		String tmp = visit(ctx.left)+System.lineSeparator()+visit(ctx.right)+Operator.OP_EQ.compileOperator()+System.lineSeparator();
+		currentStack.popUnchecked();
+		currentStack.popUnchecked();
+		currentStack.push(Datatype.TYPE_BOOL);
+		return tmp;
+	}
+
+	@Override
+	public String visitBooleanUnequal(@NotNull ToolParser.BooleanUnequalContext ctx) {
+		String tmp = visit(ctx.left)+System.lineSeparator()+visit(ctx.right)+Operator.OP_NE.compileOperator()+System.lineSeparator();
+		currentStack.popUnchecked();
+		currentStack.popUnchecked();
+		currentStack.push(Datatype.TYPE_BOOL);
+		return tmp;
+	}
+
+	@Override
+	public String visitBooleanOr(@NotNull ToolParser.BooleanOrContext ctx) {
+		String tmp = visit(ctx.left)+System.lineSeparator()+visit(ctx.right)+Operator.OP_OR.compileOperator()+System.lineSeparator();
+		currentStack.pop(Datatype.TYPE_BOOL, getLine(ctx));
+		currentStack.pop(Datatype.TYPE_BOOL, getLine(ctx));
+		currentStack.push(Datatype.TYPE_BOOL);
+		return tmp;
+	}
+
+	@Override
+	public String visitBooleanAnd(@NotNull ToolParser.BooleanAndContext ctx) {
+		String tmp = visit(ctx.left)+System.lineSeparator()+visit(ctx.right)+Operator.OP_AND.compileOperator()+System.lineSeparator();
+		currentStack.pop(Datatype.TYPE_BOOL, getLine(ctx));
+		currentStack.pop(Datatype.TYPE_BOOL, getLine(ctx));
+		currentStack.push(Datatype.TYPE_BOOL);
+		return tmp;
+	}
+
+	@Override
 	public String visitIntegerAddition(@NotNull ToolParser.IntegerAdditionContext ctx) {
+		String tmp = visit(ctx.left) + System.lineSeparator() + visit(ctx.right) + System.lineSeparator() + Operator.OP_ADD.compileOperator();
 		currentStack.pop(Datatype.TYPE_INT, getLine(ctx));
 		currentStack.pop(Datatype.TYPE_INT, getLine(ctx));
 		currentStack.push(Datatype.TYPE_INT);
-		return visit(ctx.left) + System.lineSeparator() + visit(ctx.right) + System.lineSeparator() + Operator.OP_ADD.compileOperator();
+		return tmp;
 	}
 
 	@Override
 	public String visitIntegerSubtraction(@NotNull ToolParser.IntegerSubtractionContext ctx) {
+		String tmp = visit(ctx.left) + System.lineSeparator() + visit(ctx.right) + System.lineSeparator() + Operator.OP_SUB.compileOperator();
 		currentStack.pop(Datatype.TYPE_INT, getLine(ctx));
 		currentStack.pop(Datatype.TYPE_INT, getLine(ctx));
 		currentStack.push(Datatype.TYPE_INT);
-		return visit(ctx.left) + System.lineSeparator() + visit(ctx.right) + System.lineSeparator() + Operator.OP_SUB.compileOperator();
+		return tmp;
 	}
 
 	@Override
@@ -332,18 +439,20 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 
 	@Override
 	public String visitIntegerMultiplication(@NotNull ToolParser.IntegerMultiplicationContext ctx) {
+		String tmp = visit(ctx.left) + System.lineSeparator() + visit(ctx.right) + System.lineSeparator() + Operator.OP_MUL.compileOperator();
 		currentStack.pop(Datatype.TYPE_INT, getLine(ctx));
 		currentStack.pop(Datatype.TYPE_INT, getLine(ctx));
 		currentStack.push(Datatype.TYPE_INT);
-		return visit(ctx.left) + System.lineSeparator() + visit(ctx.right) + System.lineSeparator() + Operator.OP_MUL.compileOperator();
+		return tmp;
 	}
 
 	@Override
 	public String visitIntegerDivision(@NotNull ToolParser.IntegerDivisionContext ctx) {
+		String tmp = visit(ctx.left) + System.lineSeparator() + visit(ctx.right) + System.lineSeparator() + Operator.OP_DIV.compileOperator();
 		currentStack.pop(Datatype.TYPE_INT, getLine(ctx));
 		currentStack.pop(Datatype.TYPE_INT, getLine(ctx));
 		currentStack.push(Datatype.TYPE_INT);
-		return visit(ctx.left) + System.lineSeparator() + visit(ctx.right) + System.lineSeparator() + Operator.OP_DIV.compileOperator();
+		return tmp;
 	}
 
 	@Override
@@ -392,9 +501,9 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 	public String visitStringFactorFunctionCall(@NotNull ToolParser.StringFactorFunctionCallContext ctx) {
 		return visit(ctx.factor);
 	}
-	
+
 	@Override
-	public String visitStringFactorVariableName(@NotNull ToolParser.StringFactorVariableNameContext ctx){
+	public String visitStringFactorVariableName(@NotNull ToolParser.StringFactorVariableNameContext ctx) {
 		try {
 			currentStack.push(Datatype.TYPE_STRING);
 			return this.currentScope.getVarLoadInstruction(visit(ctx.factor));
@@ -413,7 +522,7 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 	@Override
 	public String visitStringFactorString(@NotNull ToolParser.StringFactorStringContext ctx) {
 		currentStack.push(Datatype.TYPE_STRING);
-		return "ldc "+ctx.factor.getText()+System.lineSeparator();
+		return "ldc " + ctx.factor.getText() + System.lineSeparator();
 	}
 
 	@Override
@@ -515,11 +624,6 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 	}
 
 	@Override
-	public String visitBooleanFactorVariableName(@NotNull ToolParser.BooleanFactorVariableNameContext ctx) {
-		return visit(ctx.factor);
-	}
-
-	@Override
 	public String visitDataType(@NotNull ToolParser.DataTypeContext ctx) {
 		return visitChildren(ctx);
 	}
@@ -587,7 +691,6 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 		return param;
 	}
 
-	
 	/*
 	 * takes definitions and returns it formatted like {static variable
 	 * definitions, method definitions}
