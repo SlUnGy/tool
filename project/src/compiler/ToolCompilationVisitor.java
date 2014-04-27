@@ -543,8 +543,11 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 	@Override
 	public String visitVariableDefinition(@NotNull ToolParser.VariableDefinitionContext ctx) {
 		String value = "";
+        if (this.currentScope.isRoot()) {
+            value += ".line " + getLine(ctx) + System.lineSeparator();
+        }
 		if (ctx.value != null) {
-			value = visit(ctx.value);
+			value += visit(ctx.value);
 		}
 
 		final Datatype type = Datatype.resolveType(ctx.type.getText());
@@ -767,7 +770,7 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 	
 	@Override
 	public String visitDefVariableDef(@NotNull ToolParser.DefVariableDefContext ctx) {
-		return  System.lineSeparator() + visitChildren(ctx);
+		return System.lineSeparator() + ".line " + getLine(ctx) + System.lineSeparator() + visitChildren(ctx);
 	}
 	
 	@Override
