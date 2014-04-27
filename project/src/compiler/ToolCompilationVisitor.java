@@ -115,7 +115,7 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 	@Override
 	public String visitCodeFunctionCall(@NotNull ToolParser.CodeFunctionCallContext ctx) {
 		try {
-			String fCall = functionCall(ctx.fn_name.getText(), (ctx.parameters != null) ? visit(ctx.parameters) : null, getLine(ctx));
+			String fCall = ".line " + getLine(ctx) + System.lineSeparator() + functionCall(ctx.fn_name.getText(), (ctx.parameters != null) ? visit(ctx.parameters) : null, getLine(ctx));
 
 			if (reservedFunctions.containsKey(ctx.fn_name.getText())) {
 
@@ -767,7 +767,7 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 	
 	@Override
 	public String visitDefFunctionDef(@NotNull ToolParser.DefFunctionDefContext ctx) {
-		return visit(ctx.functionDef);
+		return ".line " + getLine(ctx) + System.lineSeparator() + visit(ctx.functionDef);
 	}
 	
 	@Override 
