@@ -1449,13 +1449,13 @@ public class ToolParser extends Parser {
 		}
 	}
 	public static class BooleanGreaterContext extends Bool_exprContext {
-		public Bool_factorContext left;
-		public Bool_exprContext right;
-		public Bool_exprContext bool_expr() {
-			return getRuleContext(Bool_exprContext.class,0);
+		public Int_exprContext left;
+		public Int_exprContext right;
+		public List<Int_exprContext> int_expr() {
+			return getRuleContexts(Int_exprContext.class);
 		}
-		public Bool_factorContext bool_factor() {
-			return getRuleContext(Bool_factorContext.class,0);
+		public Int_exprContext int_expr(int i) {
+			return getRuleContext(Int_exprContext.class,i);
 		}
 		public BooleanGreaterContext(Bool_exprContext ctx) { copyFrom(ctx); }
 		@Override
@@ -1465,13 +1465,13 @@ public class ToolParser extends Parser {
 		}
 	}
 	public static class BooleanLEContext extends Bool_exprContext {
-		public Bool_factorContext left;
-		public Bool_exprContext right;
-		public Bool_exprContext bool_expr() {
-			return getRuleContext(Bool_exprContext.class,0);
+		public Int_exprContext left;
+		public Int_exprContext right;
+		public List<Int_exprContext> int_expr() {
+			return getRuleContexts(Int_exprContext.class);
 		}
-		public Bool_factorContext bool_factor() {
-			return getRuleContext(Bool_factorContext.class,0);
+		public Int_exprContext int_expr(int i) {
+			return getRuleContext(Int_exprContext.class,i);
 		}
 		public BooleanLEContext(Bool_exprContext ctx) { copyFrom(ctx); }
 		@Override
@@ -1481,13 +1481,13 @@ public class ToolParser extends Parser {
 		}
 	}
 	public static class BooleanLowerContext extends Bool_exprContext {
-		public Bool_factorContext left;
-		public Bool_exprContext right;
-		public Bool_exprContext bool_expr() {
-			return getRuleContext(Bool_exprContext.class,0);
+		public Int_exprContext left;
+		public Int_exprContext right;
+		public List<Int_exprContext> int_expr() {
+			return getRuleContexts(Int_exprContext.class);
 		}
-		public Bool_factorContext bool_factor() {
-			return getRuleContext(Bool_factorContext.class,0);
+		public Int_exprContext int_expr(int i) {
+			return getRuleContext(Int_exprContext.class,i);
 		}
 		public BooleanLowerContext(Bool_exprContext ctx) { copyFrom(ctx); }
 		@Override
@@ -1497,13 +1497,13 @@ public class ToolParser extends Parser {
 		}
 	}
 	public static class BooleanGEContext extends Bool_exprContext {
-		public Bool_factorContext left;
-		public Bool_exprContext right;
-		public Bool_exprContext bool_expr() {
-			return getRuleContext(Bool_exprContext.class,0);
+		public Int_exprContext left;
+		public Int_exprContext right;
+		public List<Int_exprContext> int_expr() {
+			return getRuleContexts(Int_exprContext.class);
 		}
-		public Bool_factorContext bool_factor() {
-			return getRuleContext(Bool_factorContext.class,0);
+		public Int_exprContext int_expr(int i) {
+			return getRuleContext(Int_exprContext.class,i);
 		}
 		public BooleanGEContext(Bool_exprContext ctx) { copyFrom(ctx); }
 		@Override
@@ -1599,9 +1599,9 @@ public class ToolParser extends Parser {
 				_localctx = new BooleanLowerContext(_localctx);
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(224); ((BooleanLowerContext)_localctx).left = bool_factor();
+				setState(224); ((BooleanLowerContext)_localctx).left = int_expr(0);
 				setState(225); match(9);
-				setState(226); ((BooleanLowerContext)_localctx).right = bool_expr();
+				setState(226); ((BooleanLowerContext)_localctx).right = int_expr(0);
 				}
 				break;
 
@@ -1609,9 +1609,9 @@ public class ToolParser extends Parser {
 				_localctx = new BooleanGreaterContext(_localctx);
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(228); ((BooleanGreaterContext)_localctx).left = bool_factor();
+				setState(228); ((BooleanGreaterContext)_localctx).left = int_expr(0);
 				setState(229); match(11);
-				setState(230); ((BooleanGreaterContext)_localctx).right = bool_expr();
+				setState(230); ((BooleanGreaterContext)_localctx).right = int_expr(0);
 				}
 				break;
 
@@ -1619,9 +1619,9 @@ public class ToolParser extends Parser {
 				_localctx = new BooleanLEContext(_localctx);
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(232); ((BooleanLEContext)_localctx).left = bool_factor();
+				setState(232); ((BooleanLEContext)_localctx).left = int_expr(0);
 				setState(233); match(2);
-				setState(234); ((BooleanLEContext)_localctx).right = bool_expr();
+				setState(234); ((BooleanLEContext)_localctx).right = int_expr(0);
 				}
 				break;
 
@@ -1629,9 +1629,9 @@ public class ToolParser extends Parser {
 				_localctx = new BooleanGEContext(_localctx);
 				enterOuterAlt(_localctx, 4);
 				{
-				setState(236); ((BooleanGEContext)_localctx).left = bool_factor();
+				setState(236); ((BooleanGEContext)_localctx).left = int_expr(0);
 				setState(237); match(6);
-				setState(238); ((BooleanGEContext)_localctx).right = bool_expr();
+				setState(238); ((BooleanGEContext)_localctx).right = int_expr(0);
 				}
 				break;
 
@@ -2683,11 +2683,11 @@ public class ToolParser extends Parser {
 		"\2\u00da\u00db\5\30\r\2\u00db\u00dc\7\17\2\2\u00dc\u00e1\3\2\2\2\u00dd"+
 		"\u00e1\5\60\31\2\u00de\u00e1\5\26\f\2\u00df\u00e1\7%\2\2\u00e0\u00d9\3"+
 		"\2\2\2\u00e0\u00dd\3\2\2\2\u00e0\u00de\3\2\2\2\u00e0\u00df\3\2\2\2\u00e1"+
-		"\35\3\2\2\2\u00e2\u00e3\5 \21\2\u00e3\u00e4\7\13\2\2\u00e4\u00e5\5\36"+
-		"\20\2\u00e5\u0104\3\2\2\2\u00e6\u00e7\5 \21\2\u00e7\u00e8\7\r\2\2\u00e8"+
-		"\u00e9\5\36\20\2\u00e9\u0104\3\2\2\2\u00ea\u00eb\5 \21\2\u00eb\u00ec\7"+
-		"\4\2\2\u00ec\u00ed\5\36\20\2\u00ed\u0104\3\2\2\2\u00ee\u00ef\5 \21\2\u00ef"+
-		"\u00f0\7\b\2\2\u00f0\u00f1\5\36\20\2\u00f1\u0104\3\2\2\2\u00f2\u00f3\5"+
+		"\35\3\2\2\2\u00e2\u00e3\5\30\r\2\u00e3\u00e4\7\13\2\2\u00e4\u00e5\5\30"+
+		"\r\2\u00e5\u0104\3\2\2\2\u00e6\u00e7\5\30\r\2\u00e7\u00e8\7\r\2\2\u00e8"+
+		"\u00e9\5\30\r\2\u00e9\u0104\3\2\2\2\u00ea\u00eb\5\30\r\2\u00eb\u00ec\7"+
+		"\4\2\2\u00ec\u00ed\5\30\r\2\u00ed\u0104\3\2\2\2\u00ee\u00ef\5\30\r\2\u00ef"+
+		"\u00f0\7\b\2\2\u00f0\u00f1\5\30\r\2\u00f1\u0104\3\2\2\2\u00f2\u00f3\5"+
 		" \21\2\u00f3\u00f4\7\n\2\2\u00f4\u00f5\5\36\20\2\u00f5\u0104\3\2\2\2\u00f6"+
 		"\u00f7\5 \21\2\u00f7\u00f8\7\5\2\2\u00f8\u00f9\5\36\20\2\u00f9\u0104\3"+
 		"\2\2\2\u00fa\u00fb\5 \21\2\u00fb\u00fc\7\7\2\2\u00fc\u00fd\5\36\20\2\u00fd"+
