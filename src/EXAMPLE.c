@@ -8,6 +8,7 @@
 int i = 1;
 str mussManWissen="Schwarze Sonne -> anfang";
 bool b = _true;
+str nanana = "loool";
 
 /* "leer" entspricht "void" typ, der Ort der Definition ist jedoch nicht wichtig. Das heißt Funktionen können auch nach der "Main" deklariert werden.*/
 _definiere leer druckeWas(){
@@ -74,8 +75,8 @@ _haupt () {
 	localb = _true;
 	local = local + local;
 	
-	/*str asd = nanana + " " + mussManWissen + ( toStr(unbenutzt) + ";" ) ; */
-	/*nanana = asd + "qwert"; */
+	str asd = nanana + " " + mussManWissen + ( toStr(unbenutzt) + ";" ) ;
+	nanana = asd + "qwert";
 }
 
 int unbenutzt = 3;

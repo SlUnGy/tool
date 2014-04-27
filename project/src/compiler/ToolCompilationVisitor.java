@@ -623,9 +623,11 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 		String mainStuff = ".method public static main([Ljava/lang/String;)V" + System.lineSeparator();
 		mainStuff += ".limit stack " + this.currentStack.getMaxStackSize() + System.lineSeparator();
 		mainStuff += ".limit locals " + this.currentScope.getLocalSize() + System.lineSeparator();
+		mainStuff += this.currentScope.createVarDebugStatements();
+		mainStuff += "method_start:" + System.lineSeparator();
 		mainStuff += code;
 
-		mainStuff += System.lineSeparator() + "return" + System.lineSeparator() + ".end method";
+		mainStuff += System.lineSeparator() + "return" + System.lineSeparator() + "method_end:" + System.lineSeparator() + ".end method";
 		this.currentScope = this.currentScope.getParent();
 		this.currentStack = this.currentStack.getParent();
 		return mainStuff;
