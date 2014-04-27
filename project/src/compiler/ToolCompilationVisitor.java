@@ -659,7 +659,7 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 	
 	@Override
 	public String visitDefVariableDef(@NotNull ToolParser.DefVariableDefContext ctx) {
-		return ".line " + getLine(ctx) + System.lineSeparator() + visitChildren(ctx);
+		return  System.lineSeparator() + visitChildren(ctx);
 	}
 	
 	@Override
