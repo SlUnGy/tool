@@ -159,7 +159,7 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 		complete += safeBegin + ":" + System.lineSeparator();
 		complete += visit(ctx.condition) + System.lineSeparator();
 		currentStack.pop(Datatype.TYPE_BOOL, getLine(ctx));
-		complete += "ifne " + safeEnd + System.lineSeparator();
+		complete += "ifeq " + safeEnd + System.lineSeparator();
 		complete += code;
 		complete += "goto " + safeBegin + System.lineSeparator();
 		complete += safeEnd + ":" + System.lineSeparator();
