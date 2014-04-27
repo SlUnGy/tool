@@ -119,7 +119,7 @@ public class Scope {
 		}
 	}
 	
-	public String createVarDebugStatements()
+	public String createVarDebugStatements(String pStart, String pEnd)
 	{
 		String returnString = "";
 		int i = 0;
@@ -128,7 +128,7 @@ public class Scope {
 			String key = entry.getKey();
 		    Variable value = entry.getValue();
 		    
-		    returnString += ".var "+i+ " is "+ key + " " + value.getType().getJasminType() + " from method_start to method_end" + System.lineSeparator();
+		    returnString += ".var "+i+ " is "+ key + " " + value.getType().getJasminType() + " from " + pStart + " to " + pEnd + System.lineSeparator();
 		    i++;
 		}
 		

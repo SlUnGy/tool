@@ -656,11 +656,9 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 		}
 
 		Function function = new Function(functionName, returnType, paramNames, paramTypes);
-		String code = "";
-		int localVarSize = 0;
-		int localStackSize = 0;
-		String varDebug ="";
 		try {
+			String code = "";
+			
 			currentScope.defineFun(functionName, function);
 			currentScope = new Scope(currentScope, this.applicationName);
 
@@ -675,16 +673,17 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 					code += visit(cctx) + System.lineSeparator();
 				}
 			}
-			localVarSize = currentScope.getLocalSize();
-			localStackSize = currentStack.getMaxStackSize();
-			varDebug = currentScope.createVarDebugStatements();
+			code = function.createFunctionStatement(code, currentScope, currentStack);
+			
 			currentScope = currentScope.getParent();
 			currentStack = currentStack.getParent();
+			
+			return code;
 		} catch (RedefinitionException e) {
 			printError(e.getMessage(), ctx);
+			System.exit(-1);
+			return "";
 		}
-
-		return function.createFunctionStatement(code, varDebug, localVarSize, localStackSize);
 	}
 
 	@Override
