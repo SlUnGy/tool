@@ -141,12 +141,12 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 
 	@Override
 	public String visitCodeAssignment(@NotNull ToolParser.CodeAssignmentContext ctx) {
-		return visit(ctx.instruction);
+		return ".line " + getLine(ctx) + System.lineSeparator() + visit(ctx.instruction);
 	}
 
 	@Override
 	public String visitCodeVariableDefinition(@NotNull ToolParser.CodeVariableDefinitionContext ctx) {
-		return visit(ctx.instruction);
+		return ".line " + getLine(ctx) + System.lineSeparator() + visit(ctx.instruction);
 	}
 
 	@Override
@@ -162,6 +162,7 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 		}
 
 		String complete = "";
+        complete += ".line " + getLine(ctx) + System.lineSeparator();
 		complete += safeBegin + ":" + System.lineSeparator();
 		complete += visit(ctx.while_condition) + System.lineSeparator();
 		currentStack.pop(Datatype.TYPE_BOOL, getLine(ctx));
@@ -204,6 +205,7 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 		currentStack.pop(Datatype.TYPE_BOOL, getLine(ctx));
 		conditions = cond + "ifne " + cond_true + System.lineSeparator();
 
+        instructions += ".line " + getLine(ctx.if_condition) + System.lineSeparator();
 		instructions += cond_true + ":" + System.lineSeparator();
 
 		if (ctx.if_instructions != null) {
@@ -220,6 +222,7 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 				label = LabelCounter.createSafeName("cond_elseif");
 				result = visit(eif).split(ToolCompilationVisitor.separator);
 				conditions += result[0] + label + System.lineSeparator();
+                instructions += ".line " + getLine(ctx.elif_structure) + System.lineSeparator();
 				instructions += label + ":" + System.lineSeparator() + result[1] + "goto " + cond_end + System.lineSeparator();
 			}
 		}
@@ -591,9 +594,9 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 		}
 
 		String returnString = null;
-		returnString = safeBegin + ":" + System.lineSeparator();
+        returnString = ".line " + getLine(ctx) + System.lineSeparator();
+		returnString += safeBegin + ":" + System.lineSeparator();
 		returnString += code;
-        returnString += ".line " + getLine(ctx) + System.lineSeparator();
 		returnString += visit(ctx.condition());
 		currentStack.pop(Datatype.TYPE_BOOL, getLine(ctx));
 		returnString += "ifne " + safeBegin + System.lineSeparator();
@@ -767,7 +770,7 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 	
 	@Override
 	public String visitDefFunctionDef(@NotNull ToolParser.DefFunctionDefContext ctx) {
-		return ".line " + getLine(ctx) + System.lineSeparator() + visit(ctx.functionDef);
+		return visit(ctx.functionDef);
 	}
 	
 	@Override 
