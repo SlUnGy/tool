@@ -27,7 +27,7 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 	public ToolCompilationVisitor(TokenStream pTS) {
 		super();
 		this.tokenStream = pTS;
-		this.applicationName = "Default";
+		this.applicationName = "default/Default";
 		this.currentScope = new Scope(null, this.applicationName);
 		this.currentStack = new Stack(null);
 		this.reservedFunctions = new HashMap<String, ReservedFunctions>() {

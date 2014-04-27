@@ -4,5 +4,5 @@ rm -rf Default/
 
 java -jar project/jasmin.jar output.j
 
-java Default
+java default/Default
 
