@@ -620,11 +620,11 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 		String mainStuff = ".method public static main([Ljava/lang/String;)V" + System.lineSeparator();
 		mainStuff += ".limit stack " + this.currentStack.getMaxStackSize() + System.lineSeparator();
 		mainStuff += ".limit locals " + this.currentScope.getLocalSize() + System.lineSeparator();
-		mainStuff += this.currentScope.createVarDebugStatements();
-		mainStuff += "method_start:" + System.lineSeparator();
+		mainStuff += this.currentScope.createVarDebugStatements("m_main_s","m_main_e");
+		mainStuff += "m_main_s:" + System.lineSeparator();
 		mainStuff += code;
 
-		mainStuff += System.lineSeparator() + "return" + System.lineSeparator() + "method_end:" + System.lineSeparator() + ".end method";
+		mainStuff += System.lineSeparator() + "return" + System.lineSeparator() + "m_main_e:" + System.lineSeparator() + ".end method";
 		this.currentScope = this.currentScope.getParent();
 		this.currentStack = this.currentStack.getParent();
 		return mainStuff;
@@ -754,8 +754,8 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 		}
 
 		String result = ".source " + this.sourceCode + System.lineSeparator();
-		result += ".super java/lang/Object" + System.lineSeparator();
 		result += ".class " + applicationName + System.lineSeparator();
+		result += ".super java/lang/Object" + System.lineSeparator();
 		result += def[0] + System.lineSeparator() + def[1] + System.lineSeparator();
 		if (def[2].length() > 0) {
 			result += ".method static public <clinit>()V" + System.lineSeparator();
