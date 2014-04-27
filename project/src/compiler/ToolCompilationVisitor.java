@@ -164,12 +164,12 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 
 	@Override
 	public String visitCodeAssignment(@NotNull ToolParser.CodeAssignmentContext ctx) {
-		return ".line " + getLine(ctx) + System.lineSeparator() + visit(ctx.instruction) + "\n<><><><><><>\n";
+		return ".line " + getLine(ctx) + System.lineSeparator() + visit(ctx.instruction);
 	}
 
 	@Override
 	public String visitCodeVariableDefinition(@NotNull ToolParser.CodeVariableDefinitionContext ctx) {
-		return ".line " + getLine(ctx) + System.lineSeparator() + visit(ctx.instruction) + "\n<><><><><><>\n";
+		return ".line " + getLine(ctx) + System.lineSeparator() + visit(ctx.instruction);
 	}
 
 	@Override
@@ -525,7 +525,7 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 		String returnString = null;
 		returnString = safeBegin+":"+System.lineSeparator();
 		returnString += code;
-        returnString += "<<<<<<<<<<.line " + getLine(ctx) + System.lineSeparator();
+        returnString += ".line " + getLine(ctx) + System.lineSeparator();
         returnString += cond;
 		returnString += "ifeq " + safeBegin + System.lineSeparator();	
 		
@@ -699,7 +699,7 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 	
 	@Override
 	public String visitDefVariableDef(@NotNull ToolParser.DefVariableDefContext ctx) {
-		return ".line " + getLine(ctx) + System.lineSeparator() + visitChildren(ctx)  + "\n<><><><><><>\n";
+		return ".line " + getLine(ctx) + System.lineSeparator() + visitChildren(ctx);
 	}
 	
 	@Override
@@ -715,7 +715,7 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 				instructions += visit(cc);
 			}
 		}
-		return ".line " + getLine(ctx) + System.lineSeparator() + instructions + "\n<><><><else end><><><>\n";
+		return ".line " + getLine(ctx) + System.lineSeparator() + instructions;
 	}
 
     @Override
