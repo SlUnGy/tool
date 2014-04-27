@@ -753,9 +753,9 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 			def[2] += tmp[2];
 		}
 
-		String result = ".class " + applicationName + System.lineSeparator();
+		String result = ".source " + this.sourceCode + System.lineSeparator();
 		result += ".super java/lang/Object" + System.lineSeparator();
-		result += ".source " + this.sourceCode + System.lineSeparator();
+		result += ".class " + applicationName + System.lineSeparator();
 		result += def[0] + System.lineSeparator() + def[1] + System.lineSeparator();
 		if (def[2].length() > 0) {
 			result += ".method static public <clinit>()V" + System.lineSeparator();
