@@ -33,7 +33,7 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 	public ToolCompilationVisitor(TokenStream pTS) {
 		super();
 		this.tokenStream = pTS;
-		this.applicationName = "default/Default";
+		this.applicationName = "Default";
 		this.currentScope = new Scope(null, this.applicationName);
 		this.currentStack = new Stack(null);
 		this.reservedFunctions = new HashMap<String, ReservedFunctions>() {
@@ -198,32 +198,34 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 		String cond_end = LabelCounter.createSafeName("cond_end");
 
 		String instructions = "";
+		String if_instructions = "";
 		String conditions = "";
+		String if_conditions = "";
 		String returnString = "";
 
 		// Branch if condition is true
 		currentStack.pop(Datatype.TYPE_BOOL, getLine(ctx));
-		conditions = cond + "ifne " + cond_true + System.lineSeparator();
+		if_conditions = cond + "ifeq " + cond_false + System.lineSeparator();
 
-        instructions += ".line " + getLine(ctx.if_condition) + System.lineSeparator();
-		instructions += cond_true + ":" + System.lineSeparator();
+        if_instructions += ".line " + getLine(ctx.if_condition) + System.lineSeparator();
+		
 
 		if (ctx.if_instructions != null) {
 			for (ToolParser.CodeContext cc : ctx.if_instructions) {
-				instructions += visit(cc);
+				if_instructions += visit(cc);
 			}
-			instructions += "goto " + cond_end + System.lineSeparator();
+			if_instructions += "goto " + cond_end + System.lineSeparator();
 		}
 
 		if (ctx.elifs != null) {
 			String[] result = null;
 			String label;
 			for (ToolParser.Elif_structureContext eif : ctx.elifs) {
-				label = LabelCounter.createSafeName("cond_elseif");
+				label = LabelCounter.createSafeName("cond_nextelseif");
 				result = visit(eif).split(ToolCompilationVisitor.separator);
 				conditions += result[0] + label + System.lineSeparator();
                 instructions += ".line " + getLine(ctx.elif_structure) + System.lineSeparator();
-				instructions += label + ":" + System.lineSeparator() + result[1] + "goto " + cond_end + System.lineSeparator();
+				instructions += System.lineSeparator() + result[1] + "goto " + cond_end + System.lineSeparator()+ label + ":" + System.lineSeparator();
 			}
 		}
 
@@ -232,7 +234,7 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
             visit(ctx.else_structure());
         }
 
-		returnString = conditions + "goto " + cond_false + System.lineSeparator() + instructions + cond_end + ":";
+		returnString = if_conditions + if_instructions + conditions + instructions + cond_end + ":";
 
 		return returnString;
 	}
@@ -248,7 +250,7 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 				instructions += visit(cc);
 			}
 		}
-		return ".line " + getLine(ctx) + System.lineSeparator() + cond + "ifne "+ ToolCompilationVisitor.separator + instructions + System.lineSeparator();
+		return ".line " + getLine(ctx) + System.lineSeparator() + cond + "ifeq "+ ToolCompilationVisitor.separator + instructions + System.lineSeparator();
 	}
 
 	@Override
@@ -750,7 +752,7 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 			def[2] += tmp[2];
 		}
 
-		String result = ".class " + applicationName + System.lineSeparator() + ".super java/lang/Object" + System.lineSeparator();
+		String result = ".source EXAMPLE.c" + System.lineSeparator() + ".class " + applicationName + System.lineSeparator() + ".super java/lang/Object" + System.lineSeparator();
 		result += def[0] + System.lineSeparator() + def[1] + System.lineSeparator();
 		if (def[2].length() > 0) {
 			result += ".method static public <clinit>()V" + System.lineSeparator();
