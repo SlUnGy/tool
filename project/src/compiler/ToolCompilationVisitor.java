@@ -13,11 +13,6 @@ import compiler.Scope.RedefinitionException;
 import compiler.Scope.UnknownNameException;
 import generated.*;
 import generated.ToolParser.CodeContext;
-import generated.ToolParser.DefContext;
-import generated.ToolParser.Elif_structureContext;
-import generated.ToolParser.ElseIfContext;
-import generated.ToolParser.FunctionCallContext;
-import generated.ToolParser.ParameterContext;
 import reservedFunctions.*;
 
 public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
@@ -27,13 +22,15 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 	private Scope currentScope;
 	private Stack currentStack;
 	private Map<String, ReservedFunctions> reservedFunctions;
+	private String sourceCode;
 
 	private final static String separator = "#";
 
-	public ToolCompilationVisitor(TokenStream pTS) {
+	public ToolCompilationVisitor(TokenStream pTS, String pSource) {
 		super();
 		this.tokenStream = pTS;
 		this.applicationName = "Default";
+		this.sourceCode = pSource;
 		this.currentScope = new Scope(null, this.applicationName);
 		this.currentStack = new Stack(null);
 		this.reservedFunctions = new HashMap<String, ReservedFunctions>() {
@@ -757,7 +754,9 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 			def[2] += tmp[2];
 		}
 
-		String result = ".source EXAMPLE.c" + System.lineSeparator() + ".class " + applicationName + System.lineSeparator() + ".super java/lang/Object" + System.lineSeparator();
+		String result = ".class " + applicationName + System.lineSeparator();
+		result += ".super java/lang/Object" + System.lineSeparator();
+		result += ".source " + this.sourceCode + System.lineSeparator();
 		result += def[0] + System.lineSeparator() + def[1] + System.lineSeparator();
 		if (def[2].length() > 0) {
 			result += ".method static public <clinit>()V" + System.lineSeparator();
