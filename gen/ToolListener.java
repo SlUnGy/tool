@@ -371,6 +371,17 @@ public interface ToolListener extends ParseTreeListener {
 	void exitCodeVariableDefinition(@NotNull ToolParser.CodeVariableDefinitionContext ctx);
 
 	/**
+	 * Enter a parse tree produced by {@link ToolParser#cond}.
+	 * @param ctx the parse tree
+	 */
+	void enterCond(@NotNull ToolParser.CondContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link ToolParser#cond}.
+	 * @param ctx the parse tree
+	 */
+	void exitCond(@NotNull ToolParser.CondContext ctx);
+
+	/**
 	 * Enter a parse tree produced by {@link ToolParser#integerFactorFunctionCall}.
 	 * @param ctx the parse tree
 	 */

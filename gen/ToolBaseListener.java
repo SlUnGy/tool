@@ -445,6 +445,19 @@ public class ToolBaseListener implements ToolListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterCond(@NotNull ToolParser.CondContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitCond(@NotNull ToolParser.CondContext ctx) { }
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterIntegerFactorFunctionCall(@NotNull ToolParser.IntegerFactorFunctionCallContext ctx) { }
 	/**
 	 * {@inheritDoc}

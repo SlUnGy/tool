@@ -242,6 +242,13 @@ public interface ToolVisitor<T> extends ParseTreeVisitor<T> {
 	T visitCodeVariableDefinition(@NotNull ToolParser.CodeVariableDefinitionContext ctx);
 
 	/**
+	 * Visit a parse tree produced by {@link ToolParser#cond}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitCond(@NotNull ToolParser.CondContext ctx);
+
+	/**
 	 * Visit a parse tree produced by {@link ToolParser#integerFactorFunctionCall}.
 	 * @param ctx the parse tree
 	 * @return the visitor result

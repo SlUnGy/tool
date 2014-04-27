@@ -174,7 +174,7 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 
 	@Override
 	public String visitWhile(@NotNull ToolParser.WhileContext ctx) {
-		final String cond = visit(ctx.condition);
+		final String cond = visit(ctx.while_condition);
 		final String safeBegin = LabelCounter.createSafeName("begin_code");
 		final String safeEnd = LabelCounter.createSafeName("end_code");
 
@@ -512,7 +512,7 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 
 	@Override
 	public String visitDoWhile(@NotNull ToolParser.DoWhileContext ctx) {
-		final String cond = visit(ctx.condition);
+		final String cond = visit(ctx.condition());
 		final String safeBegin = LabelCounter.createSafeName("begin_code");
 
 		String code = "";
@@ -717,4 +717,9 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 		}
 		return ".line " + getLine(ctx) + System.lineSeparator() + instructions + "\n<><><><else end><><><>\n";
 	}
+
+    @Override
+    public String visitCond(@NotNull ToolParser.CondContext ctx) {
+        return ".line " + getLine(ctx) + System.lineSeparator() + visit(ctx.bool_expr());
+    }
 }
