@@ -542,6 +542,7 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 	@Override
 	public String visitVariableDefinition(@NotNull ToolParser.VariableDefinitionContext ctx) {
 		String value = "";
+		// add .line for global scope variables
         if (this.currentScope.isRoot()) {
             value += ".line " + getLine(ctx) + System.lineSeparator();
         }
