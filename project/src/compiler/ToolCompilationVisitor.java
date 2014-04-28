@@ -613,6 +613,11 @@ public class ToolCompilationVisitor extends ToolBaseVisitor<String> {
 
 		this.currentScope = new Scope(currentScope, this.applicationName);
 		this.currentStack = new Stack(currentStack);
+		try {
+			this.currentScope.defineVar("argArray", Datatype.TYPE_OBJECT);
+		} catch (RedefinitionException e) {
+			e.printStackTrace();
+		}
 
 		for (ToolParser.CodeContext c : ctx.instructions) {
 			code += visit(c);
